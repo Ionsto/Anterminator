@@ -1,0 +1,2 @@
+﻿  cl : Command line error D8016 : '/O2' and '/RTC1' command-line options are incompatible
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(429,5): error MSB6006: "CL.exe" exited with code 2.

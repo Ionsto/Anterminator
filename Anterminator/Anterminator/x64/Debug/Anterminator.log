@@ -1,0 +1,164 @@
+﻿  Chunk.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(7,1): error C2079:  'SwapList<Entity,1000>::ElementList' uses undefined class 'std::array<std::unique_ptr<t,std::default_delete<_Ty>>,1000>'
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(7,1): error C2079:         with
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(7,1): error C2079:         [
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(7,1): error C2079:             t=Entity,
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(7,1): error C2079:             _Ty=Entity
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(7,1): error C2079:         ]
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(8): message :  see reference to class template instantiation 'SwapList<Entity,1000>' being compiled
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(8,1): error C2079:  'SwapList<Entity,1000>::Ids' uses undefined class 'std::array<int,1000>'
+D:\Github\Anterminator\Anterminator\Anterminator\SwapList.h(9,1): error C2079:  'SwapList<Entity,1000>::ReverseIds' uses undefined class 'std::array<int,1000>'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.cpp(5,36): error C2248:  'Entity::Update': cannot access private member declared in class 'Entity'
+D:\Github\Anterminator\Anterminator\Anterminator\Entity.h(18): message :  see declaration of 'Entity::Update'
+  GameManager.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\Entity.h(3): message :  see declaration of 'Entity'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,38): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,43): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,54): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+  main.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\GameManager.h(12,10): error C1083:  Cannot open include file: 'EntityPlayer.h': No such file or directory
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,38): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,43): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,54): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+  RenderEngine.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\GameManager.h(12,10): error C1083:  Cannot open include file: 'EntityPlayer.h': No such file or directory
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,38): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,43): error C2065:  'Size': undeclared identifier
+  RenderEngineGPU.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,54): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,38): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,43): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,54): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(31,25): error C2039:  'MaxEntitiesPerChunk': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(31,44): error C2065:  'MaxEntitiesPerChunk': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(31,44): error C2975:  '_Size': invalid template argument for 'std::array', expected compile-time constant expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array(20): message :  see declaration of '_Size'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(46,7): error C2039:  'vector': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\string(19): message :  see declaration of 'std'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(46,13): error C7568:  argument list missing after assumed function template 'vector'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(46,24): error C2062:  type 'unknown-type' unexpected
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(46,46): error C2039:  'vector': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\string(19): message :  see declaration of 'std'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(46,128): error C2238:  unexpected token(s) preceding ';'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(47,7): error C2039:  'vector': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\string(19): message :  see declaration of 'std'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(47,13): error C7568:  argument list missing after assumed function template 'vector'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(47,34): error C2062:  type 'unknown-type' unexpected
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(47,57): error C2039:  'vector': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\string(19): message :  see declaration of 'std'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(47,108): error C2238:  unexpected token(s) preceding ';'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(48,7): error C2039:  'vector': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\string(19): message :  see declaration of 'std'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(48,13): error C7568:  argument list missing after assumed function template 'vector'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(48,24): error C2062:  type 'unknown-type' unexpected
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(48,46): error C2039:  'vector': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\string(19): message :  see declaration of 'std'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.h(48,95): error C2238:  unexpected token(s) preceding ';'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(62,7): error C2039:  'vector': is not a member of 'std'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\string(19): message :  see declaration of 'std'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(62,19): error C2062:  type 'float' unexpected
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(63,91): error C2065:  'data': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(63,102): error C2660:  'glTexImage2D': function does not take 8 arguments
+D:\Github\Anterminator\glew-2.1.0\include\GL\glew.h(1149,23): message :  see declaration of 'glTexImage2D'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(67,63): error C2065:  'GPUBlockBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(67,86): error C2065:  'GPUBlockBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(67,131): error C2198:  'PFNGLBUFFERSTORAGEPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(71,73): error C2065:  'GPUEntityBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(71,97): error C2065:  'GPUEntityBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(71,143): error C2198:  'PFNGLBUFFERSTORAGEPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(75,63): error C2065:  'GPUChunkBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(75,86): error C2065:  'GPUChunkBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(75,131): error C2198:  'PFNGLBUFFERSTORAGEPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(85,41): error C2440:  'initializing': cannot convert from 'glm::fvec2' to 'glm::vec<3,float,0>'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(85,27): message :  No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(86,45): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(86,49): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(87,45): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(87,49): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(90,36): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(90,40): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(91,36): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(91,40): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(97,4): error C2065:  'GPUChunkBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(98,31): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(98,35): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(100,32): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(100,36): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(104,34): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(104,38): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(104,76): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(104,80): error C2065:  'Size': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(105,23): error C2065:  'GPUBlockBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(105,21): error C2530:  'gpublock': references must be initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(106,9): error C2039:  'Chunks': is not a member of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(4): message :  see declaration of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(108,35): error C2039:  'Chunks': is not a member of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(4): message :  see declaration of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(108,21): error C2530:  'chunk': references must be initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(109,39): error C2039:  'GetBlockLocal': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(110,15): error C3536:  'gpublock': cannot be used before it is initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(110,34): error C3536:  'block': cannot be used before it is initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(119,36): error C2039:  'MaxHeight': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(119,45): error C2065:  'MaxHeight': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(126,7): error C2039:  'Chunks': is not a member of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(4): message :  see declaration of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(128,32): error C2039:  'Chunks': is not a member of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(4): message :  see declaration of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(128,18): error C2530:  'chunk': references must be initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(129,52): error C2039:  'EntityCount': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(132,25): error C2065:  'GPUChunkBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(132,23): error C2530:  'gpuchunk': references must be initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(133,15): error C3536:  'gpuchunk': cannot be used before it is initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(134,25): error C2065:  'GPUEntityBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(134,23): error C2530:  'gpuentity': references must be initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(135,43): error C2039:  'EntityList': is not a member of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(4): message :  see declaration of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(135,71): error C2039:  'EntityRef': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(135,25): error C2530:  'worldentity': references must be initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(136,16): error C3536:  'gpuentity': cannot be used before it is initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(136,35): error C3536:  'worldentity': cannot be used before it is initialized
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(157,66): error C2065:  'GPUBlockBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(157,89): error C2065:  'GPUBlockBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(157,110): error C2198:  'PFNGLBUFFERSUBDATAPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(159,76): error C2065:  'GPUEntityBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(159,100): error C2065:  'GPUEntityBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(159,122): error C2198:  'PFNGLBUFFERSUBDATAPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(161,66): error C2065:  'GPUChunkBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(161,89): error C2065:  'GPUChunkBuffer': undeclared identifier
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(161,110): error C2198:  'PFNGLBUFFERSUBDATAPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(162,34): error C2039:  'tilt': is not a member of 'Camera'
+D:\Github\Anterminator\Anterminator\Anterminator\Camera.h(3): message :  see declaration of 'Camera'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(162,34): error C2198:  'PFNGLUNIFORM1FPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(163,32): error C2039:  'yaw': is not a member of 'Camera'
+D:\Github\Anterminator\Anterminator\Anterminator\Camera.h(3): message :  see declaration of 'Camera'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(163,32): error C2198:  'PFNGLUNIFORM1FPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(164,47): error C2039:  'SunCounter': is not a member of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(4): message :  see declaration of 'World'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(164,47): error C2198:  'PFNGLUNIFORM1FPROC': too few arguments for call
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(165,117): error C2039:  'z': is not a member of 'glm::vec<2,float,0>'
+D:\Github\Anterminator\glm\glm\fwd.hpp(417): message :  see declaration of 'glm::vec<2,float,0>'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(165,117): error C2198:  'PFNGLUNIFORM3FPROC': too few arguments for call
+  World.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(166,42): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,38): error C2039:  'Size': is not a member of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\Chunk.h(4): message :  see declaration of 'Chunk'
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,43): error C2065:  'Size': undeclared identifier
+  Generating Code...
+D:\Github\Anterminator\Anterminator\Anterminator\World.h(8,54): error C4430:  missing type specifier - int assumed. Note: C++ does not support default-int

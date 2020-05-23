@@ -1,0 +1,139 @@
+﻿  cl : Command line warning D9025 : overriding '/openmp' with '/openmp:experimental'
+  Main.cpp
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(37,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(38,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(85,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(86,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(97,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(98,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(147,17): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(61,63): warning C4244:  '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(61,63): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(61,63): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(61,63): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(61,63): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(62,63): warning C4244:  '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(62,63): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(62,63): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(62,63): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(62,63): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(63,63): warning C4244:  '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(63,63): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(63,63): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(63,63): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(63,63): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(71,15): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:  '=': conversion from 'T' to '_Ty', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:         and
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:             _Ty=sf::Uint8
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(92,42): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:  '=': conversion from 'T' to '_Ty', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:         and
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:             _Ty=sf::Uint8
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(93,46): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:  '=': conversion from 'T' to '_Ty', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:         and
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:             _Ty=sf::Uint8
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(94,46): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:  '+=': conversion from 'T' to '_Ty', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:         and
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:             _Ty=sf::Uint8
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(120,55): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:  '+=': conversion from 'T' to '_Ty', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:         and
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:             _Ty=sf::Uint8
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(121,59): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:  '+=': conversion from 'T' to '_Ty', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:         and
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:             _Ty=sf::Uint8
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(122,59): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,82): warning C4244:  'argument': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,82): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,82): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,82): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,82): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,65): warning C4244:  'argument': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,65): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,65): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,65): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,65): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,48): warning C4244:  'argument': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,48): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,48): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,48): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(170,48): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,176): warning C4244:  'argument': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,176): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,176): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,176): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,176): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,128): warning C4244:  'argument': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,128): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,128): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,128): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,128): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,80): warning C4244:  'argument': conversion from 'T' to 'sf::Uint8', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,80): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,80): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,80): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(192,80): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(212,41): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(218,41): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(241,29): warning C4244:  '=': conversion from 'unsigned int' to 'T', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(241,29): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(241,29): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(241,29): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(241,29): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(242,29): warning C4244:  '=': conversion from 'unsigned int' to 'T', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(242,29): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(242,29): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(242,29): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(242,29): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(316,21): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,83): warning C4244:  'argument': conversion from 'T' to 'unsigned int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,83): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,83): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,83): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,83): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,70): warning C4244:  'argument': conversion from 'T' to 'unsigned int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,70): warning C4244:         with
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,70): warning C4244:         [
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,70): warning C4244:             T=float
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(360,70): warning C4244:         ]
+D:\Github\Anterminator\Anterminator\AntSim\Main.cpp(407,40): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+  Generating code
+  2 of 639 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  AntSim.vcxproj -> D:\Github\Anterminator\Anterminator\x64\Release\AntSim.exe
