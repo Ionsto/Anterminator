@@ -77,7 +77,6 @@ PUBLIC	??_C@_0O@ILELJAKL@Reading?5file?6@		; `string'
 PUBLIC	??_C@_0BI@CFPLBAOH@invalid?5string?5position@	; `string'
 PUBLIC	??_C@_0BA@JFNIOLAK@string?5too?5long@		; `string'
 PUBLIC	??_C@_0BD@OLBABOEK@vector?$DMT?$DO?5too?5long@	; `string'
-EXTRN	__imp_?sputn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QEAA_JPEBD_J@Z:PROC
 EXTRN	__imp_log2f:PROC
 EXTRN	__imp__get_stream_buffer_pointers:PROC
 EXTRN	??_L@YAXPEAX_K1P6AX0@Z2@Z:PROC			; `eh vector constructor iterator'
@@ -166,6 +165,7 @@ EXTRN	__imp_?sputc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QEAAHD@Z:PROC
 EXTRN	__imp_?getloc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QEBA?AVlocale@2@XZ:PROC
 EXTRN	__imp_??0?$basic_streambuf@DU?$char_traits@D@std@@@std@@IEAA@XZ:PROC
 EXTRN	__imp_?_Getcat@?$codecvt@DDU_Mbstatet@@@std@@SA_KPEAPEBVfacet@locale@2@PEBV42@@Z:PROC
+EXTRN	__imp_?sputn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QEAA_JPEBD_J@Z:PROC
 ;	COMDAT ?_Psave@?$_Facetptr@V?$codecvt@DDU_Mbstatet@@@std@@@std@@2PEBVfacet@locale@2@EB
 _BSS	SEGMENT
 ?_Psave@?$_Facetptr@V?$codecvt@DDU_Mbstatet@@@std@@@std@@2PEBVfacet@locale@2@EB DQ 01H DUP (?) ; std::_Facetptr<std::codecvt<char,char,_Mbstatet> >::_Psave
@@ -713,8 +713,6 @@ PUBLIC	??$_Unfancy@M@std@@YAPEAMPEAM@Z			; std::_Unfancy<float>
 PUBLIC	?max@?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@SAIXZ ; std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253>::max
 PUBLIC	?min@?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@SAIXZ ; std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253>::min
 PUBLIC	??$generate_canonical@M$0?0V?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@@std@@YAMAEAV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@0@@Z ; std::generate_canonical<float,-1,std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> >
-PUBLIC	??$?RAEBMAEBM@?$less@X@std@@QEBA_NAEBM0@Z	; std::less<void>::operator()<float const &,float const &>
-PUBLIC	??$?RAEBHAEBH@?$less@X@std@@QEBA_NAEBH0@Z	; std::less<void>::operator()<int const &,int const &>
 PUBLIC	??$?0AEAPEAV_Facet_base@std@@@?$_Compressed_pair@U?$default_delete@V_Facet_base@std@@@std@@PEAV_Facet_base@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@AEAPEAV_Facet_base@1@@Z ; std::_Compressed_pair<std::default_delete<std::_Facet_base>,std::_Facet_base *,1>::_Compressed_pair<std::default_delete<std::_Facet_base>,std::_Facet_base *,1><std::_Facet_base * &>
 PUBLIC	??0?$_Uninitialized_backout_al@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAA@PEAU?$vec@$01M$0A@@glm@@AEAV?$allocator@U?$vec@$01M$0A@@glm@@@1@@Z ; std::_Uninitialized_backout_al<std::allocator<glm::vec<2,float,0> > >::_Uninitialized_backout_al<std::allocator<glm::vec<2,float,0> > >
 PUBLIC	??1?$_Uninitialized_backout_al@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAA@XZ ; std::_Uninitialized_backout_al<std::allocator<glm::vec<2,float,0> > >::~_Uninitialized_backout_al<std::allocator<glm::vec<2,float,0> > >
@@ -730,8 +728,6 @@ PUBLIC	??$forward@AEBQEAD@std@@YAAEBQEADAEBQEAD@Z	; std::forward<char * const &>
 PUBLIC	??$forward@AEBV?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@YAAEBV?$allocator@U?$vec@$01M$0A@@glm@@@0@AEBV10@@Z ; std::forward<std::allocator<glm::vec<2,float,0> > const &>
 PUBLIC	??$forward@AEBV?$allocator@M@std@@@std@@YAAEBV?$allocator@M@0@AEBV10@@Z ; std::forward<std::allocator<float> const &>
 PUBLIC	??$_Eval@V?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@@?$uniform_real@M@std@@AEBAMAEAV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@1@AEBUparam_type@01@@Z ; std::uniform_real<float>::_Eval<std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> >
-PUBLIC	??$clamp@MU?$less@X@std@@@std@@YAAEBMAEBM00U?$less@X@0@@Z ; std::clamp<float,std::less<void> >
-PUBLIC	??$clamp@HU?$less@X@std@@@std@@YAAEBHAEBH00U?$less@X@0@@Z ; std::clamp<int,std::less<void> >
 PUBLIC	??$?0U?$default_delete@V_Facet_base@std@@@std@@$0A@@?$unique_ptr@V_Facet_base@std@@U?$default_delete@V_Facet_base@std@@@2@@std@@QEAA@PEAV_Facet_base@1@@Z ; std::unique_ptr<std::_Facet_base,std::default_delete<std::_Facet_base> >::unique_ptr<std::_Facet_base,std::default_delete<std::_Facet_base> ><std::default_delete<std::_Facet_base>,0>
 PUBLIC	?_Get_first@?$_Compressed_pair@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@V?$_Vector_val@U?$_Simple_types@U?$vec@$01M$0A@@glm@@@std@@@2@$00@std@@QEBAAEBV?$allocator@U?$vec@$01M$0A@@glm@@@2@XZ ; std::_Compressed_pair<std::allocator<glm::vec<2,float,0> >,std::_Vector_val<std::_Simple_types<glm::vec<2,float,0> > >,1>::_Get_first
 PUBLIC	?_Get_first@?$_Compressed_pair@V?$allocator@M@std@@V?$_Vector_val@U?$_Simple_types@M@std@@@2@$00@std@@QEBAAEBV?$allocator@M@2@XZ ; std::_Compressed_pair<std::allocator<float>,std::_Vector_val<std::_Simple_types<float> >,1>::_Get_first
@@ -791,11 +787,6 @@ PUBLIC	??$max@M@std@@YAAEBMAEBM0@Z			; std::max<float>
 PUBLIC	??$?RV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@@?$uniform_real@M@std@@QEBAMAEAV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@1@@Z ; std::uniform_real<float>::operator()<std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> >
 PUBLIC	??$?0HHH@?$vec@$02M$0A@@glm@@QEAA@HHH@Z		; glm::vec<3,float,0>::vec<3,float,0><int,int,int>
 PUBLIC	??$?0HH@?$vec@$01M$0A@@glm@@QEAA@HH@Z		; glm::vec<2,float,0>::vec<2,float,0><int,int>
-PUBLIC	??$?DM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@MAEBU10@@Z ; glm::operator*<float,0>
-PUBLIC	??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z ; glm::operator+<float,0>
-PUBLIC	??$min@M@std@@YAAEBMAEBM0@Z			; std::min<float>
-PUBLIC	??$clamp@M@std@@YAAEBMAEBM00@Z			; std::clamp<float>
-PUBLIC	??$clamp@H@std@@YAAEBHAEBH00@Z			; std::clamp<int>
 PUBLIC	??$?DM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@M@Z ; glm::operator*<float,0>
 PUBLIC	??0?$vec@$01M$0A@@glm@@QEAA@MM@Z		; glm::vec<2,float,0>::vec<2,float,0>
 PUBLIC	?_Xran@?$_String_val@U?$_Simple_types@D@std@@@std@@SAXXZ ; std::_String_val<std::_Simple_types<char> >::_Xran
@@ -903,16 +894,12 @@ PUBLIC	??0?$uniform_real_distribution@M@std@@QEAA@MM@Z	; std::uniform_real_distr
 PUBLIC	??0?$allocator@U?$vec@$01M$0A@@glm@@@std@@QEAA@XZ ; std::allocator<glm::vec<2,float,0> >::allocator<glm::vec<2,float,0> >
 PUBLIC	??0?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAA@_KAEBV?$allocator@U?$vec@$01M$0A@@glm@@@1@@Z ; std::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >
 PUBLIC	??1?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAA@XZ ; std::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >::~vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >
-PUBLIC	?size@?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEBA_KXZ ; std::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >::size
-PUBLIC	??A?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAAAEAU?$vec@$01M$0A@@glm@@_K@Z ; std::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >::operator[]
 PUBLIC	??0?$allocator@M@std@@QEAA@XZ			; std::allocator<float>::allocator<float>
 PUBLIC	??0?$vector@MV?$allocator@M@std@@@std@@QEAA@_KAEBV?$allocator@M@1@@Z ; std::vector<float,std::allocator<float> >::vector<float,std::allocator<float> >
 PUBLIC	??1?$vector@MV?$allocator@M@std@@@std@@QEAA@XZ	; std::vector<float,std::allocator<float> >::~vector<float,std::allocator<float> >
-PUBLIC	??A?$vector@MV?$allocator@M@std@@@std@@QEAAAEAM_K@Z ; std::vector<float,std::allocator<float> >::operator[]
 PUBLIC	??0?$initializer_list@M@std@@QEAA@PEBM0@Z	; std::initializer_list<float>::initializer_list<float>
 PUBLIC	?begin@?$initializer_list@M@std@@QEBAPEBMXZ	; std::initializer_list<float>::begin
 PUBLIC	?end@?$initializer_list@M@std@@QEBAPEBMXZ	; std::initializer_list<float>::end
-PUBLIC	??A?$array@UPheremoneCached@@$01@std@@QEAAAEAUPheremoneCached@@_K@Z ; std::array<PheremoneCached,2>::operator[]
 PUBLIC	??0?$initializer_list@PEAM@std@@QEAA@PEBQEAM0@Z	; std::initializer_list<float *>::initializer_list<float *>
 PUBLIC	?begin@?$initializer_list@PEAM@std@@QEBAPEBQEAMXZ ; std::initializer_list<float *>::begin
 PUBLIC	?end@?$initializer_list@PEAM@std@@QEBAPEBQEAMXZ	; std::initializer_list<float *>::end
@@ -940,10 +927,6 @@ PUBLIC	??1PheremoneCached@@QEAA@XZ			; PheremoneCached::~PheremoneCached
 PUBLIC	??0PheremoneCached@@QEAA@XZ			; PheremoneCached::PheremoneCached
 PUBLIC	??1?$array@UPheremoneCached@@$01@std@@QEAA@XZ	; std::array<PheremoneCached,2>::~array<PheremoneCached,2>
 PUBLIC	??0?$array@UPheremoneCached@@$01@std@@QEAA@XZ	; std::array<PheremoneCached,2>::array<PheremoneCached,2>
-PUBLIC	?Update@PheremoneGrid@@QEAAXM@Z			; PheremoneGrid::Update
-PUBLIC	?GetStrengthFast@PheremoneGrid@@QEAAAEAMHH@Z	; PheremoneGrid::GetStrengthFast
-PUBLIC	?GetDirectionFast@PheremoneGrid@@QEAAAEAU?$vec@$01M$0A@@glm@@HH@Z ; PheremoneGrid::GetDirectionFast
-PUBLIC	?GetStrengthGrid@PheremoneGrid@@QEAAAEAMHH@Z	; PheremoneGrid::GetStrengthGrid
 PUBLIC	??0PheremoneGrid@@QEAA@XZ			; PheremoneGrid::PheremoneGrid
 PUBLIC	??0ControlRandomWalk@@QEAA@XZ			; ControlRandomWalk::ControlRandomWalk
 PUBLIC	?_Getfacet@locale@std@@QEBAPEBVfacet@12@_K@Z	; std::locale::_Getfacet
@@ -1690,26 +1673,26 @@ $pdata$?AddAnt@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN50@AddAnt
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update
-	DD	imagerel $LN18@Update+13
+$pdata$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18
+	DD	imagerel $LN18+13
 	DD	imagerel $unwind$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update+13
-	DD	imagerel $LN18@Update+212
+$pdata$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18+13
+	DD	imagerel $LN18+212
 	DD	imagerel $chain$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update+212
-	DD	imagerel $LN18@Update+264
+$pdata$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18+212
+	DD	imagerel $LN18+264
 	DD	imagerel $chain$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update+264
-	DD	imagerel $LN18@Update+275
+$pdata$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18+264
+	DD	imagerel $LN18+275
 	DD	imagerel $chain$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
@@ -1774,14 +1757,8 @@ $pdata$??0?$array@UPheremoneCached@@$01@std@@QEAA@XZ DD imagerel $LN6@array
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$?Update@PheremoneGrid@@QEAAXM@Z DD imagerel $LN114@Update
-	DD	imagerel $LN114@Update+399
-	DD	imagerel $unwind$?Update@PheremoneGrid@@QEAAXM@Z
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$??0PheremoneGrid@@QEAA@XZ DD imagerel $LN9@PheremoneG
-	DD	imagerel $LN9@PheremoneG+134
+	DD	imagerel $LN9@PheremoneG+132
 	DD	imagerel $unwind$??0PheremoneGrid@@QEAA@XZ
 pdata	ENDS
 ;	COMDAT pdata
@@ -1825,58 +1802,6 @@ pdata	SEGMENT
 $pdata$??0exception@std@@QEAA@AEBV01@@Z DD imagerel $LN5@exception
 	DD	imagerel $LN5@exception+53
 	DD	imagerel $unwind$??0exception@std@@QEAA@AEBV01@@Z
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
-$pdata$?Update$omp$1@PheremoneGrid@@QEAAXM@Z DD imagerel ?Update$omp$1@PheremoneGrid@@QEAAXM@Z
-	DD	imagerel ?Update$omp$1@PheremoneGrid@@QEAAXM@Z+293
-	DD	imagerel $unwind$?Update$omp$1@PheremoneGrid@@QEAAXM@Z
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
-$pdata$?Update$omp$2@PheremoneGrid@@QEAAXM@Z DD imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-	DD	imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z+90
-	DD	imagerel $unwind$?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
-$pdata$0$?Update$omp$2@PheremoneGrid@@QEAAXM@Z DD imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z+90
-	DD	imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z+441
-	DD	imagerel $chain$0$?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
-$pdata$1$?Update$omp$2@PheremoneGrid@@QEAAXM@Z DD imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z+441
-	DD	imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z+461
-	DD	imagerel $chain$1$?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-;	COMDAT xdata
-xdata	SEGMENT
-$chain$1$?Update$omp$2@PheremoneGrid@@QEAAXM@Z DD 021H
-	DD	imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-	DD	imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z+90
-	DD	imagerel $unwind$?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$chain$0$?Update$omp$2@PheremoneGrid@@QEAAXM@Z DD 020521H
-	DD	0a6405H
-	DD	imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-	DD	imagerel ?Update$omp$2@PheremoneGrid@@QEAAXM@Z+90
-	DD	imagerel $unwind$?Update$omp$2@PheremoneGrid@@QEAAXM@Z
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$?Update$omp$2@PheremoneGrid@@QEAAXM@Z DD 060f01H
-	DD	0c540fH
-	DD	0b340fH
-	DD	0700b720fH
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$?Update$omp$1@PheremoneGrid@@QEAAXM@Z DD 040a01H
-	DD	0a340aH
-	DD	07006720aH
-xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$??0exception@std@@QEAA@AEBV01@@Z DD 020601H
@@ -1922,13 +1847,6 @@ xdata	ENDS
 xdata	SEGMENT
 $unwind$??0PheremoneGrid@@QEAA@XZ DD 020601H
 	DD	030025206H
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$?Update@PheremoneGrid@@QEAAXM@Z DD 021519H
-	DD	030029206H
-	DD	imagerel __GSHandlerCheck
-	DD	040H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -1986,13 +1904,13 @@ $unwind$??$_Ungetc@D@std@@YA_NAEBDPEAU_iobuf@@@Z DD 010401H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$ip2state$??0ColonyController@@QEAA@XZ DD imagerel ??0ColonyController@@QEAA@XZ+544
+$ip2state$??0ColonyController@@QEAA@XZ DD imagerel ??0ColonyController@@QEAA@XZ+548
 	DD	0ffffffffH
-	DD	imagerel ??0ColonyController@@QEAA@XZ+663
+	DD	imagerel ??0ColonyController@@QEAA@XZ+671
 	DD	00H
-	DD	imagerel ??0ColonyController@@QEAA@XZ+782
+	DD	imagerel ??0ColonyController@@QEAA@XZ+794
 	DD	01H
-	DD	imagerel ??0ColonyController@@QEAA@XZ+905
+	DD	imagerel ??0ColonyController@@QEAA@XZ+921
 	DD	02H
 xdata	ENDS
 ;	COMDAT xdata
@@ -2067,24 +1985,24 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD 021H
-	DD	imagerel $LN18@Update
-	DD	imagerel $LN18@Update+13
+	DD	imagerel $LN18
+	DD	imagerel $LN18+13
 	DD	imagerel $unwind$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD 020521H
 	DD	087405H
-	DD	imagerel $LN18@Update+264
-	DD	imagerel $LN18@Update+275
+	DD	imagerel $LN18+264
+	DD	imagerel $LN18+275
 	DD	imagerel $chain$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD 020621H
 	DD	026806H
-	DD	imagerel $LN18@Update
-	DD	imagerel $LN18@Update+13
+	DD	imagerel $LN18
+	DD	imagerel $LN18+13
 	DD	imagerel $unwind$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 xdata	ENDS
 ;	COMDAT xdata
@@ -3350,4 +3268,150 @@ xdata	ENDS
 xdata	SEGMENT
 $unwind$?_Refill_lower@?$mersenne_twister@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@@std@@IEAAXXZ DD 020501H
 	DD	013405H
+; Function compile flags: /Ogtpy
+; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
+; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
+; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
+; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
+;	COMDAT ?Update@ColonyController@@QEAAXAEAVWorld@@@Z
+_TEXT	SEGMENT
+this$ = 64
+world$ = 72
+?Update@ColonyController@@QEAAXAEAVWorld@@@Z PROC	; ColonyController::Update, COMDAT
+
+; 82   : void ColonyController::Update(World & world) {
+
+$LN18:
+	mov	QWORD PTR [rsp+16], rbx
+	push	rsi
+	sub	rsp, 48					; 00000030H
+	mov	rbx, rcx
+	vmovaps	XMMWORD PTR [rsp+32], xmm6
+
+; 83   : 	Pheremone_Home.Update(world.DeltaTime);
+
+	add	rcx, 5152				; 00001420H
+	mov	rsi, rdx
+	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
+
+; 84   : 	Pheremone_Food.Update(world.DeltaTime);
+
+	lea	rcx, QWORD PTR [rbx+5280]
+	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
+
+; 85   : 	Pheremone_Density.Update(world.DeltaTime);
+
+	lea	rcx, QWORD PTR [rbx+5536]
+	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
+
+; 86   : 	Pheremone_Killed.Update(world.DeltaTime);
+
+	lea	rcx, QWORD PTR [rbx+5408]
+	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
+
+; 87   : 	TotalEnergy -= EnergyCost * world.DeltaTime;
+
+	vmovss	xmm3, DWORD PTR [rbx+5040]
+	vmovss	xmm2, DWORD PTR __real@3c23d70a
+	vfnmadd213ss xmm2, xmm3, DWORD PTR [rbx+5144]
+	vxorps	xmm1, xmm1, xmm1
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+
+; 4460 :     if (_Left < _Right) {
+
+	vcmpltss xmm0, xmm1, xmm2
+	vblendvps xmm0, xmm1, xmm2, xmm0
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
+
+; 195  :     return _CSTD powf(_Xx, _Yx);
+
+	vmovss	xmm1, DWORD PTR [rbx+5028]
+; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
+
+; 88   : 	TotalEnergy = std::max(0.0f, TotalEnergy);
+
+	vmovss	DWORD PTR [rbx+5144], xmm0
+
+; 90   : 	int SpawnCount = ((random_number(generator) + 1.0) / 2.0) * this->AntCreation * world.DeltaTime * std::pow(TotalEnergy / EnergyCost, AntCreationEnergyFactor);
+
+	vdivss	xmm0, xmm0, xmm3
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
+
+; 195  :     return _CSTD powf(_Xx, _Yx);
+
+	call	powf
+; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
+
+; 90   : 	int SpawnCount = ((random_number(generator) + 1.0) / 2.0) * this->AntCreation * world.DeltaTime * std::pow(TotalEnergy / EnergyCost, AntCreationEnergyFactor);
+
+	lea	rcx, QWORD PTR [rbx+5000]
+	mov	rdx, rbx
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
+
+; 195  :     return _CSTD powf(_Xx, _Yx);
+
+	vmovaps	xmm6, xmm0
+; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
+
+; 90   : 	int SpawnCount = ((random_number(generator) + 1.0) / 2.0) * this->AntCreation * world.DeltaTime * std::pow(TotalEnergy / EnergyCost, AntCreationEnergyFactor);
+
+	call	??$?RV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@@?$uniform_real@M@std@@QEBAMAEAV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@1@@Z ; std::uniform_real<float>::operator()<std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> >
+	vaddss	xmm1, xmm0, DWORD PTR __real@3f800000
+	vmulss	xmm2, xmm1, DWORD PTR __real@3f000000
+	vmulss	xmm2, xmm2, DWORD PTR [rbx+5024]
+	vcvtss2sd xmm1, xmm2, xmm2
+	vmulsd	xmm3, xmm1, QWORD PTR __real@3f847ae147ae147b
+	vcvtss2sd xmm0, xmm6, xmm6
+	vmovaps	xmm6, XMMWORD PTR [rsp+32]
+	vmulsd	xmm2, xmm3, xmm0
+	vcvttsd2si eax, xmm2
+
+; 91   : 	for (int i = 0; i < SpawnCount; ++i)
+
+	test	eax, eax
+	jle	SHORT $LN3@Update
+
+; 88   : 	TotalEnergy = std::max(0.0f, TotalEnergy);
+
+	mov	QWORD PTR [rsp+64], rdi
+	mov	edi, eax
+	npad	5
+$LL4@Update:
+
+; 92   : 	{
+; 93   : 		if (TotalEnergy > EnergyCost)
+
+	vmovss	xmm0, DWORD PTR [rbx+5040]
+	vcomiss	xmm0, DWORD PTR [rbx+5144]
+	jae	SHORT $LN2@Update
+
+; 94   : 		{
+; 95   : 			AddAnt(world);
+
+	mov	rdx, rsi
+	mov	rcx, rbx
+	call	?AddAnt@ColonyController@@QEAAXAEAVWorld@@@Z ; ColonyController::AddAnt
+$LN2@Update:
+
+; 91   : 	for (int i = 0; i < SpawnCount; ++i)
+
+	sub	rdi, 1
+	jne	SHORT $LL4@Update
+	mov	rdi, QWORD PTR [rsp+64]
+$LN3@Update:
+
+; 96   : 		}
+; 97   : 	}
+; 98   : }
+
+	mov	rbx, QWORD PTR [rsp+72]
+	add	rsp, 48					; 00000030H
+	pop	rsi
+	ret	0
+?Update@ColonyController@@QEAAXAEAVWorld@@@Z ENDP	; ColonyController::Update
+_TEXT	ENDS
 END

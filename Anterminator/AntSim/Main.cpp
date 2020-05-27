@@ -161,20 +161,20 @@ void Render() {
 		for (int i = 0; i < world->ColonyArray.size(); ++i)
 		{
 			auto& colony = world->ColonyArray[i];
-				float AntHillSize = 20;
-				auto dist = (colony.HiveLocation - CameraPosition) * scale;
-				//dist.y *= -1.0;
-				if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
+			float AntHillSize = 20;
+			auto dist = (colony.HiveLocation - CameraPosition) * scale;
+			//dist.y *= -1.0;
+			if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
+			{
+				shape.setScale(scale * AntHillSize, scale * AntHillSize);
+				shape.setFillColor(sf::Color(colony.Colour.x, colony.Colour.y, colony.Colour.z));
+				if (!colony.ColonyAlive)
 				{
-					shape.setScale(scale * AntHillSize, scale * AntHillSize);
-					shape.setFillColor(sf::Color(colony.Colour.x, colony.Colour.y, colony.Colour.z));
-					if (!colony.ColonyAlive)
-					{
-						shape.setFillColor(sf::Color(200, 200, 200));
-					}
-					shape.setPosition(dist.x + (ScreenSize.x * 0.5f), dist.y + (ScreenSize.y * 0.5f));
-					window->draw(shape);
+					shape.setFillColor(sf::Color(200, 200, 200));
 				}
+				shape.setPosition(dist.x + (ScreenSize.x * 0.5f), dist.y + (ScreenSize.y * 0.5f));
+				window->draw(shape);
+			}
 		}
 		for (int i = 0; i < world->EntityList.ParticleCount; ++i)
 		{
@@ -402,6 +402,24 @@ int main(int argc, char** args)
 				//Running = false;
 			}
 			
+		}
+		if (world->AntColonyCount <= 1) {
+			float max = -1000;
+			for (int i = 0; i < world->AntColonyMax; ++i)
+			{
+				float energy = world->ColonyArray[i].TotalEnergy + (world->AffiliationCounter[i + 1] * 100);
+				if (world->ColonyArray[i].ColonyAlive && energy > max)
+				{
+					std::cout<<"Saved colony: "<<i<<"\n";
+					world->ColonyArray[i].Write("BestColony.txt");
+					max = energy;
+				}
+
+			}
+			std::cout << "---------\nElapsed time: " << world->ElapsedTime<<"\n";
+			world = std::make_unique<World>();
+			GraphRollingMax = 0;
+			world->TimeScalingFactor *= 128;
 		}
 		auto end = std::chrono::high_resolution_clock::now();
 		DeltaTime = (end - DtCounter).count()/1e9;

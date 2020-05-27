@@ -73,6 +73,7 @@ PUBLIC	??_C@_0BF@JDGAFPMC@Colonie?5update?5time?3@	; `string'
 PUBLIC	??_C@_0BB@HMAFMBEN@Total?5ant?5count?3@		; `string'
 PUBLIC	??_C@_0P@PGHGLEJB@Saved?5colony?3?5@		; `string'
 PUBLIC	??_C@_0P@MCDONFMA@BestColony?4txt@		; `string'
+PUBLIC	??_C@_0BJ@PBNHIFNH@?9?9?9?9?9?9?9?9?9?6Elapsed?5time?3?5@ ; `string'
 PUBLIC	??_C@_0N@LPFKKEBD@?3AM?3am?3PM?3pm@		; `string'
 PUBLIC	??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@ ; `string'
 EXTRN	__imp_??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QEAAAEAV01@N@Z:PROC
@@ -156,6 +157,11 @@ CONST	ENDS
 ;	COMDAT ??_C@_0N@LPFKKEBD@?3AM?3am?3PM?3pm@
 CONST	SEGMENT
 ??_C@_0N@LPFKKEBD@?3AM?3am?3PM?3pm@ DB ':AM:am:PM:pm', 00H ; `string'
+CONST	ENDS
+;	COMDAT ??_C@_0BJ@PBNHIFNH@?9?9?9?9?9?9?9?9?9?6Elapsed?5time?3?5@
+CONST	SEGMENT
+??_C@_0BJ@PBNHIFNH@?9?9?9?9?9?9?9?9?9?6Elapsed?5time?3?5@ DB '---------', 0aH
+	DB	'Elapsed time: ', 00H			; `string'
 CONST	ENDS
 ;	COMDAT ??_C@_0P@MCDONFMA@BestColony?4txt@
 CONST	SEGMENT
@@ -506,7 +512,7 @@ PUBLIC	??$_Emplace_back@$$V@?$_Uninitialized_backout_al@V?$allocator@VVertex@sf@
 PUBLIC	??$_Zero_range@PEAE@std@@YAPEAEQEAE0@Z		; std::_Zero_range<unsigned char *>
 PUBLIC	??$_Unfancy@E@std@@YAPEAEPEAE@Z			; std::_Unfancy<unsigned char>
 PUBLIC	??$?RAEAHAEAH@?$plus@X@std@@QEBAHAEAH0@Z	; std::plus<void>::operator()<int &,int &>
-PUBLIC	??$_Adl_verify_range@V?$_Array_iterator@H$01@std@@V12@@std@@YAXAEBV?$_Array_iterator@H$01@0@0@Z ; std::_Adl_verify_range<std::_Array_iterator<int,2>,std::_Array_iterator<int,2> >
+PUBLIC	??$_Adl_verify_range@V?$_Array_iterator@H$05@std@@V12@@std@@YAXAEBV?$_Array_iterator@H$05@0@0@Z ; std::_Adl_verify_range<std::_Array_iterator<int,6>,std::_Array_iterator<int,6> >
 PUBLIC	??$?0AEAPEAVRenderWindow@sf@@@?$_Compressed_pair@U?$default_delete@VRenderWindow@sf@@@std@@PEAVRenderWindow@sf@@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@AEAPEAVRenderWindow@sf@@@Z ; std::_Compressed_pair<std::default_delete<sf::RenderWindow>,sf::RenderWindow *,1>::_Compressed_pair<std::default_delete<sf::RenderWindow>,sf::RenderWindow *,1><sf::RenderWindow * &>
 PUBLIC	??$?0AEAPEAVWorld@@@?$_Compressed_pair@U?$default_delete@VWorld@@@std@@PEAVWorld@@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@AEAPEAVWorld@@@Z ; std::_Compressed_pair<std::default_delete<World>,World *,1>::_Compressed_pair<std::default_delete<World>,World *,1><World * &>
 PUBLIC	??$?0AEAPEAVTexture@sf@@@?$_Compressed_pair@U?$default_delete@VTexture@sf@@@std@@PEAVTexture@sf@@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@AEAPEAVTexture@sf@@@Z ; std::_Compressed_pair<std::default_delete<sf::Texture>,sf::Texture *,1>::_Compressed_pair<std::default_delete<sf::Texture>,sf::Texture *,1><sf::Texture * &>
@@ -532,10 +538,10 @@ PUBLIC	??$destroy@V?$vector@MV?$allocator@M@std@@@std@@@?$_Default_allocator_tra
 PUBLIC	??$_Unfancy@V?$vector@MV?$allocator@M@std@@@std@@@std@@YAPEAV?$vector@MV?$allocator@M@std@@@0@PEAV10@@Z ; std::_Unfancy<std::vector<float,std::allocator<float> > >
 PUBLIC	??$_Resize_reallocate@U_Value_init_tag@std@@@?$vector@VVertex@sf@@V?$allocator@VVertex@sf@@@std@@@std@@AEAAX_KAEBU_Value_init_tag@1@@Z ; std::vector<sf::Vertex,std::allocator<sf::Vertex> >::_Resize_reallocate<std::_Value_init_tag>
 PUBLIC	??$forward@AEBV?$allocator@E@std@@@std@@YAAEBV?$allocator@E@0@AEBV10@@Z ; std::forward<std::allocator<unsigned char> const &>
-PUBLIC	?_Unwrapped@?$_Array_const_iterator@H$01@std@@QEBAPEBHXZ ; std::_Array_const_iterator<int,2>::_Unwrapped
-PUBLIC	?_Unwrapped@?$_Array_iterator@H$01@std@@QEBAPEAHXZ ; std::_Array_iterator<int,2>::_Unwrapped
-PUBLIC	??$_Get_unwrapped@V?$_Array_iterator@H$01@std@@$0A@@std@@YAPEAHAEBV?$_Array_iterator@H$01@0@@Z ; std::_Get_unwrapped<std::_Array_iterator<int,2>,0>
-PUBLIC	??$accumulate@V?$_Array_iterator@H$01@std@@HU?$plus@X@2@@std@@YAHV?$_Array_iterator@H$01@0@0HU?$plus@X@0@@Z ; std::accumulate<std::_Array_iterator<int,2>,int,std::plus<void> >
+PUBLIC	?_Unwrapped@?$_Array_const_iterator@H$05@std@@QEBAPEBHXZ ; std::_Array_const_iterator<int,6>::_Unwrapped
+PUBLIC	?_Unwrapped@?$_Array_iterator@H$05@std@@QEBAPEAHXZ ; std::_Array_iterator<int,6>::_Unwrapped
+PUBLIC	??$_Get_unwrapped@V?$_Array_iterator@H$05@std@@$0A@@std@@YAPEAHAEBV?$_Array_iterator@H$05@0@@Z ; std::_Get_unwrapped<std::_Array_iterator<int,6>,0>
+PUBLIC	??$accumulate@V?$_Array_iterator@H$05@std@@HU?$plus@X@2@@std@@YAHV?$_Array_iterator@H$05@0@0HU?$plus@X@0@@Z ; std::accumulate<std::_Array_iterator<int,6>,int,std::plus<void> >
 PUBLIC	??$?0U?$default_delete@VRenderWindow@sf@@@std@@$0A@@?$unique_ptr@VRenderWindow@sf@@U?$default_delete@VRenderWindow@sf@@@std@@@std@@QEAA@PEAVRenderWindow@sf@@@Z ; std::unique_ptr<sf::RenderWindow,std::default_delete<sf::RenderWindow> >::unique_ptr<sf::RenderWindow,std::default_delete<sf::RenderWindow> ><std::default_delete<sf::RenderWindow>,0>
 PUBLIC	??$forward@AEAY08$$CBD@std@@YAAEAY08$$CBDAEAY08$$CBD@Z ; std::forward<char const (&)[9]>
 PUBLIC	??$forward@VVideoMode@sf@@@std@@YA$$QEAVVideoMode@sf@@AEAV12@@Z ; std::forward<sf::VideoMode>
@@ -582,13 +588,14 @@ PUBLIC	??$forward@U?$default_delete@VWorld@@@std@@@std@@YA$$QEAU?$default_delete
 PUBLIC	??$addressof@V?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@@std@@YAPEAV?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@0@AEAV10@@Z ; std::addressof<std::unique_ptr<World,std::default_delete<World> > >
 PUBLIC	??$forward@U?$default_delete@VRenderWindow@sf@@@std@@@std@@YA$$QEAU?$default_delete@VRenderWindow@sf@@@0@AEAU10@@Z ; std::forward<std::default_delete<sf::RenderWindow> >
 PUBLIC	??$addressof@V?$unique_ptr@VRenderWindow@sf@@U?$default_delete@VRenderWindow@sf@@@std@@@std@@@std@@YAPEAV?$unique_ptr@VRenderWindow@sf@@U?$default_delete@VRenderWindow@sf@@@std@@@0@AEAV10@@Z ; std::addressof<std::unique_ptr<sf::RenderWindow,std::default_delete<sf::RenderWindow> > >
-PUBLIC	??$accumulate@V?$_Array_iterator@H$01@std@@H@std@@YAHV?$_Array_iterator@H$01@0@0H@Z ; std::accumulate<std::_Array_iterator<int,2>,int>
+PUBLIC	??$accumulate@V?$_Array_iterator@H$05@std@@H@std@@YAHV?$_Array_iterator@H$05@0@0H@Z ; std::accumulate<std::_Array_iterator<int,6>,int>
 PUBLIC	??$make_unique@VRenderWindow@sf@@VVideoMode@2@AEAY08$$CBD$0A@@std@@YA?AV?$unique_ptr@VRenderWindow@sf@@U?$default_delete@VRenderWindow@sf@@@std@@@0@$$QEAVVideoMode@sf@@AEAY08$$CBD@Z ; std::make_unique<sf::RenderWindow,sf::VideoMode,char const (&)[9],0>
 PUBLIC	??$?GM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@@Z	; glm::operator-<float,0>
 PUBLIC	??$distance@$01M$0A@@glm@@YAMAEBU?$vec@$01M$0A@@0@0@Z ; glm::distance<2,float,0>
 PUBLIC	??$?XM@?$vec@$01M$0A@@glm@@QEAAAEAU01@M@Z	; glm::vec<2,float,0>::operator*=<float>
 PUBLIC	??$make_unique@VWorld@@$$V$0A@@std@@YA?AV?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@0@XZ ; std::make_unique<World,0>
 PUBLIC	??$?GUsteady_clock@chrono@std@@V?$duration@_JU?$ratio@$00$0DLJKMKAA@@std@@@12@V312@@chrono@std@@YA?AV?$duration@_JU?$ratio@$00$0DLJKMKAA@@std@@@01@AEBV?$time_point@Usteady_clock@chrono@std@@V?$duration@_JU?$ratio@$00$0DLJKMKAA@@std@@@23@@01@0@Z ; std::chrono::operator-<std::chrono::steady_clock,std::chrono::duration<__int64,std::ratio<1,1000000000> >,std::chrono::duration<__int64,std::ratio<1,1000000000> > >
+PUBLIC	??$min@M@std@@YAAEBMAEBM0@Z			; std::min<float>
 PUBLIC	??$make_unique@VTexture@sf@@$$V$0A@@std@@YA?AV?$unique_ptr@VTexture@sf@@U?$default_delete@VTexture@sf@@@std@@@0@XZ ; std::make_unique<sf::Texture,0>
 PUBLIC	??$?0U?$default_delete@VRenderWindow@sf@@@std@@$0A@@?$unique_ptr@VRenderWindow@sf@@U?$default_delete@VRenderWindow@sf@@@std@@@std@@QEAA@XZ ; std::unique_ptr<sf::RenderWindow,std::default_delete<sf::RenderWindow> >::unique_ptr<sf::RenderWindow,std::default_delete<sf::RenderWindow> ><std::default_delete<sf::RenderWindow>,0>
 PUBLIC	??$?0U?$default_delete@VWorld@@@std@@$0A@@?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@QEAA@XZ ; std::unique_ptr<World,std::default_delete<World> >::unique_ptr<World,std::default_delete<World> ><std::default_delete<World>,0>
@@ -613,10 +620,10 @@ PUBLIC	?_Getal@?$vector@VVertex@sf@@V?$allocator@VVertex@sf@@@std@@@std@@AEAAAEA
 PUBLIC	?_Destroy@?$vector@EV?$allocator@E@std@@@std@@AEAAXPEAE0@Z ; std::vector<unsigned char,std::allocator<unsigned char> >::_Destroy
 PUBLIC	?_Getal@?$vector@EV?$allocator@E@std@@@std@@AEAAAEAV?$allocator@E@2@XZ ; std::vector<unsigned char,std::allocator<unsigned char> >::_Getal
 PUBLIC	??1?$vector@VChunk@@V?$allocator@VChunk@@@std@@@std@@QEAA@XZ ; std::vector<Chunk,std::allocator<Chunk> >::~vector<Chunk,std::allocator<Chunk> >
-PUBLIC	??0?$_Array_const_iterator@H$01@std@@QEAA@PEBH_K@Z ; std::_Array_const_iterator<int,2>::_Array_const_iterator<int,2>
+PUBLIC	??0?$_Array_const_iterator@H$05@std@@QEAA@PEBH_K@Z ; std::_Array_const_iterator<int,6>::_Array_const_iterator<int,6>
 PUBLIC	??1?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@QEAA@XZ ; std::vector<std::vector<float,std::allocator<float> >,std::allocator<std::vector<float,std::allocator<float> > > >::~vector<std::vector<float,std::allocator<float> >,std::allocator<std::vector<float,std::allocator<float> > > >
 PUBLIC	??1ColonyController@@QEAA@XZ			; ColonyController::~ColonyController
-PUBLIC	??1?$array@VColonyController@@$00@std@@QEAA@XZ	; std::array<ColonyController,1>::~array<ColonyController,1>
+PUBLIC	??1?$array@VColonyController@@$04@std@@QEAA@XZ	; std::array<ColonyController,5>::~array<ColonyController,5>
 PUBLIC	??1?$ChunkArray@$0DOI@@@QEAA@XZ			; ChunkArray<1000>::~ChunkArray<1000>
 PUBLIC	??1World@@QEAA@XZ				; World::~World
 PUBLIC	??_GWorld@@QEAAPEAXI@Z				; World::`scalar deleting destructor'
@@ -627,8 +634,8 @@ PUBLIC	?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA
 PUBLIC	?_Tidy@?$vector@VVertex@sf@@V?$allocator@VVertex@sf@@@std@@@std@@AEAAXXZ ; std::vector<sf::Vertex,std::allocator<sf::Vertex> >::_Tidy
 PUBLIC	?_Tidy@?$vector@EV?$allocator@E@std@@@std@@AEAAXXZ ; std::vector<unsigned char,std::allocator<unsigned char> >::_Tidy
 PUBLIC	??A?$array@VEntity@@$0BIGKA@@std@@QEAAAEAVEntity@@_K@Z ; std::array<Entity,100000>::operator[]
-PUBLIC	??0?$_Array_iterator@H$01@std@@QEAA@PEAH_K@Z	; std::_Array_iterator<int,2>::_Array_iterator<int,2>
-PUBLIC	??E?$_Array_const_iterator@H$01@std@@QEAAAEAV01@XZ ; std::_Array_const_iterator<int,2>::operator++
+PUBLIC	??0?$_Array_iterator@H$05@std@@QEAA@PEAH_K@Z	; std::_Array_iterator<int,6>::_Array_iterator<int,6>
+PUBLIC	??E?$_Array_const_iterator@H$05@std@@QEAAAEAV01@XZ ; std::_Array_const_iterator<int,6>::operator++
 PUBLIC	??R?$default_delete@VWorld@@@std@@QEBAXPEAVWorld@@@Z ; std::default_delete<World>::operator()
 PUBLIC	?release@?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@QEAAPEAVWorld@@XZ ; std::unique_ptr<World,std::default_delete<World> >::release
 PUBLIC	?reset@?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@QEAAXPEAVWorld@@@Z ; std::unique_ptr<World,std::default_delete<World> >::reset
@@ -658,12 +665,12 @@ PUBLIC	??0?$time_point@Usteady_clock@chrono@std@@V?$duration@_JU?$ratio@$00$0DLJ
 PUBLIC	?size@?$vector@MV?$allocator@M@std@@@std@@QEBA_KXZ ; std::vector<float,std::allocator<float> >::size
 PUBLIC	?back@?$vector@MV?$allocator@M@std@@@std@@QEAAAEAMXZ ; std::vector<float,std::allocator<float> >::back
 PUBLIC	?GetParticle@?$SwapList@VEntity@@$0BIGKA@@@QEAAAEAVEntity@@H@Z ; SwapList<Entity,100000>::GetParticle
-PUBLIC	?size@?$array@VColonyController@@$00@std@@QEBA_KXZ ; std::array<ColonyController,1>::size
-PUBLIC	??A?$array@VColonyController@@$00@std@@QEAAAEAVColonyController@@_K@Z ; std::array<ColonyController,1>::operator[]
-PUBLIC	?begin@?$array@H$01@std@@QEAA?AV?$_Array_iterator@H$01@2@XZ ; std::array<int,2>::begin
-PUBLIC	?end@?$array@H$01@std@@QEAA?AV?$_Array_iterator@H$01@2@XZ ; std::array<int,2>::end
-PUBLIC	??A?$array@H$01@std@@QEAAAEAH_K@Z		; std::array<int,2>::operator[]
-PUBLIC	??E?$_Array_iterator@H$01@std@@QEAAAEAV01@XZ	; std::_Array_iterator<int,2>::operator++
+PUBLIC	?size@?$array@VColonyController@@$04@std@@QEBA_KXZ ; std::array<ColonyController,5>::size
+PUBLIC	??A?$array@VColonyController@@$04@std@@QEAAAEAVColonyController@@_K@Z ; std::array<ColonyController,5>::operator[]
+PUBLIC	?begin@?$array@H$05@std@@QEAA?AV?$_Array_iterator@H$05@2@XZ ; std::array<int,6>::begin
+PUBLIC	?end@?$array@H$05@std@@QEAA?AV?$_Array_iterator@H$05@2@XZ ; std::array<int,6>::end
+PUBLIC	??A?$array@H$05@std@@QEAAAEAH_K@Z		; std::array<int,6>::operator[]
+PUBLIC	??E?$_Array_iterator@H$05@std@@QEAAAEAV01@XZ	; std::_Array_iterator<int,6>::operator++
 PUBLIC	??A?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@QEAAAEAV?$vector@MV?$allocator@M@std@@@1@_K@Z ; std::vector<std::vector<float,std::allocator<float> >,std::allocator<std::vector<float,std::allocator<float> > > >::operator[]
 PUBLIC	??4?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@QEAAAEAV01@$$QEAV01@@Z ; std::unique_ptr<World,std::default_delete<World> >::operator=
 PUBLIC	??1?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@QEAA@XZ ; std::unique_ptr<World,std::default_delete<World> >::~unique_ptr<World,std::default_delete<World> >
@@ -1003,9 +1010,9 @@ $pdata$??1ColonyController@@QEAA@XZ DD imagerel $LN29@ColonyCont
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$??1?$array@VColonyController@@$00@std@@QEAA@XZ DD imagerel $LN5@array
+$pdata$??1?$array@VColonyController@@$04@std@@QEAA@XZ DD imagerel $LN5@array
 	DD	imagerel $LN5@array+42
-	DD	imagerel $unwind$??1?$array@VColonyController@@$00@std@@QEAA@XZ
+	DD	imagerel $unwind$??1?$array@VColonyController@@$04@std@@QEAA@XZ
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
@@ -1153,38 +1160,44 @@ $pdata$??1?$unique_ptr@VTexture@sf@@U?$default_delete@VTexture@sf@@@std@@@std@@Q
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$main DD	imagerel $LN351@main
-	DD	imagerel $LN351@main+2287
+$pdata$main DD	imagerel $LN456@main
+	DD	imagerel $LN456@main+2923
 	DD	imagerel $unwind$main
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$main$dtor$3 DD imagerel main$dtor$3
-	DD	imagerel main$dtor$3+32
-	DD	imagerel $unwind$main$dtor$3
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
-$pdata$main$dtor$4 DD imagerel main$dtor$4
-	DD	imagerel main$dtor$4+44
-	DD	imagerel $unwind$main$dtor$4
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$main$dtor$5 DD imagerel main$dtor$5
-	DD	imagerel main$dtor$5+45
+	DD	imagerel main$dtor$5+32
 	DD	imagerel $unwind$main$dtor$5
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$main$dtor$8 DD imagerel main$dtor$8
-	DD	imagerel main$dtor$8+32
-	DD	imagerel $unwind$main$dtor$8
+$pdata$main$dtor$6 DD imagerel main$dtor$6
+	DD	imagerel main$dtor$6+44
+	DD	imagerel $unwind$main$dtor$6
+pdata	ENDS
+;	COMDAT pdata
+pdata	SEGMENT
+$pdata$main$dtor$7 DD imagerel main$dtor$7
+	DD	imagerel main$dtor$7+45
+	DD	imagerel $unwind$main$dtor$7
+pdata	ENDS
+;	COMDAT pdata
+pdata	SEGMENT
+$pdata$main$dtor$10 DD imagerel main$dtor$10
+	DD	imagerel main$dtor$10+32
+	DD	imagerel $unwind$main$dtor$10
+pdata	ENDS
+;	COMDAT pdata
+pdata	SEGMENT
+$pdata$main$dtor$17 DD imagerel main$dtor$17
+	DD	imagerel main$dtor$17+32
+	DD	imagerel $unwind$main$dtor$17
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$?PollInput@@YAXXZ DD imagerel $LN421@PollInput
-	DD	imagerel $LN421@PollInput+5478
+	DD	imagerel $LN421@PollInput+5518
 	DD	imagerel $unwind$?PollInput@@YAXXZ
 pdata	ENDS
 ;	COMDAT pdata
@@ -1207,8 +1220,8 @@ $pdata$?Render@@YAXXZ DD imagerel $LN130
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$?RenderGraph@@YAXAEAV?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@@Z DD imagerel $LN180@RenderGrap
-	DD	imagerel $LN180@RenderGrap+654
+$pdata$?RenderGraph@@YAXAEAV?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@@Z DD imagerel $LN161@RenderGrap
+	DD	imagerel $LN161@RenderGrap+862
 	DD	imagerel $unwind$?RenderGraph@@YAXAEAV?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@@Z
 pdata	ENDS
 ;	COMDAT pdata
@@ -1322,20 +1335,20 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$?Render$omp$1@@YAXXZ DD imagerel ?Render$omp$1@@YAXXZ
-	DD	imagerel ?Render$omp$1@@YAXXZ+80
+	DD	imagerel ?Render$omp$1@@YAXXZ+87
 	DD	imagerel $unwind$?Render$omp$1@@YAXXZ
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$4$?Render$omp$1@@YAXXZ DD imagerel ?Render$omp$1@@YAXXZ+80
-	DD	imagerel ?Render$omp$1@@YAXXZ+887
-	DD	imagerel $chain$4$?Render$omp$1@@YAXXZ
+$pdata$6$?Render$omp$1@@YAXXZ DD imagerel ?Render$omp$1@@YAXXZ+87
+	DD	imagerel ?Render$omp$1@@YAXXZ+952
+	DD	imagerel $chain$6$?Render$omp$1@@YAXXZ
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$5$?Render$omp$1@@YAXXZ DD imagerel ?Render$omp$1@@YAXXZ+887
-	DD	imagerel ?Render$omp$1@@YAXXZ+897
-	DD	imagerel $chain$5$?Render$omp$1@@YAXXZ
+$pdata$7$?Render$omp$1@@YAXXZ DD imagerel ?Render$omp$1@@YAXXZ+952
+	DD	imagerel ?Render$omp$1@@YAXXZ+963
+	DD	imagerel $chain$7$?Render$omp$1@@YAXXZ
 pdata	ENDS
 CRT$XCU	SEGMENT
 ?world$initializer$@@3P6AXXZEA DQ FLAT:??__Eworld@@YAXXZ ; world$initializer$
@@ -1343,27 +1356,29 @@ CRT$XCU	SEGMENT
 _DATA	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$chain$5$?Render$omp$1@@YAXXZ DD 021H
+$chain$7$?Render$omp$1@@YAXXZ DD 021H
 	DD	imagerel ?Render$omp$1@@YAXXZ
-	DD	imagerel ?Render$omp$1@@YAXXZ+80
+	DD	imagerel ?Render$omp$1@@YAXXZ+87
 	DD	imagerel $unwind$?Render$omp$1@@YAXXZ
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$chain$4$?Render$omp$1@@YAXXZ DD 0a3621H
-	DD	037836H
-	DD	046828H
-	DD	0a741aH
-	DD	0b5413H
-	DD	0103408H
+$chain$6$?Render$omp$1@@YAXXZ DD 0e4121H
+	DD	037841H
+	DD	046833H
+	DD	0af42aH
+	DD	0b7425H
+	DD	0c641aH
+	DD	0d540dH
+	DD	0123408H
 	DD	imagerel ?Render$omp$1@@YAXXZ
-	DD	imagerel ?Render$omp$1@@YAXXZ+80
+	DD	imagerel ?Render$omp$1@@YAXXZ+87
 	DD	imagerel $unwind$?Render$omp$1@@YAXXZ
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$?Render$omp$1@@YAXXZ DD 020601H
-	DD	06002b206H
+$unwind$?Render$omp$1@@YAXXZ DD 020901H
+	DD	0e005d209H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -1532,11 +1547,13 @@ $unwind$??__EGraphArea@@YAXXZ DD 010401H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$?RenderGraph@@YAXAEAV?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@@Z DD 081401H
-	DD	0b6414H
-	DD	0a5414H
-	DD	093414H
-	DD	070105214H
+$unwind$?RenderGraph@@YAXAEAV?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@@Z DD 0c4f01H
+	DD	03784fH
+	DD	04683cH
+	DD	0105412H
+	DD	0f3412H
+	DD	0e00e9212H
+	DD	0600b700cH
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -1566,15 +1583,15 @@ $unwind$?dtor$1@?0??PollInput@@YAXXZ@4HA DD 020601H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$ip2state$?PollInput@@YAXXZ DD imagerel ?PollInput@@YAXXZ+112
+$ip2state$?PollInput@@YAXXZ DD imagerel ?PollInput@@YAXXZ+120
 	DD	0ffffffffH
-	DD	imagerel ?PollInput@@YAXXZ+661
+	DD	imagerel ?PollInput@@YAXXZ+673
 	DD	00H
-	DD	imagerel ?PollInput@@YAXXZ+686
+	DD	imagerel ?PollInput@@YAXXZ+698
 	DD	0ffffffffH
-	DD	imagerel ?PollInput@@YAXXZ+749
+	DD	imagerel ?PollInput@@YAXXZ+761
 	DD	01H
-	DD	imagerel ?PollInput@@YAXXZ+797
+	DD	imagerel ?PollInput@@YAXXZ+809
 	DD	0ffffffffH
 xdata	ENDS
 ;	COMDAT xdata
@@ -1596,18 +1613,20 @@ $cppxdata$?PollInput@@YAXXZ DQ 00000000219930522r ; 4.45598e-314
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$?PollInput@@YAXXZ DD 01b6519H
-	DD	06f857H
-	DD	07e851H
-	DD	08d84bH
-	DD	09c843H
-	DD	0ab83eH
-	DD	0ba839H
-	DD	0c9834H
-	DD	0d882fH
-	DD	0e782aH
-	DD	0f6825H
-	DD	0237420H
+$unwind$?PollInput@@YAXXZ DD 01f6d19H
+	DD	06f85fH
+	DD	07e859H
+	DD	08d853H
+	DD	09c84bH
+	DD	0ab846H
+	DD	0ba841H
+	DD	0c983cH
+	DD	0d8837H
+	DD	0e7832H
+	DD	0f682dH
+	DD	025e428H
+	DD	0247424H
+	DD	0236420H
 	DD	022341cH
 	DD	020010fH
 	DD	05004H
@@ -1617,7 +1636,22 @@ $unwind$?PollInput@@YAXXZ DD 01b6519H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$main$dtor$8 DD 020601H
+$unwind$main$dtor$17 DD 020601H
+	DD	050023206H
+xdata	ENDS
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$main$dtor$10 DD 020601H
+	DD	050023206H
+xdata	ENDS
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$main$dtor$7 DD 020601H
+	DD	050023206H
+xdata	ENDS
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$main$dtor$6 DD 020601H
 	DD	050023206H
 xdata	ENDS
 ;	COMDAT xdata
@@ -1627,81 +1661,85 @@ $unwind$main$dtor$5 DD 020601H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$main$dtor$4 DD 020601H
-	DD	050023206H
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$main$dtor$3 DD 020601H
-	DD	050023206H
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$ip2state$main DD imagerel main+109
+$ip2state$main DD imagerel main+137
 	DD	0ffffffffH
-	DD	imagerel main+139
+	DD	imagerel main+167
 	DD	00H
-	DD	imagerel main+173
+	DD	imagerel main+201
 	DD	01H
-	DD	imagerel main+212
+	DD	imagerel main+240
 	DD	02H
-	DD	imagerel main+274
+	DD	imagerel main+302
 	DD	03H
-	DD	imagerel main+393
+	DD	imagerel main+421
 	DD	0ffffffffH
-	DD	imagerel main+562
+	DD	imagerel main+590
 	DD	06H
-	DD	imagerel main+587
+	DD	imagerel main+615
 	DD	0ffffffffH
-	DD	imagerel main+659
+	DD	imagerel main+692
 	DD	07H
-	DD	imagerel main+707
+	DD	imagerel main+741
+	DD	0ffffffffH
+	DD	imagerel main+2300
+	DD	08H
+	DD	imagerel main+2325
+	DD	0ffffffffH
+	DD	imagerel main+2401
+	DD	07H
+	DD	imagerel main+2449
 	DD	0ffffffffH
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $stateUnwindMap$main DD 0ffffffffH
-	DD	imagerel main$dtor$3
+	DD	imagerel main$dtor$5
 	DD	00H
 	DD	imagerel __std_terminate
 	DD	00H
-	DD	imagerel main$dtor$4
+	DD	imagerel main$dtor$6
 	DD	02H
-	DD	imagerel main$dtor$5
+	DD	imagerel main$dtor$7
 	DD	0ffffffffH
-	DD	imagerel main$dtor$4
+	DD	imagerel main$dtor$6
 	DD	04H
-	DD	imagerel main$dtor$5
+	DD	imagerel main$dtor$7
 	DD	0ffffffffH
-	DD	imagerel main$dtor$8
+	DD	imagerel main$dtor$10
 	DD	0ffffffffH
 	DD	imagerel __std_terminate
+	DD	0ffffffffH
+	DD	imagerel main$dtor$17
 xdata	ENDS
 ;	COMDAT CONST
 CONST	SEGMENT
-$cppxdata$main DQ 00000000819930522r		; 1.7188e-313
+$cppxdata$main DQ 00000000919930522r		; 1.93099e-313
 	DD	imagerel $stateUnwindMap$main
 	DQ	00000000000000000r		; 0
-	DD	0aH
+	DD	0eH
 	DD	imagerel $ip2state$main
 	DQ	00000000000000070r		; 5.53354e-322
 	DD	01H
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$main DD	0174911H
-	DD	0bd849H
-	DD	0cc841H
-	DD	0db839H
-	DD	0ea834H
-	DD	0f982fH
-	DD	010882aH
-	DD	0117825H
-	DD	0126820H
-	DD	02a341bH
-	DD	026010eH
-	DD	07005e007H
-	DD	06004H
+$unwind$main DD	01f6511H
+	DD	0bf865H
+	DD	0ce85dH
+	DD	0dd855H
+	DD	0ec84dH
+	DD	0fb845H
+	DD	010a83dH
+	DD	0119838H
+	DD	0128833H
+	DD	013782eH
+	DD	0146829H
+	DD	0316424H
+	DD	0303420H
+	DD	02a0113H
+	DD	0e00af00cH
+	DD	0c006d008H
+	DD	07004H
 	DD	imagerel __CxxFrameHandler3
 	DD	imagerel $cppxdata$main
 xdata	ENDS
@@ -1991,24 +2029,24 @@ $unwind$??1World@@QEAA@XZ DD 020f19H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$ip2state$??1?$array@VColonyController@@$00@std@@QEAA@XZ DD imagerel ??1?$array@VColonyController@@$00@std@@QEAA@XZ+31
+$ip2state$??1?$array@VColonyController@@$04@std@@QEAA@XZ DD imagerel ??1?$array@VColonyController@@$04@std@@QEAA@XZ+31
 	DD	0ffffffffH
 xdata	ENDS
 ;	COMDAT CONST
 CONST	SEGMENT
-$cppxdata$??1?$array@VColonyController@@$00@std@@QEAA@XZ DQ 00000000019930522r ; 2.11987e-315
+$cppxdata$??1?$array@VColonyController@@$04@std@@QEAA@XZ DQ 00000000019930522r ; 2.11987e-315
 	DQ	00000000000000000r		; 0
 	DQ	00000000100000000r		; 2.122e-314
-	DD	imagerel $ip2state$??1?$array@VColonyController@@$00@std@@QEAA@XZ
+	DD	imagerel $ip2state$??1?$array@VColonyController@@$04@std@@QEAA@XZ
 	DQ	00000000000000020r		; 1.58101e-322
 	DD	05H
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$??1?$array@VColonyController@@$00@std@@QEAA@XZ DD 010d19H
+$unwind$??1?$array@VColonyController@@$04@std@@QEAA@XZ DD 010d19H
 	DD	06204H
 	DD	imagerel __CxxFrameHandler3
-	DD	imagerel $cppxdata$??1?$array@VColonyController@@$00@std@@QEAA@XZ
+	DD	imagerel $cppxdata$??1?$array@VColonyController@@$04@std@@QEAA@XZ
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -2473,42 +2511,31 @@ CRT$XCU	ENDS
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
+; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
@@ -2524,50 +2551,52 @@ CRT$XCU	ENDS
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 ;	COMDAT ?Render$omp$1@@YAXXZ
 _TEXT	SEGMENT
-$T1 = 112
-$T2 = 120
+$T1 = 128
+$T2 = 136
 ?Render$omp$1@@YAXXZ PROC				; Render$omp$1, COMDAT
 
 ; 75   : #pragma omp parallel for
 
-	push	rsi
-	sub	rsp, 96					; 00000060H
+	mov	r11, rsp
+	push	r14
+	sub	rsp, 112				; 00000070H
 
 ; 76   : 				for (int x = 0; x < PHGridSize; ++x)
 
-	lea	rax, QWORD PTR $T2[rsp]
+	lea	rax, QWORD PTR [r11+16]
 	mov	r9d, 1
-	mov	QWORD PTR [rsp+40], rax
+	mov	QWORD PTR [r11-80], rax
 	mov	edx, 511				; 000001ffH
-	lea	rax, QWORD PTR $T1[rsp]
+	lea	rax, QWORD PTR [r11+8]
 	xor	ecx, ecx
 	mov	r8d, r9d
-	mov	QWORD PTR [rsp+32], rax
+	mov	QWORD PTR [r11-88], rax
 	call	_vcomp_for_static_simple_init
 	movsxd	rdx, DWORD PTR $T1[rsp]
-	mov	esi, DWORD PTR $T2[rsp]
-	cmp	edx, esi
+	mov	r14d, DWORD PTR $T2[rsp]
+	cmp	edx, r14d
 	jg	$LN3@Render$omp
-	vmovss	xmm4, DWORD PTR __real@42c80000
-	vmovss	xmm5, DWORD PTR __real@40233333
-	mov	QWORD PTR [rsp+128], rbx
-	mov	ebx, DWORD PTR ?DisplayPheremone@@3HA	; DisplayPheremone
-	mov	QWORD PTR [rsp+88], rbp
-	xor	ebp, ebp
-	mov	QWORD PTR [rsp+80], rdi
-	lea	rdi, QWORD PTR [rdx*4+1]
+	vmovss	xmm5, DWORD PTR __real@42c80000
+	vmovss	xmm4, DWORD PTR __real@437f0000
+	mov	QWORD PTR [rsp+144], rbx
+	mov	QWORD PTR [rsp+104], rbp
+	lea	rbp, QWORD PTR [rdx*4+1]
+	mov	QWORD PTR [rsp+96], rsi
+	mov	esi, DWORD PTR ?DisplayPheremone@@3HA	; DisplayPheremone
+	mov	QWORD PTR [rsp+88], rdi
+	mov	QWORD PTR [rsp+80], r15
+	xor	r15d, r15d
 	vmovaps	XMMWORD PTR [rsp+64], xmm6
-	vmovss	xmm6, DWORD PTR __real@437f0000
+	vmovss	xmm6, DWORD PTR __real@3c23d70a
 	vmovaps	XMMWORD PTR [rsp+48], xmm7
-	vmovss	xmm7, DWORD PTR __real@3c23d70a
-	npad	2
+	vmovss	xmm7, DWORD PTR __real@40233333
 $LL2@Render$omp:
 
 ; 77   : 				{
 ; 78   : 					for (int y = 0; y < PHGridSize; ++y)
 
-	mov	r10d, ebp
-	mov	r8, rdi
+	mov	r11d, r15d
+	mov	rdi, rbp
 	npad	10
 $LL6@Render$omp:
 
@@ -2577,29 +2606,32 @@ $LL6@Render$omp:
 ; 82   : 						Pixels[(i * 4)] = 0;// world->FoodScent.raw_data[itex].Strength;
 
 	mov	rax, QWORD PTR ?Pixels@@3V?$vector@EV?$allocator@E@std@@@std@@A
-	mov	BYTE PTR [r8+rax-1], bpl
+	mov	BYTE PTR [rdi+rax-1], r15b
 
 ; 83   : 						Pixels[(i * 4) + 1] = 0;
 
 	mov	rax, QWORD PTR ?Pixels@@3V?$vector@EV?$allocator@E@std@@@std@@A
-	mov	BYTE PTR [r8+rax], bpl
+	mov	BYTE PTR [rdi+rax], r15b
 	mov	rax, QWORD PTR ?Pixels@@3V?$vector@EV?$allocator@E@std@@@std@@A
-	mov	BYTE PTR [r8+rax+1], bpl
+	mov	BYTE PTR [rdi+rax+1], r15b
 
 ; 84   : 						Pixels[(i * 4) + 2] = 0;
 ; 85   : 						Pixels[(i * 4) + 3] = 255;
 
 	mov	rax, QWORD PTR ?Pixels@@3V?$vector@EV?$allocator@E@std@@@std@@A
-	mov	BYTE PTR [r8+rax+2], 255		; 000000ffH
+	mov	BYTE PTR [rdi+rax+2], 255		; 000000ffH
 
 ; 86   : 						if (DisplayPheremone == 5)
 
-	mov	r9, QWORD PTR ?world@@3V?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@A ; world
-	cmp	ebx, 5
+	cmp	esi, 5
 	jne	SHORT $LN22@Render$omp
+
+; 89   : 							float value = world->FoodScent.GetStrengthGrid(x, y);
+
+	mov	r8, QWORD PTR ?world@@3V?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@A ; world
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 111  : 		ix = std::clamp(ix, 0, GridSize - 1);
+; 77   : 		ix = std::clamp(ix, 0, GridSize - 1);
 
 	cmp	edx, 511				; 000001ffH
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
@@ -2607,45 +2639,32 @@ $LL6@Render$omp:
 ; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
 
 	jle	SHORT $LN19@Render$omp
-	mov	ecx, 511				; 000001ffH
+	mov	eax, 511				; 000001ffH
 	jmp	SHORT $LN20@Render$omp
 $LN19@Render$omp:
 	test	edx, edx
-	mov	ecx, edx
-	cmovs	ecx, ebp
+	mov	eax, edx
+	cmovs	eax, r15d
 $LN20@Render$omp:
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
+; 79   : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
 
-	movsxd	rax, DWORD PTR [r9+5044]
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+	shl	eax, 9
+	add	eax, r11d
+	movsxd	rcx, eax
+	movsxd	rax, DWORD PTR [r8+5048]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 
-; 1468 :         return _My_data._Myfirst[_Pos];
-
-	inc	rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	shl	ecx, 9
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-
-; 1468 :         return _My_data._Myfirst[_Pos];
+; 148  :         return _Elems[_Pos];
 
 	lea	rax, QWORD PTR [rax+rax*2]
 	add	rax, rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	add	ecx, r10d
-	movsxd	rcx, ecx
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 89   : 							float value = world->FoodScent.GetStrengthGrid(x, y);
 
-	mov	rax, QWORD PTR [r9+rax*8+5024]
+	mov	rax, QWORD PTR [r8+rax*8+5080]
 	vmovss	xmm0, DWORD PTR [rax+rcx*4]
 
 ; 90   : 							float Scale = std::min(value, MaxValue) / MaxValue;
@@ -2653,20 +2672,20 @@ $LN20@Render$omp:
 ; 92   : 							Pixels[(i * 4)] = (255 - Colour.x)*Scale;
 
 	mov	rax, QWORD PTR ?Pixels@@3V?$vector@EV?$allocator@E@std@@@std@@A
-	vminss	xmm1, xmm0, xmm4
-	vmulss	xmm2, xmm1, xmm5
+	vminss	xmm1, xmm0, xmm5
+	vmulss	xmm2, xmm1, xmm7
 	vcvttss2si ecx, xmm2
-	mov	BYTE PTR [r8+rax-1], cl
+	mov	BYTE PTR [rdi+rax-1], cl
 
 ; 93   : 							Pixels[(i * 4) + 1] = (255 - Colour.y)*Scale;
 
 	mov	rax, QWORD PTR ?Pixels@@3V?$vector@EV?$allocator@E@std@@@std@@A
-	mov	BYTE PTR [r8+rax], cl
+	mov	BYTE PTR [rdi+rax], cl
 
 ; 94   : 							Pixels[(i * 4) + 2] = (255 - Colour.z)*Scale;
 
 	mov	rax, QWORD PTR ?Pixels@@3V?$vector@EV?$allocator@E@std@@@std@@A
-	mov	BYTE PTR [r8+rax+1], cl
+	mov	BYTE PTR [rdi+rax+1], cl
 
 ; 95   : 						}
 ; 96   : 						else {
@@ -2675,16 +2694,28 @@ $LN20@Render$omp:
 $LN22@Render$omp:
 
 ; 97   : 							for (int j = 0; j < world->AntColonyMax; ++j)
-; 98   : 							{
-; 99   : 								float MaxValue = 100;
-; 100  : 								auto& c = world->ColonyArray[j];
+
+	mov	r9, r15
+	npad	6
+$LL9@Render$omp:
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
+
+; 148  :         return _Elems[_Pos];
+
+	mov	r10, QWORD PTR ?world@@3V?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@A ; world
+; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
+
 ; 101  : 								if (c.ColonyAlive) {
 
-	cmp	BYTE PTR [r9+10016288], bpl
-	je	$LN4@Render$omp
+	cmp	BYTE PTR [r9+r10+10016304], r15b
+	je	$LN7@Render$omp
+
+; 102  : 									float value = c.Pheremone_Home.GetStrengthGrid(x, y);
+
+	lea	rbx, QWORD PTR [r9+r10]
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 111  : 		ix = std::clamp(ix, 0, GridSize - 1);
+; 77   : 		ix = std::clamp(ix, 0, GridSize - 1);
 
 	cmp	edx, 511				; 000001ffH
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
@@ -2692,47 +2723,42 @@ $LN22@Render$omp:
 ; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
 
 	jle	SHORT $LN62@Render$omp
-	mov	ecx, 511				; 000001ffH
+	mov	r8d, 511				; 000001ffH
 	jmp	SHORT $LN63@Render$omp
 $LN62@Render$omp:
 	test	edx, edx
-	mov	ecx, edx
-	cmovs	ecx, ebp
+	mov	r8d, edx
+	cmovs	r8d, r15d
 $LN63@Render$omp:
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
+; 79   : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
 
-	movsxd	rax, DWORD PTR [r9+10016412]
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+	movsxd	rax, DWORD PTR [rbx+10016432]
+	shl	r8d, 9
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 
-; 1468 :         return _My_data._Myfirst[_Pos];
+; 148  :         return _Elems[_Pos];
 
-	inc	rax
+	lea	rcx, QWORD PTR [rax+rax*2]
+	add	rcx, rcx
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
+; 79   : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
 
-	shl	ecx, 9
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-
-; 1468 :         return _My_data._Myfirst[_Pos];
-
-	lea	rax, QWORD PTR [rax+rax*2]
-	add	rax, rax
-	mov	r11, QWORD PTR [r9+rax*8+10016392]
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	lea	eax, DWORD PTR [r10+rcx]
+	lea	eax, DWORD PTR [r11+r8]
 	cdqe
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+
+; 1468 :         return _My_data._Myfirst[_Pos];
+
+	mov	rbx, QWORD PTR [rbx+rcx*8+10016464]
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 103  : 									switch (DisplayPheremone) {
 
-	mov	ecx, ebx
-	vmovss	xmm0, DWORD PTR [r11+rax*4]
+	mov	ecx, esi
+	vmovss	xmm0, DWORD PTR [rbx+rax*4]
 	sub	ecx, 1
 	je	$LN25@Render$omp
 	sub	ecx, 1
@@ -2741,9 +2767,13 @@ $LN63@Render$omp:
 	je	SHORT $LN27@Render$omp
 	cmp	ecx, 1
 	jne	$LN10@Render$omp
+
+; 114  : 										value = c.Pheremone_Killed.GetStrengthGrid(x, y);
+
+	lea	r8, QWORD PTR [r9+r10]
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 111  : 		ix = std::clamp(ix, 0, GridSize - 1);
+; 77   : 		ix = std::clamp(ix, 0, GridSize - 1);
 
 	cmp	edx, 511				; 000001ffH
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
@@ -2751,51 +2781,42 @@ $LN63@Render$omp:
 ; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
 
 	jle	SHORT $LN166@Render$omp
-	mov	ecx, 511				; 000001ffH
+	mov	eax, 511				; 000001ffH
 	jmp	SHORT $LN167@Render$omp
 $LN166@Render$omp:
 	test	edx, edx
-	mov	ecx, edx
-	cmovs	ecx, ebp
+	mov	eax, edx
+	cmovs	eax, r15d
 $LN167@Render$omp:
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
+; 79   : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
 
-	movsxd	rax, DWORD PTR [r9+10016652]
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+	shl	eax, 9
+	add	eax, r11d
+	movsxd	rcx, eax
+	movsxd	rax, DWORD PTR [r8+10016688]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 
-; 1468 :         return _My_data._Myfirst[_Pos];
-
-	inc	rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	shl	ecx, 9
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-
-; 1468 :         return _My_data._Myfirst[_Pos];
+; 148  :         return _Elems[_Pos];
 
 	lea	rax, QWORD PTR [rax+rax*2]
 	add	rax, rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	add	ecx, r10d
-	movsxd	rcx, ecx
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 114  : 										value = c.Pheremone_Killed.GetStrengthGrid(x, y);
 
-	mov	rax, QWORD PTR [r9+rax*8+10016632]
+	mov	rax, QWORD PTR [r8+rax*8+10016720]
 	vmovss	xmm0, DWORD PTR [rax+rcx*4]
 	jmp	$LN10@Render$omp
 $LN27@Render$omp:
+
+; 111  : 										value = c.Pheremone_Density.GetStrengthGrid(x, y);
+
+	lea	r8, QWORD PTR [r9+r10]
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 111  : 		ix = std::clamp(ix, 0, GridSize - 1);
+; 77   : 		ix = std::clamp(ix, 0, GridSize - 1);
 
 	cmp	edx, 511				; 000001ffH
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
@@ -2803,54 +2824,45 @@ $LN27@Render$omp:
 ; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
 
 	jle	SHORT $LN140@Render$omp
-	mov	ecx, 511				; 000001ffH
+	mov	eax, 511				; 000001ffH
 	jmp	SHORT $LN141@Render$omp
 $LN140@Render$omp:
 	test	edx, edx
-	mov	ecx, edx
-	cmovs	ecx, ebp
+	mov	eax, edx
+	cmovs	eax, r15d
 $LN141@Render$omp:
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
+; 79   : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
 
-	movsxd	rax, DWORD PTR [r9+10016772]
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+	shl	eax, 9
+	add	eax, r11d
+	movsxd	rcx, eax
+	movsxd	rax, DWORD PTR [r8+10016816]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 
-; 1468 :         return _My_data._Myfirst[_Pos];
-
-	inc	rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	shl	ecx, 9
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-
-; 1468 :         return _My_data._Myfirst[_Pos];
+; 148  :         return _Elems[_Pos];
 
 	lea	rax, QWORD PTR [rax+rax*2]
 	add	rax, rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	add	ecx, r10d
-	movsxd	rcx, ecx
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 111  : 										value = c.Pheremone_Density.GetStrengthGrid(x, y);
 
-	mov	rax, QWORD PTR [r9+rax*8+10016752]
+	mov	rax, QWORD PTR [r8+rax*8+10016848]
 	vmovss	xmm0, DWORD PTR [rax+rcx*4]
 
 ; 112  : 										break;
 
 	jmp	SHORT $LN10@Render$omp
 $LN26@Render$omp:
+
+; 108  : 										value = c.Pheremone_Food.GetStrengthGrid(x, y);
+
+	lea	r8, QWORD PTR [r9+r10]
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 111  : 		ix = std::clamp(ix, 0, GridSize - 1);
+; 77   : 		ix = std::clamp(ix, 0, GridSize - 1);
 
 	cmp	edx, 511				; 000001ffH
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
@@ -2858,45 +2870,32 @@ $LN26@Render$omp:
 ; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
 
 	jle	SHORT $LN114@Render$omp
-	mov	ecx, 511				; 000001ffH
+	mov	eax, 511				; 000001ffH
 	jmp	SHORT $LN115@Render$omp
 $LN114@Render$omp:
 	test	edx, edx
-	mov	ecx, edx
-	cmovs	ecx, ebp
+	mov	eax, edx
+	cmovs	eax, r15d
 $LN115@Render$omp:
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
+; 79   : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
 
-	movsxd	rax, DWORD PTR [r9+10016532]
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+	shl	eax, 9
+	add	eax, r11d
+	movsxd	rcx, eax
+	movsxd	rax, DWORD PTR [r8+10016560]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
 
-; 1468 :         return _My_data._Myfirst[_Pos];
-
-	inc	rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	shl	ecx, 9
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
-
-; 1468 :         return _My_data._Myfirst[_Pos];
+; 148  :         return _Elems[_Pos];
 
 	lea	rax, QWORD PTR [rax+rax*2]
 	add	rax, rax
-; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
-
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
-
-	add	ecx, r10d
-	movsxd	rcx, ecx
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 108  : 										value = c.Pheremone_Food.GetStrengthGrid(x, y);
 
-	mov	rax, QWORD PTR [r9+rax*8+10016512]
+	mov	rax, QWORD PTR [r8+rax*8+10016592]
 	vmovss	xmm0, DWORD PTR [rax+rcx*4]
 
 ; 109  : 										break;
@@ -2905,7 +2904,7 @@ $LN115@Render$omp:
 $LN25@Render$omp:
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 111  : 		ix = std::clamp(ix, 0, GridSize - 1);
+; 77   : 		ix = std::clamp(ix, 0, GridSize - 1);
 
 	cmp	edx, 511				; 000001ffH
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
@@ -2918,20 +2917,20 @@ $LN25@Render$omp:
 $LN88@Render$omp:
 	test	edx, edx
 	mov	eax, edx
-	cmovs	eax, ebp
+	cmovs	eax, r15d
 $LN89@Render$omp:
 ; File D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h
 
-; 113  : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
+; 79   : 		return cached_data[SwapBuffer].Strength[(ix * GridSize) + iy];
 
 	shl	eax, 9
-	add	eax, r10d
+	add	eax, r11d
 	cdqe
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 105  : 										value = c.Pheremone_Home.GetStrengthGrid(x, y);
 
-	vmovss	xmm0, DWORD PTR [r11+rax*4]
+	vmovss	xmm0, DWORD PTR [rbx+rax*4]
 $LN10@Render$omp:
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
 
@@ -2942,27 +2941,27 @@ $LN10@Render$omp:
 
 ; 120  : 									Pixels[(i * 4)] += (255 - c.Colour.x) * Scale;
 
-	vsubss	xmm2, xmm6, DWORD PTR [r9+10016372]
+	vsubss	xmm2, xmm4, DWORD PTR [r9+r10+10016388]
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
 
 ; 4492 :     if (_Right < _Left) {
 
-	vminss	xmm0, xmm0, xmm4
+	vminss	xmm0, xmm0, xmm5
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 118  : 									float Scale = std::min(value, MaxValue) / MaxValue;
 
-	vmulss	xmm3, xmm0, xmm7
+	vmulss	xmm3, xmm0, xmm6
 
 ; 120  : 									Pixels[(i * 4)] += (255 - c.Colour.x) * Scale;
 
-	movzx	eax, BYTE PTR [r8+rcx-1]
+	movzx	eax, BYTE PTR [rdi+rcx-1]
 	vxorps	xmm0, xmm0, xmm0
 	vcvtsi2ss xmm0, xmm0, eax
 	vmovaps	xmm1, xmm3
 	vfmadd213ss xmm1, xmm2, xmm0
 	vcvttss2si eax, xmm1
-	mov	BYTE PTR [r8+rcx-1], al
+	mov	BYTE PTR [rdi+rcx-1], al
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
 
 ; 1468 :         return _My_data._Myfirst[_Pos];
@@ -2972,14 +2971,14 @@ $LN10@Render$omp:
 
 ; 121  : 									Pixels[(i * 4) + 1] += (255 - c.Colour.y) * Scale;
 
-	vsubss	xmm2, xmm6, DWORD PTR [r9+10016376]
+	vsubss	xmm2, xmm4, DWORD PTR [r9+r10+10016392]
 	vxorps	xmm0, xmm0, xmm0
 	vmovaps	xmm1, xmm3
-	movzx	eax, BYTE PTR [r8+rcx]
+	movzx	eax, BYTE PTR [rdi+rcx]
 	vcvtsi2ss xmm0, xmm0, eax
 	vfmadd213ss xmm1, xmm2, xmm0
 	vcvttss2si eax, xmm1
-	mov	BYTE PTR [r8+rcx], al
+	mov	BYTE PTR [rdi+rcx], al
 ; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
 
 ; 1468 :         return _My_data._Myfirst[_Pos];
@@ -2989,35 +2988,44 @@ $LN10@Render$omp:
 
 ; 122  : 									Pixels[(i * 4) + 2] += (255 - c.Colour.z) * Scale;
 
-	vsubss	xmm2, xmm6, DWORD PTR [r9+10016380]
+	vsubss	xmm2, xmm4, DWORD PTR [r9+r10+10016396]
 	vxorps	xmm0, xmm0, xmm0
 	vmovaps	xmm1, xmm3
-	movzx	eax, BYTE PTR [r8+rcx+1]
+	movzx	eax, BYTE PTR [rdi+rcx+1]
 	vcvtsi2ss xmm0, xmm0, eax
 	vfmadd213ss xmm1, xmm2, xmm0
 	vcvttss2si eax, xmm1
-	mov	BYTE PTR [r8+rcx+1], al
+	mov	BYTE PTR [rdi+rcx+1], al
+$LN7@Render$omp:
+
+; 97   : 							for (int j = 0; j < world->AntColonyMax; ++j)
+
+	add	r9, 10768				; 00002a10H
+	cmp	r9, 53840				; 0000d250H
+	jl	$LL9@Render$omp
 $LN4@Render$omp:
 
 ; 77   : 				{
 ; 78   : 					for (int y = 0; y < PHGridSize; ++y)
 
-	inc	r10d
-	add	r8, 2048				; 00000800H
-	cmp	r10d, 512				; 00000200H
+	inc	r11d
+	add	rdi, 2048				; 00000800H
+	cmp	r11d, 512				; 00000200H
 	jl	$LL6@Render$omp
 
 ; 76   : 				for (int x = 0; x < PHGridSize; ++x)
 
 	inc	edx
-	add	rdi, 4
-	cmp	edx, esi
+	add	rbp, 4
+	cmp	edx, r14d
 	jle	$LL2@Render$omp
 	vmovaps	xmm7, XMMWORD PTR [rsp+48]
 	vmovaps	xmm6, XMMWORD PTR [rsp+64]
-	mov	rdi, QWORD PTR [rsp+80]
-	mov	rbp, QWORD PTR [rsp+88]
-	mov	rbx, QWORD PTR [rsp+128]
+	mov	r15, QWORD PTR [rsp+80]
+	mov	rdi, QWORD PTR [rsp+88]
+	mov	rsi, QWORD PTR [rsp+96]
+	mov	rbp, QWORD PTR [rsp+104]
+	mov	rbx, QWORD PTR [rsp+144]
 $LN3@Render$omp:
 
 ; 123  : 								}
@@ -3026,8 +3034,8 @@ $LN3@Render$omp:
 ; 126  : 					}
 ; 127  : 				}
 
-	add	rsp, 96					; 00000060H
-	pop	rsi
+	add	rsp, 112				; 00000070H
+	pop	r14
 
 ; 76   : 				for (int x = 0; x < PHGridSize; ++x)
 
@@ -3359,9 +3367,9 @@ $LL14@Render:
 
 ; 551  : 		return vec<2, T, Q>(
 
-	vmovss	xmm0, DWORD PTR [rdi+rbx+10016364]
+	vmovss	xmm0, DWORD PTR [rdi+rbx+10016380]
 	vsubss	xmm1, xmm0, DWORD PTR ?CameraPosition@@3U?$vec@$01M$0A@@glm@@A
-	vmovss	xmm0, DWORD PTR [rdi+rbx+10016368]
+	vmovss	xmm0, DWORD PTR [rdi+rbx+10016384]
 
 ; 38   : 		: x(_x), y(_y)
 
@@ -3376,7 +3384,7 @@ $LL14@Render:
 	vmulss	xmm9, xmm1, xmm7
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
-; 167  : 				if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
+; 167  : 			if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
 
 	vmulss	xmm1, xmm6, DWORD PTR ?ScreenSize@@3U?$vec@$01M$0A@@glm@@A
 ; File C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\ucrt\corecrt_math.h
@@ -3386,7 +3394,7 @@ $LL14@Render:
 	vandps	xmm2, xmm10, xmm8
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
-; 167  : 				if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
+; 167  : 			if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
 
 	vcomiss	xmm2, xmm1
 	jae	$LN12@Render
@@ -3398,24 +3406,24 @@ $LL14@Render:
 	vandps	xmm2, xmm9, xmm8
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
-; 167  : 				if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
+; 167  : 			if (std::abs(dist.x) < ScreenSize.x / 2 && std::abs(dist.y) < ScreenSize.y / 2)
 
 	vcomiss	xmm2, xmm1
 	jae	$LN12@Render
 
-; 168  : 				{
-; 169  : 					shape.setScale(scale * AntHillSize, scale * AntHillSize);
+; 168  : 			{
+; 169  : 				shape.setScale(scale * AntHillSize, scale * AntHillSize);
 
 	vmulss	xmm1, xmm7, xmm11
 	vmovaps	xmm2, xmm1
 	lea	rcx, OFFSET FLAT:?shape@@3VCircleShape@sf@@A+8
 	call	QWORD PTR __imp_?setScale@Transformable@sf@@QEAAXMM@Z
 
-; 170  : 					shape.setFillColor(sf::Color(colony.Colour.x, colony.Colour.y, colony.Colour.z));
+; 170  : 				shape.setFillColor(sf::Color(colony.Colour.x, colony.Colour.y, colony.Colour.z));
 
-	vcvttss2si r9d, DWORD PTR [rdi+rbx+10016380]
-	vcvttss2si r8d, DWORD PTR [rdi+rbx+10016376]
-	vcvttss2si edx, DWORD PTR [rdi+rbx+10016372]
+	vcvttss2si r9d, DWORD PTR [rdi+rbx+10016396]
+	vcvttss2si r8d, DWORD PTR [rdi+rbx+10016392]
+	vcvttss2si edx, DWORD PTR [rdi+rbx+10016388]
 	lea	rcx, QWORD PTR $T19[rsp]
 	mov	BYTE PTR [rsp+32], 255			; 000000ffH
 	call	QWORD PTR __imp_??0Color@sf@@QEAA@EEEE@Z
@@ -3423,13 +3431,13 @@ $LL14@Render:
 	lea	rcx, OFFSET FLAT:?shape@@3VCircleShape@sf@@A ; shape
 	call	QWORD PTR __imp_?setFillColor@Shape@sf@@QEAAXAEBVColor@2@@Z
 
-; 171  : 					if (!colony.ColonyAlive)
+; 171  : 				if (!colony.ColonyAlive)
 
-	cmp	BYTE PTR [rdi+rbx+10016288], sil
+	cmp	BYTE PTR [rdi+rbx+10016304], sil
 	jne	SHORT $LN30@Render
 
-; 172  : 					{
-; 173  : 						shape.setFillColor(sf::Color(200, 200, 200));
+; 172  : 				{
+; 173  : 					shape.setFillColor(sf::Color(200, 200, 200));
 
 	mov	r9b, 200				; 000000c8H
 	mov	BYTE PTR [rsp+32], 255			; 000000ffH
@@ -3442,8 +3450,8 @@ $LL14@Render:
 	call	QWORD PTR __imp_?setFillColor@Shape@sf@@QEAAXAEBVColor@2@@Z
 $LN30@Render:
 
-; 174  : 					}
-; 175  : 					shape.setPosition(dist.x + (ScreenSize.x * 0.5f), dist.y + (ScreenSize.y * 0.5f));
+; 174  : 				}
+; 175  : 				shape.setPosition(dist.x + (ScreenSize.x * 0.5f), dist.y + (ScreenSize.y * 0.5f));
 
 	vmovaps	xmm2, xmm6
 	vfmadd132ss xmm2, xmm9, DWORD PTR ?ScreenSize@@3U?$vec@$01M$0A@@glm@@A+4
@@ -3452,7 +3460,7 @@ $LN30@Render:
 	lea	rcx, OFFSET FLAT:?shape@@3VCircleShape@sf@@A+8
 	call	QWORD PTR __imp_?setPosition@Transformable@sf@@QEAAXMM@Z
 
-; 176  : 					window->draw(shape);
+; 176  : 				window->draw(shape);
 
 	mov	rcx, QWORD PTR ?window@@3V?$unique_ptr@VRenderWindow@sf@@U?$default_delete@VRenderWindow@sf@@@std@@@std@@A ; window
 	lea	rdx, OFFSET FLAT:?shape@@3VCircleShape@sf@@A ; shape
@@ -3466,24 +3474,24 @@ $LN12@Render:
 ; 161  : 		for (int i = 0; i < world->ColonyArray.size(); ++i)
 
 	inc	ebp
-	add	rdi, 10736				; 000029f0H
-	cmp	ebp, 1
+	add	rdi, 10768				; 00002a10H
+	cmp	ebp, 5
 	jb	$LL14@Render
 
-; 177  : 				}
+; 177  : 			}
 ; 178  : 		}
 ; 179  : 		for (int i = 0; i < world->EntityList.ParticleCount; ++i)
 
-	cmp	DWORD PTR [rbx+10010192], esi
+	cmp	DWORD PTR [rbx+10010204], esi
 	jle	$LN16@Render
 	mov	rdi, rsi
 $LL17@Render:
 
 ; 181  : 			Entity entity = world->EntityList.GetParticle(i);
 
-	vmovups	ymm0, YMMWORD PTR [rdi+rbx+10192]
-	vmovups	ymm2, YMMWORD PTR [rdi+rbx+10256]
-	vmovups	ymm1, YMMWORD PTR [rdi+rbx+10224]
+	vmovups	ymm0, YMMWORD PTR [rdi+rbx+10204]
+	vmovups	ymm2, YMMWORD PTR [rdi+rbx+10268]
+	vmovups	ymm1, YMMWORD PTR [rdi+rbx+10236]
 	vmovups	YMMWORD PTR entity$58[rsp], ymm0
 ; File D:\Github\Anterminator\glm\glm\detail\type_vec2.inl
 
@@ -3561,16 +3569,16 @@ $LL17@Render:
 
 ; 148  :         return _Elems[_Pos];
 
-	imul	rdx, rax, 10736				; 000029f0H
+	imul	rdx, rax, 10768				; 00002a10H
 ; File D:\Github\Anterminator\Anterminator\AntSim\Main.cpp
 
 ; 192  : 					shape.setFillColor(sf::Color(world->ColonyArray[entity.Affiliation].Colour.x,world->ColonyArray[entity.Affiliation].Colour.y,world->ColonyArray[entity.Affiliation].Colour.z));
 
 	mov	rax, QWORD PTR ?world@@3V?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@A ; world
 	lea	rcx, QWORD PTR $T40[rsp]
-	vcvttss2si r9d, DWORD PTR [rdx+rax+10016380]
-	vcvttss2si r8d, DWORD PTR [rdx+rax+10016376]
-	vcvttss2si edx, DWORD PTR [rdx+rax+10016372]
+	vcvttss2si r9d, DWORD PTR [rdx+rax+10016396]
+	vcvttss2si r8d, DWORD PTR [rdx+rax+10016392]
+	vcvttss2si edx, DWORD PTR [rdx+rax+10016388]
 	jmp	SHORT $LN127@Render
 $LN32@Render:
 
@@ -3634,13 +3642,13 @@ $LN34@Render:
 	mov	rbx, QWORD PTR ?world@@3V?$unique_ptr@VWorld@@U?$default_delete@VWorld@@@std@@@std@@A ; world
 $LN15@Render:
 
-; 177  : 				}
+; 177  : 			}
 ; 178  : 		}
 ; 179  : 		for (int i = 0; i < world->EntityList.ParticleCount; ++i)
 
 	inc	esi
 	add	rdi, 100				; 00000064H
-	cmp	esi, DWORD PTR [rbx+10010192]
+	cmp	esi, DWORD PTR [rbx+10010204]
 	jl	$LL17@Render
 $LN16@Render:
 
@@ -3648,7 +3656,7 @@ $LN16@Render:
 ; 208  : 		}
 ; 209  : 		RenderGraph(world->AntCountHistory);
 
-	lea	rcx, QWORD PTR [rbx+10021984]
+	lea	rcx, QWORD PTR [rbx+10065120]
 	vzeroupper
 	call	?RenderGraph@@YAXAEAV?$vector@V?$vector@MV?$allocator@M@std@@@std@@V?$allocator@V?$vector@MV?$allocator@M@std@@@std@@@2@@std@@@Z ; RenderGraph
 

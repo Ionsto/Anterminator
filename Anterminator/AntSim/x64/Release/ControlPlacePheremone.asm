@@ -4,54 +4,85 @@ include listing.inc
 
 INCLUDELIB OLDNAMES
 
+PUBLIC	??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z ; glm::operator+<float,0>
 PUBLIC	??$?KM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@M@Z ; glm::operator/<float,0>
 PUBLIC	?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z ; ControlPlacePheremone::Update
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD imagerel $LN159@Update
-	DD	imagerel $LN159@Update+61
+	DD	imagerel $LN159@Update+47
 	DD	imagerel $unwind$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$8$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD imagerel $LN159@Update+61
-	DD	imagerel $LN159@Update+676
+$pdata$8$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD imagerel $LN159@Update+47
+	DD	imagerel $LN159@Update+647
 	DD	imagerel $chain$8$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$9$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD imagerel $LN159@Update+676
-	DD	imagerel $LN159@Update+705
+$pdata$9$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD imagerel $LN159@Update+647
+	DD	imagerel $LN159@Update+662
 	DD	imagerel $chain$9$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$9$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD 021H
 	DD	imagerel $LN159@Update
-	DD	imagerel $LN159@Update+61
+	DD	imagerel $LN159@Update+47
 	DD	imagerel $unwind$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$chain$8$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD 0125221H
-	DD	01f852H
-	DD	02e844H
-	DD	03d835H
-	DD	04c82fH
-	DD	06a822H
-	DD	079815H
-	DD	088810H
-	DD	0a680bH
-	DD	0196404H
+$chain$8$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD 0125d21H
+	DD	01c85dH
+	DD	02b84eH
+	DD	03a83dH
+	DD	04982fH
+	DD	058822H
+	DD	067815H
+	DD	076810H
+	DD	018c408H
+	DD	0175404H
 	DD	imagerel $LN159@Update
-	DD	imagerel $LN159@Update+61
+	DD	imagerel $LN159@Update+47
 	DD	imagerel $unwind$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD 092101H
-	DD	05b821H
-	DD	097819H
-	DD	01a340fH
-	DD	016010fH
-	DD	07008H
+$unwind$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@MM@Z DD 061101H
+	DD	0f00af211H
+	DD	07006e008H
+	DD	030046005H
+; Function compile flags: /Ogtpy
+; File D:\Github\Anterminator\glm\glm\detail\type_vec2.inl
+;	COMDAT ??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z
+_TEXT	SEGMENT
+__$ReturnUdt$ = 8
+v1$ = 16
+v2$ = 24
+??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z PROC	; glm::operator+<float,0>, COMDAT
+
+; 511  : 		return vec<2, T, Q>(
+
+	vmovss	xmm0, DWORD PTR [rdx]
+	vaddss	xmm1, xmm0, DWORD PTR [r8]
+	vmovss	xmm2, DWORD PTR [rdx+4]
+	vaddss	xmm0, xmm2, DWORD PTR [r8+4]
+
+; 38   : 		: x(_x), y(_y)
+
+	vmovss	DWORD PTR [rcx+4], xmm0
+	vmovss	DWORD PTR [rcx], xmm1
+
+; 511  : 		return vec<2, T, Q>(
+
+	mov	rax, rcx
+
+; 512  : 			v1.x + v2.x,
+; 513  : 			v1.y + v2.y);
+; 514  : 	}
+
+	ret	0
+??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z ENDP	; glm::operator+<float,0>
+_TEXT	ENDS
 END

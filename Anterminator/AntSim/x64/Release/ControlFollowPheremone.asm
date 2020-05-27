@@ -7,15 +7,22 @@ INCLUDELIB OLDNAMES
 PUBLIC	??$?0U_Exact_args_t@std@@$0A@@?$tuple@$$V@std@@QEAA@U_Exact_args_t@1@@Z ; std::tuple<>::tuple<><std::_Exact_args_t,0>
 PUBLIC	??$?0AEAH@?$_Tuple_val@H@std@@QEAA@AEAH@Z	; std::_Tuple_val<int>::_Tuple_val<int><int &>
 PUBLIC	??$?0U_Exact_args_t@std@@AEAH$$V$0A@@?$tuple@H@std@@QEAA@U_Exact_args_t@1@AEAH@Z ; std::tuple<int>::tuple<int><std::_Exact_args_t,int &,0>
+PUBLIC	??$?RAEBHAEBH@?$less@X@std@@QEBA_NAEBH0@Z	; std::less<void>::operator()<int const &,int const &>
 PUBLIC	??$forward@$$QEAH@std@@YA$$QEAHAEAH@Z		; std::forward<int &&>
 PUBLIC	??$?0U_Exact_args_t@std@@AEAHAEAH$0A@@?$tuple@HH@std@@QEAA@U_Exact_args_t@1@AEAH1@Z ; std::tuple<int,int>::tuple<int,int><std::_Exact_args_t,int &,int &,0>
 PUBLIC	??$forward@AEAH@std@@YAAEAHAEAH@Z		; std::forward<int &>
+PUBLIC	??$clamp@HU?$less@X@std@@@std@@YAAEBHAEBH00U?$less@X@0@@Z ; std::clamp<int,std::less<void> >
 PUBLIC	??$?_0N@?$vec@$01M$0A@@glm@@QEAAAEAU01@N@Z	; glm::vec<2,float,0>::operator/=<double>
 PUBLIC	??$get@$00HH@std@@YA$$QEAH$$QEAV?$tuple@HH@0@@Z	; std::get<1,int,int>
 PUBLIC	??$get@$0A@HH@std@@YA$$QEAH$$QEAV?$tuple@HH@0@@Z ; std::get<0,int,int>
 PUBLIC	??$<move>@AEAV?$tuple@HH@std@@@@YA$$QEAV?$tuple@HH@std@@AEAV01@@Z ; <move><std::tuple<int,int> &>
 PUBLIC	??$?0AEAHAEAH$0A@@?$tuple@HH@std@@QEAA@AEAH0@Z	; std::tuple<int,int>::tuple<int,int><int &,int &,0>
+PUBLIC	??$clamp@H@std@@YAAEBHAEBH00@Z			; std::clamp<int>
+PUBLIC	??A?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAAAEAU?$vec@$01M$0A@@glm@@_K@Z ; std::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >::operator[]
+PUBLIC	??A?$vector@MV?$allocator@M@std@@@std@@QEAAAEAM_K@Z ; std::vector<float,std::allocator<float> >::operator[]
+PUBLIC	??A?$array@UPheremoneCached@@$01@std@@QEAAAEAUPheremoneCached@@_K@Z ; std::array<PheremoneCached,2>::operator[]
 PUBLIC	?Update@ControlFollowPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@M@Z ; ControlFollowPheremone::Update
+PUBLIC	?GetStrengthGrid@PheremoneGrid@@QEAAAEAMHH@Z	; PheremoneGrid::GetStrengthGrid
 PUBLIC	?GetDirectionGrid@PheremoneGrid@@QEAAAEAU?$vec@$01M$0A@@glm@@HH@Z ; PheremoneGrid::GetDirectionGrid
 PUBLIC	?GetGridPos@PheremoneGrid@@QEAA?AV?$tuple@HH@std@@MM@Z ; PheremoneGrid::GetGridPos
 ;	COMDAT pdata
@@ -29,4 +36,75 @@ $unwind$?Update@ControlFollowPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremon
 	DD	04740fH
 	DD	02640aH
 	DD	013405H
+; Function compile flags: /Ogtpy
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\array
+;	COMDAT ??A?$array@UPheremoneCached@@$01@std@@QEAAAEAUPheremoneCached@@_K@Z
+_TEXT	SEGMENT
+this$ = 8
+_Pos$ = 16
+??A?$array@UPheremoneCached@@$01@std@@QEAAAEAUPheremoneCached@@_K@Z PROC ; std::array<PheremoneCached,2>::operator[], COMDAT
+
+; 144  : #if _CONTAINER_DEBUG_LEVEL > 0
+; 145  :         _STL_VERIFY(_Pos < _Size, "array subscript out of range");
+; 146  : #endif // _CONTAINER_DEBUG_LEVEL > 0
+; 147  : 
+; 148  :         return _Elems[_Pos];
+
+	lea	rax, QWORD PTR [rdx+rdx*2]
+	shl	rax, 4
+	add	rax, rcx
+
+; 149  :     }
+
+	ret	0
+??A?$array@UPheremoneCached@@$01@std@@QEAAAEAUPheremoneCached@@_K@Z ENDP ; std::array<PheremoneCached,2>::operator[]
+_TEXT	ENDS
+; Function compile flags: /Ogtpy
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+;	COMDAT ??A?$vector@MV?$allocator@M@std@@@std@@QEAAAEAM_K@Z
+_TEXT	SEGMENT
+this$ = 8
+_Pos$ = 16
+??A?$vector@MV?$allocator@M@std@@@std@@QEAAAEAM_K@Z PROC ; std::vector<float,std::allocator<float> >::operator[], COMDAT
+
+; 1462 :         auto& _My_data = _Mypair._Myval2;
+; 1463 : #if _CONTAINER_DEBUG_LEVEL > 0
+; 1464 :         _STL_VERIFY(
+; 1465 :             _Pos < static_cast<size_type>(_My_data._Mylast - _My_data._Myfirst), "vector subscript out of range");
+; 1466 : #endif // _CONTAINER_DEBUG_LEVEL > 0
+; 1467 : 
+; 1468 :         return _My_data._Myfirst[_Pos];
+
+	mov	rax, QWORD PTR [rcx]
+	lea	rax, QWORD PTR [rax+rdx*4]
+
+; 1469 :     }
+
+	ret	0
+??A?$vector@MV?$allocator@M@std@@@std@@QEAAAEAM_K@Z ENDP ; std::vector<float,std::allocator<float> >::operator[]
+_TEXT	ENDS
+; Function compile flags: /Ogtpy
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\vector
+;	COMDAT ??A?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAAAEAU?$vec@$01M$0A@@glm@@_K@Z
+_TEXT	SEGMENT
+this$ = 8
+_Pos$ = 16
+??A?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAAAEAU?$vec@$01M$0A@@glm@@_K@Z PROC ; std::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >::operator[], COMDAT
+
+; 1462 :         auto& _My_data = _Mypair._Myval2;
+; 1463 : #if _CONTAINER_DEBUG_LEVEL > 0
+; 1464 :         _STL_VERIFY(
+; 1465 :             _Pos < static_cast<size_type>(_My_data._Mylast - _My_data._Myfirst), "vector subscript out of range");
+; 1466 : #endif // _CONTAINER_DEBUG_LEVEL > 0
+; 1467 : 
+; 1468 :         return _My_data._Myfirst[_Pos];
+
+	mov	rax, QWORD PTR [rcx]
+	lea	rax, QWORD PTR [rax+rdx*8]
+
+; 1469 :     }
+
+	ret	0
+??A?$vector@U?$vec@$01M$0A@@glm@@V?$allocator@U?$vec@$01M$0A@@glm@@@std@@@std@@QEAAAEAU?$vec@$01M$0A@@glm@@_K@Z ENDP ; std::vector<glm::vec<2,float,0>,std::allocator<glm::vec<2,float,0> > >::operator[]
+_TEXT	ENDS
 END

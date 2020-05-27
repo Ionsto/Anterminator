@@ -8,9 +8,9 @@ void ControlHillClimbPheremone::Update(World& world, Entity& entity, PheremoneGr
 	glm::vec2 meandir = glm::vec2(0, 0);
 	float strengthacc = 0;
 	int halfspan = 3;
-#pragma omp simd
 	for (int x = -halfspan; x <= halfspan; ++x)
 	{
+#pragma omp simd
 		for (int y = -halfspan; y <= halfspan; ++y)
 		{
 			float strength = Pheremone.GetStrengthGrid(ix + x, iy + y);

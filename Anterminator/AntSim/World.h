@@ -20,6 +20,7 @@ public:
 	PheremoneGrid FoodScent;
 	ControlRandomWalk NPCWalking;
 	ControlPlacePheremone FoodScentPlace;
+	float ElapsedTime = 0;
 	float TimeScalingFactor = 1;
 	float TimeSpacialHash = 0;
 	float TimeCollisions = 0;
@@ -35,7 +36,8 @@ public:
 	ChunkArray<WorldSize> Chunks;
 	int AntCounter = 0;
 	float FoodCounter = 0;
-	static constexpr int AntColonyMax = 1;
+	float FoodDecrement = 0;
+	static constexpr int AntColonyMax = 5;
 	int AntColonyCount = AntColonyMax;
 	std::array<ColonyController, AntColonyMax> ColonyArray;
 	std::array<int, AntColonyMax + 1> AffiliationCounter = { 0 };

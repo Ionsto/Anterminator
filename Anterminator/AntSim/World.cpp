@@ -28,8 +28,9 @@ World::World():random_number(-1,1) {
 		e.Affiliation = -1;
 		AddEntity(e);
 	}
+	FoodScent.DiffuseTimeMax = 20;
 	FoodScent.DiffusionConstant = 1000;
-	FoodScent.DecayRate = 0.1;
+	FoodScent.DecayRate = 1;
 	FoodScentPlace.SpreadSize = 5;
 }
 void World::Update(float realdt)
@@ -39,19 +40,21 @@ void World::Update(float realdt)
 	TimeUpdateEntity = 0;
 	TimeUpdateColonies = 0;
 	DtAccumulator += realdt * TimeScalingFactor;
-	int dtstepcount = std::min(100, static_cast<int>(DtAccumulator / this->DeltaTime));
+	int dtstepcount = std::min(500, static_cast<int>(DtAccumulator / this->DeltaTime));
 	DtAccumulator -= this->DeltaTime * static_cast<float>(dtstepcount);
 	DtAccumulator = std::min(this->DeltaTime * 100, DtAccumulator);
 	for (int i = 0; i < dtstepcount;++i)
 	{
+		ElapsedTime += this->DeltaTime;
 		UpdateColonies();
 		UpdateEntities();
 		UpdateSpacialHash();
 		UpdateCollisions();
 		UpdateDeadEntities();
 		FoodCounter += this->DeltaTime;
-		if (FoodCounter > 10)
+		if (FoodCounter > 10 * FoodDecrement)
 		{
+			FoodDecrement++;
 			FoodCounter = 0;
 			Entity e = Entity();
 			e.Position.x = random_number(generator) * WorldSize;
@@ -369,13 +372,14 @@ auto start = std::chrono::high_resolution_clock::now();
 		else {
 			if (!e.Dead)
 			{
+				NPCWalking.RandomValue = 0.005;
 				NPCWalking.Update(*this, e, 1000);
-				FoodScentPlace.SpreadSize = e.Size;
+				FoodScentPlace.SpreadSize = std::ceil(e.Size/PheremoneGrid::Size);
 				FoodScentPlace.Update(*this, e, FoodScent,10,0);
 			}
 			else {
-				FoodScentPlace.SpreadSize = e.Size;
-				FoodScentPlace.Update(*this, e, FoodScent,10,0);
+				FoodScentPlace.SpreadSize = std::ceil(e.Size/PheremoneGrid::Size);
+				FoodScentPlace.Update(*this, e, FoodScent,5,0);
 			}
 		}
 		e.Update(*this);

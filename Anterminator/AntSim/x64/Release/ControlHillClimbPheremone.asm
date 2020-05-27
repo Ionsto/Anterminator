@@ -8,17 +8,16 @@ PUBLIC	??$?_0M@?$vec@$01M$0A@@glm@@QEAAAEAU01@M@Z	; glm::vec<2,float,0>::operato
 PUBLIC	?Update@ControlHillClimbPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@M@Z ; ControlHillClimbPheremone::Update
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$?Update@ControlHillClimbPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@M@Z DD imagerel $LN158@Update
-	DD	imagerel $LN158@Update+883
+$pdata$?Update@ControlHillClimbPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@M@Z DD imagerel $LN153@Update
+	DD	imagerel $LN153@Update+774
 	DD	imagerel $unwind$?Update@ControlHillClimbPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@M@Z
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$?Update@ControlHillClimbPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@M@Z DD 0e4601H
-	DD	0a846H
-	DD	019841H
-	DD	02883bH
-	DD	037832H
-	DD	046826H
-	DD	0c340aH
-	DD	07006920aH
+$unwind$?Update@ControlHillClimbPheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremoneGrid@@M@Z DD 0c4e01H
+	DD	0984eH
+	DD	018849H
+	DD	027840H
+	DD	036838H
+	DD	0a340aH
+	DD	07006720aH
 END

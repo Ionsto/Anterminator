@@ -4,10 +4,10 @@
 #include <glm/glm.hpp>
 void ControlPlacePheremone::Update(World& world, Entity& entity,PheremoneGrid & Pheremone,float s,float v)
 {
-	for (float x = -SpreadSize+1; x < SpreadSize; ++x)
+	for (int x = -SpreadSize+1; x < SpreadSize; ++x)
 	{
 
-		for (float y = -SpreadSize+1; y < SpreadSize; ++y)
+		for (int y = -SpreadSize+1; y < SpreadSize; ++y)
 		{
 			auto [ix,iy] = Pheremone.GetGridPos(entity.Position.x, entity.Position.y);
 			auto& pDirection = Pheremone.GetDirectionGrid(ix + x, iy + y);

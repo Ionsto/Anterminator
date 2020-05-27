@@ -5,7 +5,7 @@
 
 void Entity::Update(World& world)
 {
-	float headingdamp = 0.99;
+	float headingdamp = 1;// 0.99;
 	Heading.x *= headingdamp;
 	Heading.y *= headingdamp;
 	HeldFood = std::clamp(HeldFood, 0.0f, FoodCarryAmount);

@@ -6,6 +6,7 @@ INCLUDELIB OLDNAMES
 
 PUBLIC	??$max@M@glm@@YAMMM@Z				; glm::max<float>
 PUBLIC	??$min@M@glm@@YAMMM@Z				; glm::min<float>
+PUBLIC	??$?RAEBMAEBM@?$less@X@std@@QEBA_NAEBM0@Z	; std::less<void>::operator()<float const &,float const &>
 PUBLIC	?call@?$functor2@Uvec@glm@@$01M$0A@@detail@glm@@SA?AU?$vec@$01M$0A@@3@P6AMMM@ZAEBU43@1@Z ; glm::detail::functor2<glm::vec,2,float,0>::call
 PUBLIC	?call@?$compute_max_vector@$01M$0A@$0A@@detail@glm@@SA?AU?$vec@$01M$0A@@3@AEBU43@0@Z ; glm::detail::compute_max_vector<2,float,0,0>::call
 PUBLIC	?call@?$compute_min_vector@$01M$0A@$0A@@detail@glm@@SA?AU?$vec@$01M$0A@@3@AEBU43@0@Z ; glm::detail::compute_min_vector<2,float,0,0>::call
@@ -13,14 +14,17 @@ PUBLIC	??$min@$01M$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z ; glm::min<2,float,
 PUBLIC	??$max@$01M$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z ; glm::max<2,float,0>
 PUBLIC	??$?DM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z ; glm::operator*<float,0>
 PUBLIC	??$inversesqrt@M@glm@@YAMM@Z			; glm::inversesqrt<float>
+PUBLIC	??$clamp@MU?$less@X@std@@@std@@YAAEBMAEBM00U?$less@X@0@@Z ; std::clamp<float,std::less<void> >
 PUBLIC	?call@?$compute_clamp_vector@$01M$0A@$0A@@detail@glm@@SA?AU?$vec@$01M$0A@@3@AEBU43@00@Z ; glm::detail::compute_clamp_vector<2,float,0,0>::call
 PUBLIC	?call@?$compute_dot@U?$vec@$01M$0A@@glm@@M$0A@@detail@glm@@SAMAEBU?$vec@$01M$0A@@3@0@Z ; glm::detail::compute_dot<glm::vec<2,float,0>,float,0>::call
 PUBLIC	?call@?$compute_normalize@$01M$0A@$0A@@detail@glm@@SA?AU?$vec@$01M$0A@@3@AEBU43@@Z ; glm::detail::compute_normalize<2,float,0,0>::call
 PUBLIC	?call@?$compute_length@$01M$0A@$0A@@detail@glm@@SAMAEBU?$vec@$01M$0A@@3@@Z ; glm::detail::compute_length<2,float,0,0>::call
 PUBLIC	??$clamp@$01M$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@00@Z ; glm::clamp<2,float,0>
+PUBLIC	??$?DM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@MAEBU10@@Z ; glm::operator*<float,0>
 PUBLIC	??$length@$01M$0A@@glm@@YAMAEBU?$vec@$01M$0A@@0@@Z ; glm::length<2,float,0>
 PUBLIC	??$normalize@$01M$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@@Z ; glm::normalize<2,float,0>
 PUBLIC	??$dot@$01M$0A@@glm@@YAMAEBU?$vec@$01M$0A@@0@0@Z ; glm::dot<2,float,0>
+PUBLIC	??$clamp@M@std@@YAAEBMAEBM00@Z			; std::clamp<float>
 PUBLIC	?CheckBounds@Entity@@QEAAXAEAVWorld@@@Z		; Entity::CheckBounds
 PUBLIC	?Intergrate@Entity@@QEAAXAEAVWorld@@@Z		; Entity::Intergrate
 PUBLIC	?Update@Entity@@QEAAXAEAVWorld@@@Z		; Entity::Update
@@ -94,15 +98,15 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$?Update@Entity@@QEAAXAEAVWorld@@@Z DD imagerel $LN135@Update
-	DD	imagerel $LN135@Update+747
+	DD	imagerel $LN135@Update+719
 	DD	imagerel $unwind$?Update@Entity@@QEAAXAEAVWorld@@@Z
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$?Update@Entity@@QEAAXAEAVWorld@@@Z DD 0e5401H
-	DD	039854H
-	DD	04884fH
-	DD	057835H
-	DD	06682cH
+$unwind$?Update@Entity@@QEAAXAEAVWorld@@@Z DD 0e3801H
+	DD	039838H
+	DD	048833H
+	DD	05782bH
+	DD	06681aH
 	DD	0126410H
 	DD	0113410H
 	DD	0700cd210H
@@ -194,4 +198,133 @@ $unwind$?call@?$functor2@Uvec@glm@@$01M$0A@@detail@glm@@SA?AU?$vec@$01M$0A@@3@P6
 	DD	095414H
 	DD	083414H
 	DD	070105214H
+; Function compile flags: /Ogtpy
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+;	COMDAT ??$clamp@M@std@@YAAEBMAEBM00@Z
+_TEXT	SEGMENT
+_Val$ = 8
+_Min_val$ = 16
+_Max_val$ = 24
+??$clamp@M@std@@YAAEBMAEBM00@Z PROC			; std::clamp<float>, COMDAT
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+
+; 246  :         return static_cast<_Ty1&&>(_Left) < static_cast<_Ty2&&>(_Right);
+
+	vmovss	xmm0, DWORD PTR [rcx]
+	vcomiss	xmm0, DWORD PTR [r8]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+
+; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
+
+	jbe	SHORT $LN5@clamp
+
+; 4689 :     return _STD clamp(_Val, _Min_val, _Max_val, less<>());
+
+	mov	rax, r8
+
+; 4690 : }
+
+	ret	0
+$LN5@clamp:
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+
+; 246  :         return static_cast<_Ty1&&>(_Left) < static_cast<_Ty2&&>(_Right);
+
+	vcomiss	xmm0, DWORD PTR [rdx]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+
+; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
+
+	cmovb	rcx, rdx
+
+; 4689 :     return _STD clamp(_Val, _Min_val, _Max_val, less<>());
+
+	mov	rax, rcx
+
+; 4690 : }
+
+	ret	0
+??$clamp@M@std@@YAAEBMAEBM00@Z ENDP			; std::clamp<float>
+_TEXT	ENDS
+; Function compile flags: /Ogtpy
+; File D:\Github\Anterminator\glm\glm\detail\type_vec2.inl
+;	COMDAT ??$?DM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@MAEBU10@@Z
+_TEXT	SEGMENT
+__$ReturnUdt$ = 8
+scalar$ = 16
+v$ = 24
+??$?DM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@MAEBU10@@Z PROC	; glm::operator*<float,0>, COMDAT
+
+; 575  : 		return vec<2, T, Q>(
+
+	vmulss	xmm0, xmm1, DWORD PTR [r8]
+	vmulss	xmm1, xmm1, DWORD PTR [r8+4]
+
+; 38   : 		: x(_x), y(_y)
+
+	vmovss	DWORD PTR [rcx+4], xmm1
+	vmovss	DWORD PTR [rcx], xmm0
+
+; 575  : 		return vec<2, T, Q>(
+
+	mov	rax, rcx
+
+; 576  : 			scalar * v.x,
+; 577  : 			scalar * v.y);
+; 578  : 	}
+
+	ret	0
+??$?DM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@MAEBU10@@Z ENDP	; glm::operator*<float,0>
+_TEXT	ENDS
+; Function compile flags: /Ogtpy
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+;	COMDAT ??$clamp@MU?$less@X@std@@@std@@YAAEBMAEBM00U?$less@X@0@@Z
+_TEXT	SEGMENT
+_Val$ = 8
+_Min_val$ = 16
+_Max_val$ = 24
+_Pred$dead$ = 32
+??$clamp@MU?$less@X@std@@@std@@YAAEBMAEBM00U?$less@X@0@@Z PROC ; std::clamp<float,std::less<void> >, COMDAT
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+
+; 246  :         return static_cast<_Ty1&&>(_Left) < static_cast<_Ty2&&>(_Right);
+
+	vmovss	xmm0, DWORD PTR [rcx]
+	vcomiss	xmm0, DWORD PTR [r8]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+
+; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
+
+	jbe	SHORT $LN3@clamp
+	mov	rax, r8
+
+; 4684 : }
+
+	ret	0
+$LN3@clamp:
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xstddef
+
+; 246  :         return static_cast<_Ty1&&>(_Left) < static_cast<_Ty2&&>(_Right);
+
+	vcomiss	xmm0, DWORD PTR [rdx]
+; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
+
+; 4683 :     return _DEBUG_LT_PRED(_Pred, _Max_val, _Val) ? _Max_val : _DEBUG_LT_PRED(_Pred, _Val, _Min_val) ? _Min_val : _Val;
+
+	cmovb	rcx, rdx
+	mov	rax, rcx
+
+; 4684 : }
+
+	ret	0
+??$clamp@MU?$less@X@std@@@std@@YAAEBMAEBM00U?$less@X@0@@Z ENDP ; std::clamp<float,std::less<void> >
+_TEXT	ENDS
 END

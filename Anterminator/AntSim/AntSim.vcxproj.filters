@@ -48,6 +48,9 @@
     <ClCompile Include="ControlHillClimbPheremone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PheremoneGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
