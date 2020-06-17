@@ -21,7 +21,8 @@ GameManager::GameManager()
 	//glfwWindowHint(GLFW_DOUBLEBUFFER, GL_FALSE);
 	std::cout << "Loading window" << std::endl;
 	//Window_Handle = glfwCreateWindow(1920, 1080, "Beaver game", glfwGetPrimaryMonitor(), NULL);
-	Window_Handle = glfwCreateWindow(800, 800, "Beaver game",NULL, NULL);
+	Window_Handle = glfwCreateWindow(800, 800, "Anterminator",NULL, NULL);
+	ScreenSize = glm::vec2(800, 800);
 	if (!Window_Handle)
 	{
 		std::cout << "Window load failed" << std::endl;
@@ -45,8 +46,8 @@ GameManager::GameManager()
 	//world->AddWater(glm::dvec2(100,100));
 	std::cout << "Init render engine" << std::endl;
 	renderengine = std::make_unique<RenderEngineGPU>(Window_Handle);
-	renderengine->cam.Position.x = 16 / 2;
-	renderengine->cam.Position.y = 16 / 2;
+	//renderengine->cam.Position.x = 16 / 2;
+	//renderengine->cam.Position.y = 16 / 2;
 	int width, height;
 	glfwGetFramebufferSize(Window_Handle, &width, &height);
 	glViewport(0, 0, width, height);
@@ -71,17 +72,27 @@ void GameManager::Run()
 		Render();
 		glfwSwapBuffers(Window_Handle);
 		glfwPollEvents();
-		if (FrameCount++ == 100)
+		FPSAcc += DeltaTime;
+		FrameCount++;
+		if (FPSAcc > 1)
 		{
 			auto now = std::chrono::high_resolution_clock::now();
 			auto dt = now - StartTime;
 			StartTime = now;
-			std::cout << "Frametime:" << (dt.count() / (100.0 * 1000000000)) << "\n fps:" << ((100.0 * 1000000000) / dt.count()) << "\n";
+//			std::cout << "Frametime:" << (dt.count() / (FrameCount * 1e9)) << "\n fps:" << ((FrameCount * 1e9) / dt.count()) << "\n";
+			std::cout << "Frametime:" << FPSAcc / (float)FrameCount<<"\n";
+			std::cout << "FPS:" << FrameCount / FPSAcc <<"\n";
+			std::cout << "Total Entity Count:" << world->EntityList.ElementCount << "\n";
+			std::cout << "Total Render Count:" << dynamic_cast<RenderEngineGPU*>(renderengine.get())->EntityCounter << "\n";
+			std::cout << "Render view size:" << renderengine->cam.CameraXSize<<"\n";
+			std::cout << "Render view size:" << static_cast<int>(renderengine->cam.CameraXSize/Chunk::Size)<<" chunks\n";
 			//std::cout << "Particle count:" << world->waterengine.ParticleCount << "\n";
 			FrameCount = 0;
+			FPSAcc = 0;
 		}
 		auto end = std::chrono::high_resolution_clock::now();
 		DeltaTime = (end - DtCounter).count()/1e9;
+		DtCounter = end; DtCounter = end;
 		DtCounter = end;
 	}
 }
@@ -99,13 +110,50 @@ void GameManager::Render()
 void GameManager::PollInput()
 {
 	KeyInput.UpdateState(Window_Handle);
-	if (glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS || glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	double xpos, ypos;
+	glfwGetCursorPos(Window_Handle, &xpos, &ypos);
+	glfwGetWindowSize(Window_Handle, &ScreenSize.x, &ScreenSize.y);
+	glm::vec2 mpos(xpos,ScreenSize.y - ypos);
+	mpos.x /= ScreenSize.x;
+	mpos.y /= ScreenSize.y;
+	mpos.x -= 0.5;
+	mpos.y -= 0.5;
+	//mpos *= 8.0f;
+	MouseScreenPosOld = MouseScreenPos;
+	MouseScreenPos = renderengine->cam.Position;
+	MouseScreenPos += glm::vec2(mpos.x, mpos.y) * renderengine->cam.CameraXSize * 2.0f;
+	if (glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
+		int Aff = renderengine->RenderConfig.RenderAffiliation;
+		int size = 5;
+		for (int x = -size; x <= size; ++x)
+		{
+			for (int y = -size; y <= size; ++y)
+			{
+				world->FactionArray[Aff].PheremoneAttack.GetPheremone(MouseScreenPos.x + x, MouseScreenPos.y + y).Strength = 100;
+				world->FactionArray[Aff].PheremoneAttack.GetPheremone(MouseScreenPos.x + x, MouseScreenPos.y + y).Direction = (MouseScreenPos - MouseScreenPosOld)/DeltaTime;
+				//world->ColonyArray[0].Pheremone_Food.GetPheremone(WorldMousePos.x + x, WorldMousePos.y + y).Strength = 100;
+				//world->ColonyArray[0].Pheremone_Food.GetPheremone(WorldMousePos.x + x, WorldMousePos.y + y).Direction = WorldMousePos - WorldMousePosOld;
+			}
+		}
+	}
+	if (glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	{
+		if (!MouseDown)
+		{
+			MouseDown = true;
+			auto e = world->PrintEntityInfo(MouseScreenPos.x,MouseScreenPos.y);
+			if (e.Affiliation >= 0 && e.Affiliation < world->AntFactionCount)
+			{
+				renderengine->RenderConfig.RenderAffiliation = e.Affiliation;
+			}
+		}
 	}
 	else {
+		MouseDown = false;
 	}
 	float speed = 30 * DeltaTime;
-	if (player != nullptr)
+	/*if (player != nullptr)
 	{
 		player->PlayerInput.W = KeyInput.GetState(GLFW_KEY_W).first;
 		player->PlayerInput.S = KeyInput.GetState(GLFW_KEY_S).first;
@@ -117,6 +165,11 @@ void GameManager::PollInput()
 		player->PlayerInput.dx = xpos;
 		player->PlayerInput.dy = xpos;
 	}
+	*/
+	if (false) 
+	{
+
+	}
 	else {
 		double xpos, ypos;
 		if (KeyCapture)
@@ -127,9 +180,9 @@ void GameManager::PollInput()
 			renderengine->cam.tilt += ypos * speed;
 			renderengine->cam.yaw += xpos * speed;
 		}
-		renderengine->cam.tilt = std::clamp(renderengine->cam.tilt,-70.0f,70.0f);
-		float MoveSpeed = 5;
-		if (KeyInput.GetState(GLFW_KEY_W).first)
+		renderengine->cam.tilt = std::clamp(renderengine->cam.tilt, -70.0f, 70.0f);
+		float MoveSpeed = 20;
+		/*if (KeyInput.GetState(GLFW_KEY_W).first)
 		{
 			renderengine->cam.Position += DeltaTime * MoveSpeed * glm::fvec3(cos(glm::radians(renderengine->cam.yaw)),sin(glm::radians(renderengine->cam.yaw)),0);
 		}
@@ -145,7 +198,25 @@ void GameManager::PollInput()
 		{
 			renderengine->cam.Position -= DeltaTime * MoveSpeed * glm::fvec3(sin(glm::radians(renderengine->cam.yaw)),-cos(glm::radians(renderengine->cam.yaw)),0);
 		}
-		if (KeyInput.GetState(GLFW_KEY_M) == std::pair{true,true})
+		*/
+		MoveSpeed *= renderengine->cam.CameraXSize / Chunk::Size;
+		if (KeyInput.GetState(GLFW_KEY_W).first)
+		{
+			renderengine->cam.Position += DeltaTime * MoveSpeed * glm::fvec3(0, 1, 0);
+		}
+		if (KeyInput.GetState(GLFW_KEY_S).first)
+		{
+			renderengine->cam.Position -= DeltaTime * MoveSpeed * glm::fvec3(0, 1, 0);
+		}
+		if (KeyInput.GetState(GLFW_KEY_A).first)
+		{
+			renderengine->cam.Position -= DeltaTime * MoveSpeed * glm::fvec3(1, 0, 0);
+		}
+		if (KeyInput.GetState(GLFW_KEY_D).first)
+		{
+			renderengine->cam.Position += DeltaTime * MoveSpeed * glm::fvec3(1, 0, 0);
+		}
+		if (KeyInput.GetState(GLFW_KEY_M) == std::pair{ true,true })
 		{
 			if (KeyCapture)
 			{
@@ -158,46 +229,108 @@ void GameManager::PollInput()
 			}
 			KeyCapture = !KeyCapture;
 		}
-		renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
-		renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
+		if (KeyInput.GetState(GLFW_KEY_0) == std::pair{ true,true })
+		{
+			renderengine->cam.CameraXSize *= 0.5;
+			renderengine->cam.CameraYSize *= 0.5;
+		}
+		if (KeyInput.GetState(GLFW_KEY_9) == std::pair{ true,true })
+		{
+			renderengine->cam.CameraXSize /= 0.5;
+			renderengine->cam.CameraYSize /= 0.5;
+		}
+		if (KeyInput.GetState(GLFW_KEY_P) == std::pair{ true,true })
+		{
+			world->TimeScalingFactor *= 0.5;
+			world->DtAccumulator = 0;
+			std::cout << "Time scale:" << world->TimeScalingFactor << "\n";
+		}
+		if (KeyInput.GetState(GLFW_KEY_O) == std::pair{ true,true })
+		{
+			world->TimeScalingFactor /= 0.5;
+			world->DtAccumulator = 0;
+			std::cout << "Time scale:" << world->TimeScalingFactor << "\n";
+		}
+		//renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
+		//renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
+		while (renderengine->cam.Position.x < 0)
+		{
+			renderengine->cam.Position.x += world->WorldSize;
+		}
+		while (renderengine->cam.Position.x > world->WorldSize)
+		{
+			renderengine->cam.Position.x -= world->WorldSize;
+		}
+		while (renderengine->cam.Position.y < 0)
+		{
+			renderengine->cam.Position.y += world->WorldSize;
+		}
+		while (renderengine->cam.Position.y > world->WorldSize)
+		{
+			renderengine->cam.Position.y -= world->WorldSize;
+		}
 		//renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, (float)Chunk::Size,-0.1f + ((float)world->Chunks.WorldSize-1) * Chunk::Size);
 		//renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, (float)Chunk::Size,-0.1f +  ((float)world->Chunks.WorldSize-1) * Chunk::Size);
-		renderengine->cam.Position.z = std::clamp(renderengine->cam.Position.z, 0.0f,-0.1f +  (float)Chunk::Size);
+		//renderengine->cam.Position.z = std::clamp(renderengine->cam.Position.z, 0.0f,-0.1f +  (float)Chunk::Size);
 	}
 	//if (auto[s,t] = KeyInput.GetState(GLFW_KEY_1); s && t) {
 	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_1)) {
-		renderengine->RenderConfig.Reflections ^= true;
-		std::cout << "Reflections: " << renderengine->RenderConfig.Reflections << std::endl;
+		renderengine->RenderConfig.RenderPheremone ^= true;
+		std::cout << "Pheremone home: " << renderengine->RenderConfig.RenderPheremone << std::endl;
 	}
 	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_2)) {
 		renderengine->RenderConfig.Refraction ^= true;
 		std::cout << "Refraction: " << renderengine->RenderConfig.Refraction << std::endl;
 	}
+	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_R)) {
+		world = std::make_unique<World>();
+	}
 	if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_E)) {
-		int id = world->AddEntity(std::make_unique<Entity>(*world));
-		if (id != -1)
-		{
-			auto& entity = world->EntityList.GetParticle(id);
-			entity.Position = glm::vec3(8, 8, 12);
-			entity.PositionOld = glm::vec3(8, 8, 12);
-		}
+		//int id = world->AddEntity(std::make_unique<Entity>(*world));
+		//if (id != -1)
+		//{
+		//	auto& entity = world->EntityList.GetParticle(id);
+		//	entity.Position = glm::vec3(8, 8, 12);
+		//	entity.PositionOld = glm::vec3(8, 8, 12);
+		//}
 	}
 	if (KeyInput.GetState(GLFW_KEY_ESCAPE).first)
 	{
 		Running = false;
 	}
 	if (glfwGetKey(Window_Handle, GLFW_KEY_2)){
+		renderengine->RenderConfig.Pheremone = 0;
 	}
 	if (glfwGetKey(Window_Handle, GLFW_KEY_3)){
+		renderengine->RenderConfig.Pheremone = 1;
 	}
 	if (glfwGetKey(Window_Handle, GLFW_KEY_4)){
+		renderengine->RenderConfig.Pheremone = 2;
 	}
 	if (glfwGetKey(Window_Handle, GLFW_KEY_5)){
+		renderengine->RenderConfig.Pheremone = 3;
+	}
+	if (glfwGetKey(Window_Handle, GLFW_KEY_6)){
+		renderengine->RenderConfig.Pheremone = 4;
 	}
 
 }
 void GameManager::Update()
 {
+	if (DeltaTime > 1/100.0) 
+	{
+//		world->DtAccumulator = 0;
+		world->TimeScalingFactor /= 2;
+		//std::cout << "Auto slow down\n";
+		//std::cout << "Time scale:" << world->TimeScalingFactor << "\n";
+	}
+	if (DeltaTime < 1/1000.0) 
+	{
+		//world->DtAccumulator = 0;
+		world->TimeScalingFactor *= 2;
+		//std::cout << "Auto speed up\n";
+		//std::cout << "Time scale:" << world->TimeScalingFactor << "\n";
+	}
 	PollInput();
 //	renderengine->cam.yaw += DeltaTime * 30;
 	//this->waterengine->Update(DeltaTime);

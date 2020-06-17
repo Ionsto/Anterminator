@@ -7,11 +7,14 @@ struct RenderConfig {
 	bool Reflections = false;
 	bool Shadows = true;
 	bool Refraction = true;
+	bool RenderPheremone = false;
+	int Pheremone = 0;
+	int RenderAffiliation = 0;
 };
 
 class RenderEngine
 {
-private:
+protected:
 	GLFWwindow* Window;
 public:
 	RenderConfig RenderConfig;

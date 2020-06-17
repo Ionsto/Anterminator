@@ -1,2 +1,38 @@
-﻿  cl : Command line error D8016 : '/O2' and '/RTC1' command-line options are incompatible
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(429,5): error MSB6006: "CL.exe" exited with code 2.
+﻿  World.cpp
+D:\Github\Anterminator\Anterminator\AntSim\Entity.h(10,26): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\ControlRandomWalk.h(12,25): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\ControlRandomWalk.h(13,26): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(22,32): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(39,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(40,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(51,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(52,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(63,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\PheremoneGrid.h(64,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\ColonyController.h(21,25): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\ColonyController.h(43,39): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\ColonyController.h(53,24): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\World.h(29,41): warning C4305:  'initializing': truncation from 'double' to 'const float'
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(7,21): warning C4244:  'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(14,31): warning C4305:  'argument': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(124,46): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(252,45): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(282,49): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(322,73): warning C4244:  '-=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(375,35): warning C4305:  '=': truncation from 'double' to 'float'
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(377,42): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(381,42): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(409,47): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\ChunkArray.h(22,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\ChunkArray.h(21): message :  while compiling class template member function 'std::tuple<int,int> ChunkArray<1000>::GetChunkPos(float,float)'
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(106): message :  see reference to function template instantiation 'std::tuple<int,int> ChunkArray<1000>::GetChunkPos(float,float)' being compiled
+D:\Github\Anterminator\Anterminator\AntSim\World.h(36): message :  see reference to class template instantiation 'ChunkArray<1000>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\chrono(591): message :  see reference to class template instantiation 'std::chrono::duration<double,std::ratio<1,1>>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\chrono(169): message :  see reference to class template instantiation 'std::chrono::duration<__int64,std::nano>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\chrono(570): message :  see reference to class template instantiation 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>' being compiled
+D:\Github\Anterminator\Anterminator\AntSim\ChunkArray.h(23,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\ChunkArray.h(14,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\AntSim\ChunkArray.h(13): message :  while compiling class template member function 'Chunk &ChunkArray<1000>::GetChunk(float,float)'
+D:\Github\Anterminator\Anterminator\AntSim\World.cpp(97): message :  see reference to function template instantiation 'Chunk &ChunkArray<1000>::GetChunk(float,float)' being compiled
+D:\Github\Anterminator\Anterminator\AntSim\ChunkArray.h(15,10): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+  AntSim.vcxproj -> D:\Github\Anterminator\Anterminator\x64\Debug\AntSim.exe

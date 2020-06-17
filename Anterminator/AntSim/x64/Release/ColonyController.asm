@@ -1673,26 +1673,26 @@ $pdata$?AddAnt@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN50@AddAnt
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18
-	DD	imagerel $LN18+13
+$pdata$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update
+	DD	imagerel $LN18@Update+13
 	DD	imagerel $unwind$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18+13
-	DD	imagerel $LN18+212
+$pdata$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update+13
+	DD	imagerel $LN18@Update+212
 	DD	imagerel $chain$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18+212
-	DD	imagerel $LN18+264
+$pdata$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update+212
+	DD	imagerel $LN18@Update+264
 	DD	imagerel $chain$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18+264
-	DD	imagerel $LN18+275
+$pdata$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD imagerel $LN18@Update+264
+	DD	imagerel $LN18@Update+275
 	DD	imagerel $chain$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 pdata	ENDS
 ;	COMDAT pdata
@@ -1985,24 +1985,24 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD 021H
-	DD	imagerel $LN18
-	DD	imagerel $LN18+13
+	DD	imagerel $LN18@Update
+	DD	imagerel $LN18@Update+13
 	DD	imagerel $unwind$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$2$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD 020521H
 	DD	087405H
-	DD	imagerel $LN18+264
-	DD	imagerel $LN18+275
+	DD	imagerel $LN18@Update+264
+	DD	imagerel $LN18@Update+275
 	DD	imagerel $chain$1$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$0$?Update@ColonyController@@QEAAXAEAVWorld@@@Z DD 020621H
 	DD	026806H
-	DD	imagerel $LN18
-	DD	imagerel $LN18+13
+	DD	imagerel $LN18@Update
+	DD	imagerel $LN18@Update+13
 	DD	imagerel $unwind$?Update@ColonyController@@QEAAXAEAVWorld@@@Z
 xdata	ENDS
 ;	COMDAT xdata
@@ -3268,150 +3268,4 @@ xdata	ENDS
 xdata	SEGMENT
 $unwind$?_Refill_lower@?$mersenne_twister@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@@std@@IEAAXXZ DD 020501H
 	DD	013405H
-; Function compile flags: /Ogtpy
-; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
-; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
-; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
-; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
-;	COMDAT ?Update@ColonyController@@QEAAXAEAVWorld@@@Z
-_TEXT	SEGMENT
-this$ = 64
-world$ = 72
-?Update@ColonyController@@QEAAXAEAVWorld@@@Z PROC	; ColonyController::Update, COMDAT
-
-; 82   : void ColonyController::Update(World & world) {
-
-$LN18:
-	mov	QWORD PTR [rsp+16], rbx
-	push	rsi
-	sub	rsp, 48					; 00000030H
-	mov	rbx, rcx
-	vmovaps	XMMWORD PTR [rsp+32], xmm6
-
-; 83   : 	Pheremone_Home.Update(world.DeltaTime);
-
-	add	rcx, 5152				; 00001420H
-	mov	rsi, rdx
-	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
-
-; 84   : 	Pheremone_Food.Update(world.DeltaTime);
-
-	lea	rcx, QWORD PTR [rbx+5280]
-	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
-
-; 85   : 	Pheremone_Density.Update(world.DeltaTime);
-
-	lea	rcx, QWORD PTR [rbx+5536]
-	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
-
-; 86   : 	Pheremone_Killed.Update(world.DeltaTime);
-
-	lea	rcx, QWORD PTR [rbx+5408]
-	call	?Update@PheremoneGrid@@QEAAXM@Z		; PheremoneGrid::Update
-
-; 87   : 	TotalEnergy -= EnergyCost * world.DeltaTime;
-
-	vmovss	xmm3, DWORD PTR [rbx+5040]
-	vmovss	xmm2, DWORD PTR __real@3c23d70a
-	vfnmadd213ss xmm2, xmm3, DWORD PTR [rbx+5144]
-	vxorps	xmm1, xmm1, xmm1
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\algorithm
-
-; 4460 :     if (_Left < _Right) {
-
-	vcmpltss xmm0, xmm1, xmm2
-	vblendvps xmm0, xmm1, xmm2, xmm0
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
-
-; 195  :     return _CSTD powf(_Xx, _Yx);
-
-	vmovss	xmm1, DWORD PTR [rbx+5028]
-; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
-
-; 88   : 	TotalEnergy = std::max(0.0f, TotalEnergy);
-
-	vmovss	DWORD PTR [rbx+5144], xmm0
-
-; 90   : 	int SpawnCount = ((random_number(generator) + 1.0) / 2.0) * this->AntCreation * world.DeltaTime * std::pow(TotalEnergy / EnergyCost, AntCreationEnergyFactor);
-
-	vdivss	xmm0, xmm0, xmm3
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
-
-; 195  :     return _CSTD powf(_Xx, _Yx);
-
-	call	powf
-; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
-
-; 90   : 	int SpawnCount = ((random_number(generator) + 1.0) / 2.0) * this->AntCreation * world.DeltaTime * std::pow(TotalEnergy / EnergyCost, AntCreationEnergyFactor);
-
-	lea	rcx, QWORD PTR [rbx+5000]
-	mov	rdx, rbx
-; File C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\cmath
-
-; 195  :     return _CSTD powf(_Xx, _Yx);
-
-	vmovaps	xmm6, xmm0
-; File D:\Github\Anterminator\Anterminator\AntSim\ColonyController.cpp
-
-; 90   : 	int SpawnCount = ((random_number(generator) + 1.0) / 2.0) * this->AntCreation * world.DeltaTime * std::pow(TotalEnergy / EnergyCost, AntCreationEnergyFactor);
-
-	call	??$?RV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@std@@@?$uniform_real@M@std@@QEBAMAEAV?$mersenne_twister_engine@I$0CA@$0CHA@$0BIN@$0BP@$0JJAILANP@$0L@$0PPPPPPPP@$06$0JNCMFGIA@$0P@$0OPMGAAAA@$0BC@$0GMAHIJGF@@1@@Z ; std::uniform_real<float>::operator()<std::mersenne_twister_engine<unsigned int,32,624,397,31,2567483615,11,4294967295,7,2636928640,15,4022730752,18,1812433253> >
-	vaddss	xmm1, xmm0, DWORD PTR __real@3f800000
-	vmulss	xmm2, xmm1, DWORD PTR __real@3f000000
-	vmulss	xmm2, xmm2, DWORD PTR [rbx+5024]
-	vcvtss2sd xmm1, xmm2, xmm2
-	vmulsd	xmm3, xmm1, QWORD PTR __real@3f847ae147ae147b
-	vcvtss2sd xmm0, xmm6, xmm6
-	vmovaps	xmm6, XMMWORD PTR [rsp+32]
-	vmulsd	xmm2, xmm3, xmm0
-	vcvttsd2si eax, xmm2
-
-; 91   : 	for (int i = 0; i < SpawnCount; ++i)
-
-	test	eax, eax
-	jle	SHORT $LN3@Update
-
-; 88   : 	TotalEnergy = std::max(0.0f, TotalEnergy);
-
-	mov	QWORD PTR [rsp+64], rdi
-	mov	edi, eax
-	npad	5
-$LL4@Update:
-
-; 92   : 	{
-; 93   : 		if (TotalEnergy > EnergyCost)
-
-	vmovss	xmm0, DWORD PTR [rbx+5040]
-	vcomiss	xmm0, DWORD PTR [rbx+5144]
-	jae	SHORT $LN2@Update
-
-; 94   : 		{
-; 95   : 			AddAnt(world);
-
-	mov	rdx, rsi
-	mov	rcx, rbx
-	call	?AddAnt@ColonyController@@QEAAXAEAVWorld@@@Z ; ColonyController::AddAnt
-$LN2@Update:
-
-; 91   : 	for (int i = 0; i < SpawnCount; ++i)
-
-	sub	rdi, 1
-	jne	SHORT $LL4@Update
-	mov	rdi, QWORD PTR [rsp+64]
-$LN3@Update:
-
-; 96   : 		}
-; 97   : 	}
-; 98   : }
-
-	mov	rbx, QWORD PTR [rsp+72]
-	add	rsp, 48					; 00000030H
-	pop	rsi
-	ret	0
-?Update@ColonyController@@QEAAXAEAVWorld@@@Z ENDP	; ColonyController::Update
-_TEXT	ENDS
 END

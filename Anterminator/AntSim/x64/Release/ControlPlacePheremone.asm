@@ -53,36 +53,4 @@ $unwind$?Update@ControlPlacePheremone@@QEAAXAEAVWorld@@AEAVEntity@@AEAUPheremone
 	DD	0f00af211H
 	DD	07006e008H
 	DD	030046005H
-; Function compile flags: /Ogtpy
-; File D:\Github\Anterminator\glm\glm\detail\type_vec2.inl
-;	COMDAT ??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z
-_TEXT	SEGMENT
-__$ReturnUdt$ = 8
-v1$ = 16
-v2$ = 24
-??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z PROC	; glm::operator+<float,0>, COMDAT
-
-; 511  : 		return vec<2, T, Q>(
-
-	vmovss	xmm0, DWORD PTR [rdx]
-	vaddss	xmm1, xmm0, DWORD PTR [r8]
-	vmovss	xmm2, DWORD PTR [rdx+4]
-	vaddss	xmm0, xmm2, DWORD PTR [r8+4]
-
-; 38   : 		: x(_x), y(_y)
-
-	vmovss	DWORD PTR [rcx+4], xmm0
-	vmovss	DWORD PTR [rcx], xmm1
-
-; 511  : 		return vec<2, T, Q>(
-
-	mov	rax, rcx
-
-; 512  : 			v1.x + v2.x,
-; 513  : 			v1.y + v2.y);
-; 514  : 	}
-
-	ret	0
-??$?HM$0A@@glm@@YA?AU?$vec@$01M$0A@@0@AEBU10@0@Z ENDP	; glm::operator+<float,0>
-_TEXT	ENDS
 END

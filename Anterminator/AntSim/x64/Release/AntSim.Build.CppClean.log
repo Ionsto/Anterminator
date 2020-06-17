@@ -6,12 +6,13 @@ d:\github\anterminator\anterminator\antsim\x64\release\main.obj
 d:\github\anterminator\anterminator\antsim\x64\release\entity.obj
 d:\github\anterminator\anterminator\antsim\x64\release\controlrandomwalk.obj
 d:\github\anterminator\anterminator\antsim\x64\release\controlplacepheremone.obj
-d:\github\anterminator\anterminator\antsim\x64\release\controlhillclimbpheremone.obj
-d:\github\anterminator\anterminator\antsim\x64\release\controlfollowpheremone.obj
 d:\github\anterminator\anterminator\antsim\x64\release\colonycontroller.obj
 d:\github\anterminator\anterminator\antsim\x64\release\chunkarray.obj
+d:\github\anterminator\anterminator\antsim\x64\release\controlhillclimbpheremone.obj
+d:\github\anterminator\anterminator\antsim\x64\release\controlfollowpheremone.obj
 d:\github\anterminator\anterminator\antsim\x64\release\chunk.obj
 d:\github\anterminator\anterminator\antsim\x64\release\antbehaviour.obj
+d:\github\anterminator\anterminator\antsim\x64\release\pheremonegrid.obj
 d:\github\anterminator\anterminator\x64\release\antsim.exe
 d:\github\anterminator\anterminator\antsim\x64\release\antbehaviour.asm
 d:\github\anterminator\anterminator\antsim\x64\release\chunk.asm
@@ -23,6 +24,7 @@ d:\github\anterminator\anterminator\antsim\x64\release\controlplacepheremone.asm
 d:\github\anterminator\anterminator\antsim\x64\release\controlrandomwalk.asm
 d:\github\anterminator\anterminator\antsim\x64\release\entity.asm
 d:\github\anterminator\anterminator\antsim\x64\release\main.asm
+d:\github\anterminator\anterminator\antsim\x64\release\pheremonegrid.asm
 d:\github\anterminator\anterminator\antsim\x64\release\world.asm
 d:\github\anterminator\anterminator\x64\release\antsim.pdb
 d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\antsim.write.1u.tlog
@@ -30,5 +32,6 @@ d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\cl.command.1.
 d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\cl.read.1.tlog
 d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\cl.write.1.tlog
 d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\link.command.1.tlog
+d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\link.delete.1.tlog
 d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\link.read.1.tlog
 d:\github\anterminator\anterminator\antsim\x64\release\antsim.tlog\link.write.1.tlog

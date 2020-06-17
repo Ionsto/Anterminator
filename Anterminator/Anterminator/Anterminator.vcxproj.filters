@@ -22,30 +22,24 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{72a71357-87ea-42c0-8aee-01c50c9cb434}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Frontend">
+      <UniqueIdentifier>{a54abf6d-e380-4801-bba5-a18d7ff31b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{e7c37cdf-0ce9-4e47-9c14-d23d38e1ff23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game\Behavior">
+      <UniqueIdentifier>{87480777-6b99-49c1-a396-2658c20e1d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Behaviour">
+      <UniqueIdentifier>{f9f2ccc8-5e83-48f7-b74c-3505903ca498}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="KeyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderEngineGPU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Chunk.cpp">
@@ -56,6 +50,36 @@
     </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>Source Files\Frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderEngine.cpp">
+      <Filter>Source Files\Frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderEngineGPU.cpp">
+      <Filter>Source Files\Frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files\Frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="PheremoneGrid.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviour.cpp">
+      <Filter>Source Files\Game\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="AntColonyController.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionHash.cpp">
+      <Filter>Source Files\Frontend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +104,6 @@
     <ClInclude Include="ShaderProgram.h">
       <Filter>Header Files\Frontend</Filter>
     </ClInclude>
-    <ClInclude Include="SwapList.h">
-      <Filter>Header Files\Frontend</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -92,5 +113,70 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="ChunkMap.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionHash.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="PheremoneGrid.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorAnt.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorRandomWalk.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorFollowPheremone.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorPheremonePlace.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorPrey.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorPredator.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorAntNest.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="AntColonyController.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviour.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapListOld.h">
+      <Filter>Header Files\Frontend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AntSim\SwapList.h">
+      <Filter>Header Files\Frontend</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapList.h">
+      <Filter>Header Files\Frontend</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorPheremoneHillClimb.h">
+      <Filter>Header Files\Game\Behavior</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="raytrace.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_entity.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_entity.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_quad.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_quad.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
