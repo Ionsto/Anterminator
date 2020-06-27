@@ -11,6 +11,13 @@ namespace BehaviorAntNest {
 	{
 		if (e.Alive)
 		{
+			if (e.Health < 100)
+			{
+				float MaxEnergyHeal = 10;
+				float de = std::min(MaxEnergyHeal, e.Energy);
+				e.Health += World::DeltaTime * de;
+				e.Energy -= de;
+			}
 			int SpawnCount = static_cast<int>(distr(generator) * (1+c.AntSpawnRate));
 			for(int i = 0; i < SpawnCount;++i)
 			{

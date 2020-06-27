@@ -122,18 +122,30 @@ void GameManager::PollInput()
 	MouseScreenPosOld = MouseScreenPos;
 	MouseScreenPos = renderengine->cam.Position;
 	MouseScreenPos += glm::vec2(mpos.x, mpos.y) * renderengine->cam.CameraXSize * 2.0f;
+	//MouseScreenPos = glm::clamp(MouseScreenPos,glm::vec2(0, 0), glm::vec2(world->WorldSize, world->WorldSize));
 	if (glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		int Aff = renderengine->RenderConfig.RenderAffiliation;
 		int size = 5;
-		for (int x = -size; x <= size; ++x)
+		glm::vec2 vel = glm::vec2(world->WrapDistance(MouseScreenPos.x, MouseScreenPosOld.x), world->WrapDistance(MouseScreenPos.y , MouseScreenPosOld.y));
+		float distance = glm::length(vel);
+		int maxi = ceil(distance / 1);
+		int lasti = maxi - 1;
+		for (int i = 0; i < maxi; ++i)
 		{
-			for (int y = -size; y <= size; ++y)
+			for (int x = -size; x <= size; ++x)
 			{
-				world->FactionArray[Aff].PheremoneAttack.GetPheremone(MouseScreenPos.x + x, MouseScreenPos.y + y).Strength = 100;
-				world->FactionArray[Aff].PheremoneAttack.GetPheremone(MouseScreenPos.x + x, MouseScreenPos.y + y).Direction = (MouseScreenPos - MouseScreenPosOld)/DeltaTime;
-				//world->ColonyArray[0].Pheremone_Food.GetPheremone(WorldMousePos.x + x, WorldMousePos.y + y).Strength = 100;
-				//world->ColonyArray[0].Pheremone_Food.GetPheremone(WorldMousePos.x + x, WorldMousePos.y + y).Direction = WorldMousePos - WorldMousePosOld;
+				for (int y = -size; y <= size; ++y)
+				{
+					auto pos = MouseScreenPos - (vel * (float(i) / float(maxi)));
+					world->FactionArray[Aff].PheremoneAttack.GetChunk(pos.x + x, pos.y + y).Active = true;
+					world->FactionArray[Aff].PheremoneAttack.GetChunk(pos.x + x, pos.y + y).ZeroValue = false;
+					world->FactionArray[Aff].PheremoneAttack.GetPheremone(pos.x + x, pos.y + y).Strength = 100;
+					//vel = glm::normalize(vel) * 10.0f;
+					world->FactionArray[Aff].PheremoneAttack.GetPheremone(pos.x + x, pos.y + y).Direction = vel/DeltaTime;
+					//world->ColonyArray[0].Pheremone_Food.GetPheremone(WorldMousePos.x + x, WorldMousePos.y + y).Strength = 100;
+					//world->ColonyArray[0].Pheremone_Food.GetPheremone(WorldMousePos.x + x, WorldMousePos.y + y).Direction = WorldMousePos - WorldMousePosOld;
+				}
 			}
 		}
 	}

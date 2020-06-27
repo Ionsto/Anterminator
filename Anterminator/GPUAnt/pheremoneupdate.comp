@@ -1,0 +1,55 @@
+#version 430
+const float dt = 0.02;
+layout(rg16f) uniform image3D Pheremone;
+layout (local_size_x = 16,local_size_y = 16,local_size_z=1) in;
+float random (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
+uniform float DecayConstant;
+uniform float DiffusionConstant;
+const int WorldSize = 2048;
+const float PheremoneResolution = 4;
+const int PheremoneCount = int(floor(2*WorldSize/PheremoneResolution));
+const float MaxDiffusionConstant = 50;
+const float MaxValue = 100;
+ivec2 WrapPhermoneGrid(ivec2 pos)
+{
+	return pos & (PheremoneCount-1);
+//	return pos % PheremoneCount;
+}
+void main()
+{
+    ivec2 xy = ivec2(gl_GlobalInvocationID.xy);
+    uint aff = gl_GlobalInvocationID.z;
+	//if(xy.x < 2*(WorldSize/PheremoneResolution) && xy.y < 2*(WorldSize/PheremoneResolution)){
+	vec4 ph = imageLoad(Pheremone,ivec3(xy,int(aff)));
+	//Diffusion	
+	float MeshDiffusionNumber = 1000 * DiffusionConstant * dt / (PheremoneResolution * PheremoneResolution);
+	MeshDiffusionNumber = min(MeshDiffusionNumber, MaxDiffusionConstant);
+	float Crecip = 1.0 / (1.0f + (MeshDiffusionNumber * 4.0f));
+	ph.xy =
+		(ph.xy +
+			(MeshDiffusionNumber * (
+				  imageLoad(Pheremone,ivec3(WrapPhermoneGrid(xy + ivec2(1,0)),int(aff))).xy
+				+ imageLoad(Pheremone,ivec3(WrapPhermoneGrid(xy - ivec2(1,0)),int(aff))).xy
+				+ imageLoad(Pheremone,ivec3(WrapPhermoneGrid(xy + ivec2(0,1)),int(aff))).xy
+				+ imageLoad(Pheremone,ivec3(WrapPhermoneGrid(xy - ivec2(0,1)),int(aff))).xy))) * Crecip;
+	float len = dot(ph.xy,ph.xy);
+	if(len > MaxValue * MaxValue){
+		ph.xy = normalize(ph.xy) * MaxValue; 
+	}
+	ph.xy *= (1.0 - DecayConstant);
+	if(isinf(ph.x) || isnan(ph.x))
+	{
+		ph.x = 0;	
+	}
+	if(isinf(ph.y) || isnan(ph.y))
+	{
+		ph.y = 0;	
+	}
+//	ph.xyz = clamp(ph.xyz,vec3(0,0,0),vec3(100,100,100));
+	imageStore(Pheremone,ivec3(xy,int(aff)),ph);
+	//}
+}

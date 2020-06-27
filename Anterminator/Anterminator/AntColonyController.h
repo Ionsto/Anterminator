@@ -94,9 +94,9 @@ public:
 		&DensityLay                                  ,
 		&DensityAvoid                                ,
 		&FollowFood                                  ,      
-		&AttackDensityMult	                         ,
-		&AttackRepropogateMult						 ,
-		&AttackFollow
+		//&AttackDensityMult	                         ,
+		//&AttackRepropogateMult						 ,
+		//&AttackFollow
 		};
 		return map;
 	}

@@ -1,0 +1,86 @@
+#version 430
+const float dt = 0.02;
+const float IntergrationDamping = 1.;
+
+
+struct Entity{
+	vec2 Position;
+	vec2 PositionOld;
+
+	vec2 Acceleration;
+	float Size;
+	float Alive;
+
+	vec3 Colour;
+	float ToRemove;
+
+	float Affiliation;
+	float Type;
+	float Mass;
+	float Age;
+
+	vec2 Heading;
+	float Energy;
+	float HeldFood;
+
+	float TimeFromHome;
+	float Attacked;
+	float MaxEnergy;
+	float Health;
+
+	float MaxHealth;
+	float Pad;
+	float PadB;
+	float PadC;
+};
+
+const int WorldSize = 2048;
+const int MaxEntityPerChunk = 10;
+const int MaxEntityCount = 50000;
+const int MaxTypeCount = 5;
+const int ChunkSize = 8;
+const int ChunkCount = 2 * WorldSize/ChunkSize;
+struct Chunk{
+	int EntityCount;
+	int EntityID[MaxEntityPerChunk];
+};
+
+
+int GetChunkId(vec2 pos)
+{
+	ivec2 localpos = ivec2(floor((pos + WorldSize)/ChunkSize));
+	return clamp(localpos.y + (localpos.x * ChunkCount),0,ChunkCount * ChunkCount-1); 
+}
+struct Scene{
+	int EntityCount;
+	int TypeCount[MaxTypeCount];
+};
+
+
+layout (local_size_x = 64) in;
+
+layout(std430, binding = 0) buffer entity_block
+{
+	Entity EntityList[];
+};
+layout(std430, binding = 4) buffer scene_data 
+{
+	Scene gpuscene;
+};
+layout(std430, binding = 5) buffer chunk_data 
+{
+	Chunk chunks[];
+};
+float random (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
+void main()
+{
+    uint id = gl_GlobalInvocationID.x;
+	if(id < ChunkCount * ChunkCount)
+	{
+		chunks[id].EntityCount = 0;
+	}
+}

@@ -1,7 +1,7 @@
 #pragma once
 #include "PheremoneGrid.h"
 namespace BehaviorPheremonePlace {
-	void Update(Entity& entity, PheremoneGrid& Pheremone, float SpreadSize, float Strength, float Direction)
+	void Update(Entity& entity, PheremoneGrid& Pheremone, float SpreadSize, float Strength, glm::vec2 speed)
 	{
 		int x = 0;
 		int y = 0;
@@ -16,7 +16,6 @@ namespace BehaviorPheremonePlace {
 				float& pStrength = ph.Strength;
 //				float Delta = (Strength / SpreadSize) / (1 + (std::sqrtf(x * x + y * y)));
 				float Delta = (Strength) / (1 + (std::sqrtf(x * x + y * y)));
-				auto speed = ((entity.PositionOld - entity.Position) / World::DeltaTime) * Direction;
 				if (pStrength + Delta != 0)
 				{
 					pDirection = ((pDirection * pStrength) + (speed * Delta)) / (pStrength + Delta);
@@ -26,5 +25,10 @@ namespace BehaviorPheremonePlace {
 				}
 			}
 		}
+	}
+	void Update(Entity& entity, PheremoneGrid& Pheremone, float SpreadSize, float Strength, float Direction)
+	{
+		auto speed = ((entity.PositionOld - entity.Position) / World::DeltaTime) * Direction;
+		Update(entity, Pheremone, SpreadSize, Strength, speed);
 	}
 }

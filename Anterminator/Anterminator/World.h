@@ -11,7 +11,7 @@ public:
 	std::uniform_real_distribution<float>  random_number;
 	static constexpr float DeltaTime = 0.01;
 	static constexpr float WorldSize = 4096;
-	static constexpr int ChunkCount = static_cast<int>(WorldSize/Chunk::Size);
+	static constexpr int ChunkCount = static_cast<int>((WorldSize)/Chunk::Size);
 //World extends from -worldsize to +worldsize
 //	std::array<Chunk, WorldSize* WorldSize> ChunkArray;
 	float DtAccumulator = 0;

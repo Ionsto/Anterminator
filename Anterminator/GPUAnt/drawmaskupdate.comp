@@ -1,0 +1,30 @@
+#version 430
+const float dt = 0.02;
+layout(rg16f,binding=0) uniform image3D Pheremone;
+layout(rgba32f,binding=1) uniform image2D DrawMask;
+layout (local_size_x = 16,local_size_y = 16,local_size_z=1) in;
+float random (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
+uniform int Affiliation;
+const float PheremoneResolution = 4;
+const float MaskResolution = 8;
+const int PhPerMask = int(MaskResolution/PheremoneResolution);
+
+void main()
+{
+    uvec2 xy = gl_GlobalInvocationID.xy;
+    uint aff = gl_GlobalInvocationID.z;
+	float maskv = imageLoad(DrawMask,ivec2(xy)).r;
+	imageStore(DrawMask,ivec2(xy),vec4(maskv,0,0,0));
+	for(int dx = 0;dx < PhPerMask;++dx){
+		for(int dy = 0;dy < PhPerMask;++dy){
+			vec4 ph = imageLoad(Pheremone,ivec3((xy * PhPerMask) + uvec2(dx,dy),int(Affiliation)));
+			maskv += dot(ph.xy,ph.xy) * 5;
+		}
+	}
+//	maskv = clamp(maskv,0,1);
+	imageStore(DrawMask,ivec2(xy),vec4(maskv,0,0,0));
+}

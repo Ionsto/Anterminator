@@ -74,7 +74,7 @@ namespace BehaviorAnt {
 					BehaviorPheremoneHillClimb::Update(e, c.PheremoneKilled, c.FindKilled);
 					float AttackMult = (c.PheremoneKilled.GetPheremone(e.Position.x, e.Position.y).Strength * c.AttackDensityMult)
 						+ (c.PheremoneAttack.GetPheremone(e.Position.x, e.Position.y).Strength * c.AttackRepropogateMult);
-					BehaviorPheremonePlace::Update(e, c.PheremoneAttack, 1, AttackMult, 0.1);
+					BehaviorPheremonePlace::Update(e, c.PheremoneAttack, 1, AttackMult,c.PheremoneAttack.GetPheremone(e.Position.x, e.Position.y).Direction);
 					BehaviorFollowPheremone::Update(e, c.PheremoneAttack, c.AttackFollow);
 					///c.behaviour_followkilled.Update(*this, e, c.Pheremone_Killed, c.FindKilled);
 					///c.behaviour_density.Update(*this, e, c.Pheremone_Density,c.DensityAvoid);

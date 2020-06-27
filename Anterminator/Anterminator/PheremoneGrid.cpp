@@ -59,9 +59,9 @@ void PheremoneGrid::MarkActive()
 			{
 				for (int dy = -1; dy <= 1; ++dy)
 				{
-					if (x + dx > 0 && x + dx < ChunkCount)
+					//if (x + dx > 0 && x + dx < ChunkCount)
 					{
-						if (y + dy > 0 && y + dy < ChunkCount)
+						//if (y + dy > 0 && y + dy < ChunkCount)
 						{
 							GetChunkGrid(x, y).Active |= !GetChunkGrid(x + dx, y + dy).ZeroValue;
 						}

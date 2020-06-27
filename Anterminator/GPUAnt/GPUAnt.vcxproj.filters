@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{63788b6d-fcf3-4973-8dd9-7507b683d8fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{98b18c8f-baba-4ae5-b7ff-9c8dfcc725b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interface">
+      <UniqueIdentifier>{6b508d69-0092-49bd-8f4b-c2ad0e8a965c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{9f156474-2419-4203-863e-f6f4936e41ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render">
+      <UniqueIdentifier>{436f380c-c337-491f-9251-05b6a0308bf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{db8dfb6e-87ae-46d8-a59f-ecce4efe999b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{977085b5-321c-4640-9730-d05335cf1f80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface\GUI">
+      <UniqueIdentifier>{74fd5407-deac-4c46-b92f-d6caed2442e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interface\GUI">
+      <UniqueIdentifier>{47027f79-f7c1-4ad8-9fc2-f7c0f198e30c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imgui">
+      <UniqueIdentifier>{3c70c3ba-5ce6-42d7-b00d-565644aad662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\imgui">
+      <UniqueIdentifier>{ac8fc7cf-ccb5-49a0-8bc5-69f25b3d1cfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interface\GUI\States">
+      <UniqueIdentifier>{7092154c-50d0-4054-b432-8d7012fd90b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface\GUI\States">
+      <UniqueIdentifier>{93760130-ade5-427a-a2e0-3c88afd582db}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderEngine.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapList.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterEngineGPU.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>Header Files\Interface\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIBase.h">
+      <Filter>Header Files\Interface\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_glfw.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_opengl3.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinNoise.hpp">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyPngOut.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_plot.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIMainMenu.h">
+      <Filter>Header Files\Interface\GUI\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIGame.h">
+      <Filter>Header Files\Interface\GUI\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIPauseMenu.h">
+      <Filter>Header Files\Interface\GUI\States</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderEngine.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterEngineGPU.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>Source Files\Interface\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIBase.cpp">
+      <Filter>Source Files\Interface\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_glfw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_opengl3.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyPngOut.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_plot.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIMainMenu.cpp">
+      <Filter>Source Files\Interface\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIGame.cpp">
+      <Filter>Source Files\Interface\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIPauseMenu.cpp">
+      <Filter>Source Files\Interface\GUI\States</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="render_entity.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_entity.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_quad.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_quad.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="entityupdate.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="chunkupdate.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="pheremoneupdate.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="removedead.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="pheremonepaint.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="collisionupdate.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="drawmaskupdate.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_drawmask.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="render_drawmask.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="drawmaskblur.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="chunkreset.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="typesort.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="entityaiupdate.comp">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

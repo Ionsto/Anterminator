@@ -9,7 +9,6 @@ World::World():random_number(-1,1)
 	{
 		FactionArray[i].Affiliation = i;
 		FactionArray[i].Alive = false;
-
 	}
 	for (int i = 0; i < 10; ++i)
 	{
@@ -40,7 +39,7 @@ World::World():random_number(-1,1)
 void World::Update(float realdt)
 {
 	//DtAccumulator += 0.01;
-	TimeScalingFactor = std::clamp(TimeScalingFactor, 1.0f / (1 << 5), (float)(1 << 6));
+	TimeScalingFactor = std::clamp(TimeScalingFactor, 1.0f / (1 << 5), (float)(1 << 0));
 	DtAccumulator += realdt * TimeScalingFactor;
 	int dtstepcount = static_cast<int>(DtAccumulator / this->DeltaTime);//std::min(100, static_cast<int>(DtAccumulator / this->DeltaTime));
 	DtAccumulator -= this->DeltaTime * static_cast<float>(dtstepcount);
@@ -61,18 +60,18 @@ void World::AddPrey()
 	PreySpawnCount += DeltaTime;
 	if (PreySpawnCount > 0.8)
 	{
-		static constexpr float AreaPerSpawn = 5'000'000;
+		static constexpr float AreaPerSpawn = 10'000'000;
 		for (int i = 0; i < static_cast<int>((WorldSize * WorldSize) / AreaPerSpawn); ++i) {
 			Entity e;
 			e.Type = Entity::EntityType::Prey;
 			e.Position = (glm::vec2(random_number(generator), random_number(generator)) * WorldSize);
 			e.PositionOld = e.Position;
 			e.Colour = glm::vec3(1, 0, 0);
-			e.Size = 20;
-			e.Mass = 100;
+			e.Size = 5 * (1+(powf(random_number(generator),4)*30));
+			e.Mass = 10 * e.Size * e.Size;
 			e.Health = 5;
-			e.MaxSpeed = 1;
-			e.MaxEnergy = 100'000;
+			e.MaxSpeed = 10 / e.Size;
+			e.MaxEnergy = 100 * e.Size * e.Size;
 			e.Energy = e.MaxEnergy;
 			e.Affiliation = -1;
 			//e.Heading = glm::vec2(random_number(generator), random_number(generator)) * 100.0f;
@@ -175,7 +174,7 @@ void World::UpdateCollisionEntities(Entity& e, Entity& ej)
 		{
 			ej.Position -= norm * (displacementajustment * (e.Mass / totalmass));
 		}
-		if (abs(displacementajustment)/combsize > 0.8)
+		if (abs(displacementajustment)/e.Size > 0.8 ||abs(displacementajustment)/ej.Size > 0.8)
 		{
 			e.PositionOld += norm * (displacementajustment * (ej.Mass / totalmass));
 			ej.PositionOld -= norm * (displacementajustment * (e.Mass / totalmass));
@@ -243,8 +242,8 @@ void World::UpdateCollisionEntities(Entity& e, Entity& ej)
 			float Distance = (1.01+(random_number(generator)*0.5)) * antnest.Size;
 //				float Distance = (1.01) * antnest.Size;
 			glm::vec2 randplace = glm::vec2(cosf(Angle), sinf(Angle)) * Distance;
-			//ant.Position = antnest.Position + randplace;
-			//ant.PositionOld = ant.Position;
+			ant.Position = antnest.Position + randplace;
+			ant.PositionOld = ant.Position;
 			//ant.Heading = glm::vec2(0, 0);
 			ant.Heading *= 0.5;
 		}

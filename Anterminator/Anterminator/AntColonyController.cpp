@@ -64,7 +64,7 @@ Entity&& AntColonyController::CreateAnt(World& w)
 	e.Colour = Colour;
 	e.Size = 0.5;
 	e.Health = 5;
-	e.MaxAge = 20;
+	e.MaxAge = 50;
 	e.Affiliation = Affiliation;
 	e.PhysicsUpdate = true;
 	return std::move(e);
@@ -78,8 +78,8 @@ Entity && AntColonyController::CreateColony(World& w)
 	Entity e;
 	e.Type = Entity::EntityType::AntNest;
 	e.Size = 40;
-	//e.NoAging = true;
-	e.Health = 1000;
+	e.NoAging = true;
+	e.Health = 100;
 	e.MaxEnergy = 100'000;
 	e.Energy = e.MaxEnergy;
 	e.MaxAge = 120;

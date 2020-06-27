@@ -1,35 +1,85 @@
 ﻿  cl : Command line warning D9025 : overriding '/openmp' with '/openmp:experimental'
-  World.cpp
+  GameManager.cpp
 D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(34,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
 D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(35,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(60,47): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(78,16): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(99,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(100,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(156,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(157,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(7,21): warning C4244:  'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(97,55): warning C4806:  '!=': unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(203,18): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(211,18): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(242,16): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(243,19): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\ChunkMap.h(46,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\ChunkMap.h(45): message :  while compiling class template member function 'std::tuple<int,int> ChunkMap<128>::GetChunkId(float,float)'
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(137): message :  see reference to function template instantiation 'std::tuple<int,int> ChunkMap<128>::GetChunkId(float,float)' being compiled
-D:\Github\Anterminator\Anterminator\Anterminator\World.h(19): message :  see reference to class template instantiation 'ChunkMap<128>' being compiled
-D:\Github\Anterminator\Anterminator\Anterminator\ChunkMap.h(47,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\ChunkMap.h(36,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-D:\Github\Anterminator\Anterminator\Anterminator\ChunkMap.h(33): message :  while compiling class template member function 'Chunk &ChunkMap<128>::GetChunkPos(float,float)'
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(119): message :  see reference to function template instantiation 'Chunk &ChunkMap<128>::GetChunkPos(float,float)' being compiled
-D:\Github\Anterminator\Anterminator\Anterminator\ChunkMap.h(37,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(68,47): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(86,16): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(107,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(108,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(164,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(165,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\GameManager.cpp(94,40): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\GameManager.cpp(132,12): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\GameManager.cpp(192,42): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\GameManager.cpp(193,41): warning C4244:  '+=': conversion from 'double' to 'float', possible loss of data
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(365,1): warning C4530:  C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(358): message :  while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(float)'
-D:\Github\Anterminator\Anterminator\Anterminator\World.cpp(383): message :  see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(float)' being compiled
+D:\Github\Anterminator\Anterminator\Anterminator\GameManager.cpp(83): message :  see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(float)' being compiled
+  RenderEngine.cpp
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(601): message :  see reference to class template instantiation 'std::basic_ostream<char,std::char_traits<char>>' being compiled
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(34,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(35,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(68,47): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(86,16): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(107,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(108,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(164,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(165,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(707,1): warning C4530:  C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+  RenderEngineGPU.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngine.cpp(24): message :  see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::operator <<<std::char_traits<char>>(std::basic_ostream<char,std::char_traits<char>> &,const char *)' being compiled
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(34,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(35,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(68,47): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(86,16): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(107,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(108,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(164,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(165,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(132,21): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(134,11): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(135,11): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(239,22): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(241,12): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(242,12): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(365,1): warning C4530:  C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(358): message :  while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(float)'
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(119): message :  see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(float)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(601): message :  see reference to class template instantiation 'std::basic_ostream<char,std::char_traits<char>>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xutility(2253,24): warning C4244:  '=': conversion from 'const _Ty' to 'float', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xutility(2253,24): warning C4244:         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xutility(2253,24): warning C4244:         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xutility(2253,24): warning C4244:             _Ty=int
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\xutility(2253,24): warning C4244:         ]
+  Shader.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(92): message :  see reference to function template instantiation 'void std::fill<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int>(const _FwdIt,const _FwdIt,const int &)' being compiled
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(92): message :         with
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(92): message :         [
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(92): message :             _Ty=float,
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(92): message :             _FwdIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<float>>>
+D:\Github\Anterminator\Anterminator\Anterminator\RenderEngineGPU.cpp(92): message :         ]
+D:\Github\Anterminator\Anterminator\Anterminator\Shader.cpp(38,81): warning C4267:  'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(444,1): warning C4530:  C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(437): message :  while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(std::basic_streambuf<char,std::char_traits<char>> *)'
+D:\Github\Anterminator\Anterminator\Anterminator\Shader.cpp(26): message :  see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(std::basic_streambuf<char,std::char_traits<char>> *)' being compiled
+  ShaderProgram.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(601): message :  see reference to class template instantiation 'std::basic_ostream<char,std::char_traits<char>>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(707,1): warning C4530:  C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+  main.cpp
+D:\Github\Anterminator\Anterminator\Anterminator\ShaderProgram.cpp(36): message :  see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::operator <<<std::char_traits<char>>(std::basic_ostream<char,std::char_traits<char>> &,const char *)' being compiled
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(34,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(35,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(68,47): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(86,16): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(107,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(108,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(164,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Github\Anterminator\Anterminator\Anterminator\PheremoneGrid.h(165,10): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\include\ostream(707,1): warning C4530:  C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+D:\Github\Anterminator\Anterminator\Anterminator\main.cpp(6): message :  see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::operator <<<std::char_traits<char>>(std::basic_ostream<char,std::char_traits<char>> &,const char *)' being compiled
   Generating code
-  5 of 719 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    10 functions had inline decision re-evaluated but remain unchanged
+  0 of 715 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Anterminator.vcxproj -> D:\Github\Anterminator\Anterminator\x64\Release\Anterminator.exe

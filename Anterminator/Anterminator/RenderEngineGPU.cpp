@@ -72,6 +72,7 @@ RenderEngineGPU::RenderEngineGPU(GLFWwindow* window) : RenderEngine(window)
 	}
 	UniformOffset = glGetUniformLocation(program_quad.GetProgram(), "Offset");
 	UniformScale = glGetUniformLocation(program_quad.GetProgram(), "Scale");
+
 	glUniform2f(UniformOffset, 0, 0);
 	glUniform2f(UniformScale, 1, 1);
 //	UniformYaw = glGetUniformLocation(program_quad.GetProgram(), "CameraYaw");

@@ -33,8 +33,16 @@ struct PheremoneChunk {
 	{
 		int ix = floor(((x - X) / ChunkSize) * GridCount);
 		int iy = floor(((y - Y) / ChunkSize) * GridCount);
-		ix = std::clamp(ix, 0, GridCount - 1);
-		iy = std::clamp(iy, 0, GridCount - 1);
+		//ix = std::clamp(ix, 0, GridCount - 1);
+/*		float xc = x / ChunkSize;
+		float yc = y / ChunkSize;
+		float dummya;
+		int ix = GridCount * modf(xc, &dummya);
+		float dummyb;
+		int iy = GridCount * modf(yc, &dummyb);*/
+//		int ix = modulo(((x / ChunkSize) * GridCount), GridCount);
+//		int iy = modulo(((y / ChunkSize) * GridCount), GridCount);
+		//iy = std::clamp(iy, 0, GridCount - 1);
 		return GetPheremoneGrid(ix, iy);
 	}
 	PheremoneUnit& GetPheremoneGrid(int x, int y)
@@ -48,8 +56,8 @@ struct PheremoneChunk {
 };
 class PheremoneGrid
 {
-	static constexpr float WorldSize = 4096;// World::WorldSize;
 public:
+	static constexpr float WorldSize = 4096;// World::WorldSize;
 	float DiffuseTime = 0;
 	float DiffuseTimeMax = 0.5;
 	float DecayRate = 1;
@@ -161,6 +169,22 @@ public:
 	}
 	PheremoneUnit& GetPheremone(float x, float y) 
 	{
+		if (x < 0)
+		{
+			x += WorldSize;
+		}
+		if (x >= WorldSize)
+		{
+			x -= WorldSize;
+		}
+		if (y < 0)
+		{
+			y += WorldSize;
+		}
+		if (y >= WorldSize)
+		{
+			y -= WorldSize;
+		}
 		auto& c = GetChunk(x, y);
 		return c.GetPheremone(x, y);
 	}
