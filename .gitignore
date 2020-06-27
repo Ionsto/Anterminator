@@ -31,6 +31,7 @@
 *.out
 *.app
 *.ipch
-Aftermath\*
+/Aftermath\
+/TinyPngOut\
 *.tlog
 *.log
