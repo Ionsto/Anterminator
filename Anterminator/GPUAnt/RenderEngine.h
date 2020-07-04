@@ -36,33 +36,47 @@ public:
 	Shader shaderquad_fragment;
 	Shader shaderrendermask_vertex;
 	Shader shaderrendermask_fragment;
+	Shader shaderrenderterrain_fragment;
+	Shader shaderrenderterrain_vertex;
 	Shader Compute_DrawMask;
 	Shader Compute_BlurMask;
 	ShaderProgram program_entity;
 	ShaderProgram program_quad;
 	ShaderProgram program_renderdraw;
+	ShaderProgram program_renderterrain;
 	ShaderProgram Program_DrawMaskUpdate;
 	ShaderProgram Program_DrawMaskBlur;
+
 	GLuint UniformEntityCameraPosition;
 	GLuint UniformEntityScale;
 	GLuint UniformEntityMaskTexture;
 	GLuint UniformEntityUseMask;
+	GLuint UniformEntityMVP;
+
 	GLuint UniformPixelScale;
 	GLuint UniformWorldSize;
+
 	GLuint UniformQuadTexture;
 	GLuint UniformQuadCameraPosition;
 	GLuint UniformQuadScale;
 	GLuint UniformQuadWorldSize;
 	GLuint UniformQuadAffiliation;
+	GLuint UniformQuadMVP;
 	GLuint UniformDrawMaskAffiliation;
 
 	GLuint UniformRenderMaskTexture;
 	GLuint UniformRenderMaskCameraPosition;
 	GLuint UniformRenderMaskScale;
 	GLuint UniformRenderMaskWorldSize;
+	GLuint UniformRenderMaskMVP;
 	GLuint UniformRenderMaskAffiliation;
+
+	GLuint UniformTerrainMVP;
+	GLuint UniformTerrainWorldSize;
+	GLuint UniformTerrainTexture;
 	
 	GLuint TextureDrawMask;
+	GLuint TextureWorldTerrain;
 
 	GLuint FB_VBO;
 	GLuint FB_VAO;
@@ -77,12 +91,18 @@ public:
 		0,1,2,
 		0,2,3
 	};
+	GLuint Terrain_VBO;
+	GLuint Terrain_VAO;
+	GLuint Terrain_EBO;
+	std::vector<float> Terrain_Verts;
+	std::vector<int> Terrain_Elements;
 	static constexpr const int MaxEntityCount = WaterEngineGPU::MaxParticleCount;
 	static constexpr const int FactionCount = WaterEngineGPU::FactionCount;
 	static constexpr const float WorldSize = WaterEngineGPU::WorldSize;
 	static constexpr const int DrawMaskResolution = 8;
 	static constexpr const int DrawMaskSize = 2 * WorldSize / DrawMaskResolution;
 	int EntityCount = 0;
+	static constexpr const float ViewSizeThreshold = 1000.0 / WorldSize;
 	RenderEngine(GLFWwindow* Window);
 	void Init();
 	void SetEntityEngine(WaterEngineGPU & entityengine);
@@ -90,5 +110,6 @@ public:
 	void RenderEntities();
 	void RenderPheremone();
 	void RenderDrawMask();
+	void RenderTerrain();
 };
 

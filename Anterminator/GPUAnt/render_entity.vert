@@ -8,6 +8,7 @@ layout (location = 5) uniform float PixelScale;
 out vec3 Colour;
 out vec2 DrawMaskLocation;
 uniform float WorldSize;
+uniform mat4 MVP;
 
 void main()
 {
@@ -22,8 +23,13 @@ void main()
 		}
 
 	}	
-    gl_Position = vec4(worlddiff * Scale,0, 1);
+    //gl_Position = vec4(worlddiff * Scale,0, 1);
+	//Colour = colour.xyz;
+	//gl_PointSize = Size * PixelScale;
+	//DrawMaskLocation = (aPos + WorldSize) / (WorldSize * 2);
+	vec4 pos = MVP * vec4(worlddiff + CameraPosition,0, 1);
+    gl_Position = pos;
 	Colour = colour.xyz;
-	gl_PointSize = Size * PixelScale;
+	gl_PointSize =  (16.0/9) * (1920) * Size / pos.z;
 	DrawMaskLocation = (aPos + WorldSize) / (WorldSize * 2);
 }

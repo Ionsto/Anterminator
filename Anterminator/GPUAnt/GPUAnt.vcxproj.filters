@@ -52,6 +52,30 @@
     <Filter Include="Header Files\Interface\GUI\States">
       <UniqueIdentifier>{93760130-ade5-427a-a2e0-3c88afd582db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Compute">
+      <UniqueIdentifier>{abed03d2-12bd-48aa-834a-1242e3916c0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Compute\Chunk">
+      <UniqueIdentifier>{152b43a8-234c-4265-bb44-f2f44744b02e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Compute\Entity">
+      <UniqueIdentifier>{701e5bd5-36a4-4e58-97d8-c16a59c7cebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Compute\Collision">
+      <UniqueIdentifier>{cda6f6b1-9f0d-4dde-93cb-098e2ce60386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Compute\Draw mask">
+      <UniqueIdentifier>{5060b61a-47f0-420f-b469-e77e9debda45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Compute\Pheremone">
+      <UniqueIdentifier>{1fdd62c7-ab5d-4251-a8be-878249eb0dea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Render">
+      <UniqueIdentifier>{8a983aff-3065-4de1-91c2-d339f70221ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Compute\Audio">
+      <UniqueIdentifier>{3e0b19dc-76d5-4c3f-bb62-619d887d0ea1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -126,6 +150,12 @@
     <ClInclude Include="GUIPauseMenu.h">
       <Filter>Header Files\Interface\GUI\States</Filter>
     </ClInclude>
+    <ClInclude Include="FastNoise.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -191,58 +221,76 @@
     <ClCompile Include="GUIPauseMenu.cpp">
       <Filter>Source Files\Interface\GUI\States</Filter>
     </ClCompile>
+    <ClCompile Include="FastNoise.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="render_entity.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="render_entity.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="render_quad.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="render_quad.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="entityupdate.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="chunkupdate.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="pheremoneupdate.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="removedead.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="pheremonepaint.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="collisionupdate.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="drawmaskupdate.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="render_drawmask.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="render_drawmask.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="drawmaskblur.comp">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="chunkreset.comp">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="typesort.comp">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="chunkreset.comp">
+      <Filter>Shaders\Compute\Chunk</Filter>
+    </None>
+    <None Include="chunkupdate.comp">
+      <Filter>Shaders\Compute\Chunk</Filter>
+    </None>
     <None Include="entityaiupdate.comp">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders\Compute\Entity</Filter>
+    </None>
+    <None Include="entityupdate.comp">
+      <Filter>Shaders\Compute\Entity</Filter>
+    </None>
+    <None Include="collisionupdate.comp">
+      <Filter>Shaders\Compute\Collision</Filter>
+    </None>
+    <None Include="drawmaskblur.comp">
+      <Filter>Shaders\Compute\Draw mask</Filter>
+    </None>
+    <None Include="drawmaskupdate.comp">
+      <Filter>Shaders\Compute\Draw mask</Filter>
+    </None>
+    <None Include="pheremonepaint.comp">
+      <Filter>Shaders\Compute\Pheremone</Filter>
+    </None>
+    <None Include="pheremoneupdate.comp">
+      <Filter>Shaders\Compute\Pheremone</Filter>
+    </None>
+    <None Include="removedead.comp">
+      <Filter>Shaders\Compute\Entity</Filter>
+    </None>
+    <None Include="render_drawmask.frag">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="render_drawmask.vert">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="render_entity.frag">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="render_entity.vert">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="render_quad.frag">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="render_quad.vert">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="render_terrain.frag">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="audioevents.comp">
+      <Filter>Shaders\Compute\Audio</Filter>
+    </None>
+    <None Include="render_terrain.vert">
+      <Filter>Shaders\Render</Filter>
+    </None>
+    <None Include="collisionupdateentity.comp">
+      <Filter>Shaders\Compute\Collision</Filter>
     </None>
   </ItemGroup>
 </Project>

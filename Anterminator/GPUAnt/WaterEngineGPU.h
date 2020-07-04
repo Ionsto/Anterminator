@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "PerlinNoise.hpp"
 #include "ShaderProgram.h"
+#include "FastNoise.h"
 //static constexpr int GPUSceneMaxInd = 5'000;
 static constexpr int GPUSceneTypeCount = 5;
 struct GPUScene {
@@ -62,8 +63,14 @@ struct GPUFaction {
 	int AntCount = 0;
 	int NestCount = 0;
 	float TotalEnergy = 0;
-	float AntSpawnRate = 0;
-	float NestSpawnRate = 0;
+	float AntSpawnRate = 0.2;
+	float NestSpawnRate = 1;
+};
+struct GPUAudioEvent {
+	float Type = 0;
+	float Loudness = 0;
+	float PositionX = 0;
+	float PositionY = 0;
 };
 class WaterEngineGPU
 {
@@ -87,6 +94,7 @@ public:
 	Shader Compute_PheremoneUpdate;
 	Shader Compute_PheremonePaint;
 	Shader Compute_RemoveDead;
+	Shader Compute_AudioEvents;
 	ShaderProgram Program_CollisionUpdate;
 	ShaderProgram Program_EntityAIUpdate;
 	ShaderProgram Program_EntityUpdate;
@@ -95,6 +103,7 @@ public:
 	ShaderProgram Program_PheremoneUpdate;
 	ShaderProgram Program_PheremonePaint;
 	ShaderProgram Program_RemoveDead;
+	ShaderProgram Program_AudioEvents;
 	GLuint EntityBuffer;
 	GLuint RenderPositionBuffer;
 	GLuint RenderColourBuffer;
@@ -105,6 +114,8 @@ public:
 	GLuint EntityOutputBuffer;
 	GLuint FactionOutputBuffer;
 	GLuint FactionBuffer;
+	GLuint AudioEventBuffer;
+	GLuint AudioOutputBuffer;
 
 	GLuint UniformEntityEntityCount;       
 	GLuint UniformEntityWorldSize;       
@@ -114,6 +125,8 @@ public:
 	GLuint UniformEntityAIRandomTimeSeed;
 	GLuint UniformEntityExecutionType;
 	GLuint UniformCollisionRandomTimeSeed;
+	GLuint UniformCollisionCollsionMap;
+	GLuint UniformAudioRandomTimeSeed;
 	GLuint UniformTextureHome;
 	GLuint UniformTextureFood;
 	GLuint UniformTextureDead;
@@ -127,13 +140,19 @@ public:
 	GLuint TexturePheremonePaint;
 	static constexpr int PhermoneResolution = 4;
 	std::array<GLuint,4> TexturePheremone;
-	std::array<float, 4> PhermoneDecayRate = {0.001,0.001,0.01,0.002};
-	std::array<float, 4> PhermoneDiffusion = {0.001,0.001,0.01,0.4};
+	std::array<float, 4> PhermoneDecayRate = {0.0001,0.0001,0.001,0.02};
+	std::array<float, 4> PhermoneDiffusion = {0.001,0.001,0.01,4};
 	static constexpr int PheremoneSize =  2 * WorldSize/ PhermoneResolution;
 	std::vector<float> PheremonePainter = std::vector<float>(PheremoneSize * PheremoneSize * 4);
 	bool PheremonePainterDirty = false;
 	int PheremonePainterDirtyCounter = 0;
 	int PheremonePaintAffilation = 0;
+	
+	GLuint TextureWorldMap;
+	static constexpr int WorldTextureResolution = 4;
+	static constexpr int WorldTextureSize =  2 * WorldSize/ WorldTextureResolution;
+	std::vector<float> WorldNoiseMask = std::vector<float>(WorldTextureSize * WorldTextureSize);
+
 	float WrapValue(float v)
 	{
 		if(v < -WorldSize)
@@ -158,16 +177,21 @@ public:
 
 	float TimeScalingFactor = 1;
 	float DtAccumulator = 0;
-	static constexpr const int MaxParticleCount = 50'000;
+	static constexpr const int MaxParticleCount = 20'000;
 	//How often we pull gpu data onto the mirror in ram
 	int EntityUpdateCounter = 0;
+	int AudioUpdateCounter = 0;
 	std::vector<GPUEntity> WorldEntityMirror = std::vector<GPUEntity>(MaxParticleCount);
 	std::vector<GPUFaction> WorldFactionMirror = std::vector<GPUFaction>(FactionCount);
 	std::vector<bool> WorldFactionMirrorDirty = std::vector<bool>(FactionCount);
+	static constexpr const int MaxAudioEvents = 5000;
+	std::vector<GPUAudioEvent> GPUAudioEventList = std::vector<GPUAudioEvent>(MaxAudioEvents);
 	int ParticleCount = 0;
 
 	std::unique_ptr<GPUScene> GPUSceneTransferBuffer;
 	siv::PerlinNoise PerlinGenerator;
+	FastNoise noisegen;
+
 	GPUScene GPUscene;
 	WaterEngineGPU();
 	void Init(GLFWwindow * handle);

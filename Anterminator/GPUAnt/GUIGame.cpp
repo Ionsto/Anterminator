@@ -40,6 +40,22 @@ void GUIGame::Render()
 		ImGui::BulletText("Age: %f", e.Age);
 		ImGui::BulletText("Held food: %f", e.HeldFood);
 		ImGui::BulletText("Time from home: %f", e.TimeFromHome);
+		ImGui::BulletText("Size: %f", e.Size);
+		ImGui::BulletText("Mass: %f", e.Mass);
+		ImGui::End();
+	}
+	if (CurrentState.CurrentFaction != nullptr)
+	{
+		ImGui::Begin("Faction stat");
+		ImGui::BulletText("Ant count: %d", CurrentState.CurrentFaction->AntCount);
+		ImGui::BulletText("Nest count: %d", CurrentState.CurrentFaction->NestCount);
+		ImGui::SliderFloat("Total ant spawn:", &CurrentState.CurrentFaction->AntSpawnRate, 0, 1);
+		ImGui::SliderFloat("Total nest count:", &CurrentState.CurrentFaction->NestSpawnRate, 0, 1);
+//		int AntCount = 0;
+//		int NestCount = 0;
+//		float TotalEnergy = 0;
+//		float AntSpawnRate = 0;
+//		float NestSpawnRate = 0;
 		ImGui::End();
 	}
 	static ImU32 colors[3] = {
@@ -92,5 +108,4 @@ void GUIGame::Render()
 		ImGui::Plot("Population", conf);
 		ImGui::End();
 	}
-
 }

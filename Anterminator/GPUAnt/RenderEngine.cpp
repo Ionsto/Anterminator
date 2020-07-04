@@ -1,6 +1,7 @@
 #include "RenderEngine.h"
 #include <iostream>
 #include <GL/GL.h>
+#include <glm/ext.hpp>
 
 
 RenderEngine::RenderEngine(GLFWwindow* window)
@@ -18,6 +19,8 @@ RenderEngine::RenderEngine(GLFWwindow* window)
 	shaderquad_fragment.Init("render_quad.frag", GL_FRAGMENT_SHADER);
 	shaderrendermask_vertex.Init("render_drawmask.vert", GL_VERTEX_SHADER);
 	shaderrendermask_fragment.Init("render_drawmask.frag", GL_FRAGMENT_SHADER);
+	shaderrenderterrain_vertex.Init("render_terrain.vert", GL_VERTEX_SHADER);
+	shaderrenderterrain_fragment.Init("render_terrain.frag", GL_FRAGMENT_SHADER);
 	Compute_DrawMask.Init("drawmaskupdate.comp", GL_COMPUTE_SHADER);
 	Compute_BlurMask.Init("drawmaskblur.comp", GL_COMPUTE_SHADER);
 	std::cout << "Creating program" << std::endl;
@@ -33,6 +36,12 @@ RenderEngine::RenderEngine(GLFWwindow* window)
 	program_renderdraw.AddShader(shaderrendermask_vertex);
 	program_renderdraw.AddShader(shaderrendermask_fragment);
 	program_renderdraw.LinkProgram();
+
+	program_renderterrain.CreateProgram();
+	program_renderterrain.AddShader(shaderrenderterrain_vertex);
+	program_renderterrain.AddShader(shaderrenderterrain_fragment);
+	program_renderterrain.LinkProgram();
+
 	Program_DrawMaskUpdate.CreateProgram();
 	Program_DrawMaskUpdate.AddShader(Compute_DrawMask);
 	Program_DrawMaskUpdate.LinkProgram();
@@ -48,6 +57,8 @@ RenderEngine::RenderEngine(GLFWwindow* window)
 	UniformWorldSize = glGetUniformLocation(program_entity.GetProgram(), "WorldSize");
 	UniformEntityUseMask = glGetUniformLocation(program_entity.GetProgram(), "UseDrawMask");
 	UniformEntityMaskTexture = glGetUniformLocation(program_entity.GetProgram(), "DrawMask");
+	UniformEntityMVP = glGetUniformLocation(program_entity.GetProgram(), "MVP");
+
 	UniformDrawMaskAffiliation = glGetUniformLocation(Program_DrawMaskUpdate.GetProgram(), "Affiliation");
 
 	UniformQuadTexture = glGetUniformLocation(program_quad.GetProgram(), "DestTexture");
@@ -55,11 +66,18 @@ RenderEngine::RenderEngine(GLFWwindow* window)
 	UniformQuadScale = glGetUniformLocation(program_quad.GetProgram(), "Scale");
 	UniformQuadWorldSize = glGetUniformLocation(program_quad.GetProgram(), "WorldSize");
 	UniformQuadAffiliation = glGetUniformLocation(program_quad.GetProgram(), "Affiliation");
+	UniformQuadMVP = glGetUniformLocation(program_quad.GetProgram(), "MVP");
 
 	UniformRenderMaskTexture = glGetUniformLocation(program_renderdraw.GetProgram(), "DestTexture");
 	UniformRenderMaskCameraPosition = glGetUniformLocation(program_renderdraw.GetProgram(), "CameraPosition");
 	UniformRenderMaskScale = glGetUniformLocation(program_renderdraw.GetProgram(), "Scale");
 	UniformRenderMaskWorldSize = glGetUniformLocation(program_renderdraw.GetProgram(), "WorldSize");
+	UniformRenderMaskMVP = glGetUniformLocation(program_renderdraw.GetProgram(), "MVP");
+
+
+	UniformTerrainMVP = glGetUniformLocation(program_renderterrain.GetProgram(), "MVP");
+	UniformTerrainWorldSize = glGetUniformLocation(program_renderterrain.GetProgram(), "WorldSize");
+	UniformTerrainTexture = glGetUniformLocation(program_renderterrain.GetProgram(), "DestTexture");
 
 	program_quad.UseProgram();
 	glGenVertexArrays(1, &FB_VAO);
@@ -75,6 +93,47 @@ RenderEngine::RenderEngine(GLFWwindow* window)
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, FB_EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(fb_ebo), fb_ebo, GL_STATIC_DRAW);
+
+	glGenVertexArrays(1, &Terrain_VAO);
+	glGenBuffers(1, &Terrain_EBO);
+	glGenBuffers(1, &Terrain_VBO);
+	static constexpr float TerrainResolution = 4;
+	static constexpr int TerrainCount = 2 * WorldSize / TerrainResolution;
+	Terrain_Verts.resize(TerrainCount * TerrainCount * 4);
+	Terrain_Elements.resize((TerrainCount - 1)  * (TerrainCount - 1) * 6);
+	int id = 0;
+	int eid = 0;
+	for (int x = 0; x < TerrainCount; ++x) {
+		for (int y = 0; y < TerrainCount; ++y) {
+			float u = x/float(TerrainCount-1);
+			float v = y/float(TerrainCount-1);
+			Terrain_Verts[id++] = (u-0.5)*2*WorldSize;
+			Terrain_Verts[id++] = (v-0.5)*2*WorldSize;
+			Terrain_Verts[id++] = u;
+			Terrain_Verts[id++] = v;
+		}
+	}
+	for (int x = 0; x < TerrainCount-1; ++x) {
+		for (int y = 0; y < TerrainCount-1; ++y) {
+			Terrain_Elements[eid++] = (y + (x * TerrainCount));
+			Terrain_Elements[eid++] = (y + ((x+1) * TerrainCount));
+			Terrain_Elements[eid++] = ((y+1) + (x * TerrainCount));
+
+			Terrain_Elements[eid++] = (y + ((x+1) * TerrainCount));
+			Terrain_Elements[eid++] = ((y+1) + ((x+1) * TerrainCount));
+			Terrain_Elements[eid++] = ((y+1) + (x * TerrainCount));
+		}
+	}
+	//init
+	glBindVertexArray(Terrain_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, Terrain_VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * Terrain_Verts.size(), Terrain_Verts.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Terrain_EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * Terrain_Elements.size(), Terrain_Elements.data(), GL_STATIC_DRAW);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -121,11 +180,14 @@ void RenderEngine::SetEntityEngine(WaterEngineGPU & entityengine)
 	RenderColourBuffer = entityengine.RenderColourBuffer;
 	RenderSizeBuffer = entityengine.RenderSizeBuffer;
 	TexturePheremone = entityengine.TexturePheremone;
+	TextureWorldTerrain = entityengine.TextureWorldMap;
 }
 void RenderEngine::Render()
 {
 	glfwGetFramebufferSize(Window, &WindowSizePixelsX, &WindowSizePixelsY);
+	cam.Update();
 	RenderPheremone();
+	RenderTerrain();
 	RenderEntities();
 	RenderDrawMask();
 }
@@ -143,6 +205,8 @@ void RenderEngine::RenderEntities()
 	glUniform1i(UniformEntityMaskTexture, 0);
 //	glUniform1i(UniformEntityUseMask, this->RenderConfig.DrawMask ? 1 : 0);
 	glUniform1i(UniformEntityUseMask, 0);
+	auto mvp = cam.MVPMat;
+	glUniformMatrix4fv(UniformEntityMVP, 1, GL_FALSE, &mvp[0][0]);
 	glDrawArrays(GL_POINTS, 0, EntityCount);
 	glBindVertexArray(0);
 }
@@ -157,19 +221,25 @@ void RenderEngine::RenderPheremone()
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F,PheremoneSizeX, PheremoneSizeY, 0, GL_RGBA, GL_FLOAT, PheremoneTexture.data());
 //		auto WorldPosition = glm::vec3(ChunkPos.x, ChunkPos.y,0) - cam.Position;
 		//glUniform2f(UniformOffset, WorldPosition.x / cam.CameraXSize, WorldPosition.y/ cam.CameraYSize);
-		for (int x = -1; x <= 1; ++x)
+		int xmin = cam.Position.x < (-WorldSize * ViewSizeThreshold) ? -1 : 0;
+		int xmax = cam.Position.x > (WorldSize * ViewSizeThreshold) ? 1 : 0;
+		int ymin = cam.Position.y < (-WorldSize * ViewSizeThreshold) ? -1 : 0;
+		int ymax = cam.Position.y > (WorldSize * ViewSizeThreshold) ? 1 : 0;
+		for (int x = xmin; x <= xmax; ++x)
 		{
-			for (int y = -1; y <= 1; ++y)
+			for (int y = ymin; y <= ymax; ++y)
 			{
-				glUniform2f(UniformQuadCameraPosition,((2*WorldSize*x)+ cam.Position.x) / WorldSize,((2*WorldSize*y) + cam.Position.y) / WorldSize);
-				glUniform2f(UniformQuadScale, WorldSize / cam.CameraXSize, WorldSize / cam.CameraYSize);
+				//glUniform3f(UniformQuadCameraPosition,((2*WorldSize*x)+ cam.Position.x) / WorldSize,((2*WorldSize*y) + cam.Position.y) / WorldSize,cam.Position.z);
+				//glUniform2f(UniformQuadScale, WorldSize / cam.CameraXSize, WorldSize / cam.CameraYSize);
 				glUniform1f(UniformQuadWorldSize, WorldSize);
+				auto mvp = cam.MVPMat * glm::translate(glm::mat4(1.f),glm::vec3(2*x*WorldSize,2*y*WorldSize,0));
+				glUniformMatrix4fv(UniformQuadMVP, 1, GL_FALSE, &mvp[0][0]);
 				//		glUniform1i(UniformQuadTexture, TexturePheremone[0]);
-				float RenderAff = static_cast<float>(this->RenderConfig.RenderAffiliation) / FactionCount;
+				float RenderAff = static_cast<float>(this->RenderConfig.RenderAffiliation) / static_cast<float>(FactionCount-1);
 				//Scent
 				if (this->RenderConfig.Pheremone == 3)
 				{
-					RenderAff = -1.0 / FactionCount;
+					RenderAff = -1.0 / static_cast<float>(FactionCount-1);
 				}
 				glUniform1f(UniformQuadAffiliation, RenderAff);
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -209,16 +279,49 @@ void RenderEngine::RenderDrawMask()
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F,PheremoneSizeX, PheremoneSizeY, 0, GL_RGBA, GL_FLOAT, PheremoneTexture.data());
 //		auto WorldPosition = glm::vec3(ChunkPos.x, ChunkPos.y,0) - cam.Position;
 		//glUniform2f(UniformOffset, WorldPosition.x / cam.CameraXSize, WorldPosition.y/ cam.CameraYSize);
-		for (int x = -1; x <= 1; ++x)
+		int xmin = cam.Position.x < (-WorldSize * ViewSizeThreshold) ? -1 : 0;
+		int xmax = cam.Position.x > (WorldSize * ViewSizeThreshold) ? 1 : 0;
+		int ymin = cam.Position.y < (-WorldSize * ViewSizeThreshold) ? -1 : 0;
+		int ymax = cam.Position.y > (WorldSize * ViewSizeThreshold) ? 1 : 0;
+		for (int x = xmin; x <= xmax; ++x)
 		{
-			for (int y = -1; y <= 1; ++y)
+			for (int y = ymin; y <= ymax; ++y)
 			{
 				glUniform2f(UniformRenderMaskCameraPosition,((2*WorldSize*x)+ cam.Position.x) / WorldSize,((2*WorldSize*y) + cam.Position.y) / WorldSize);
 				glUniform2f(UniformRenderMaskScale, WorldSize / cam.CameraXSize, WorldSize / cam.CameraYSize);
 				glUniform1f(UniformRenderMaskWorldSize, WorldSize);
 				glUniform1i(UniformRenderMaskTexture, 0);
+				auto mvp = cam.MVPMat * glm::translate(glm::mat4(1.f),glm::vec3(2*x*WorldSize,2*y*WorldSize,0));
+				glUniformMatrix4fv(UniformRenderMaskMVP, 1, GL_FALSE, &mvp[0][0]);
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			}
+		}
+	}
+	glBindVertexArray(0);
+}
+
+void RenderEngine::RenderTerrain() 
+{
+	//Update the draw mas
+	program_renderterrain.UseProgram();
+	glBindVertexArray(Terrain_VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TextureWorldTerrain);
+	int xmin = cam.Position.x < (-WorldSize * ViewSizeThreshold) ? -1 : 0;
+	int xmax = cam.Position.x > (WorldSize * ViewSizeThreshold) ? 1 : 0;
+	int ymin = cam.Position.y < (-WorldSize * ViewSizeThreshold) ? -1 : 0;
+	int ymax = cam.Position.y > (WorldSize * ViewSizeThreshold) ? 1 : 0;
+	for (int x = xmin; x <= xmax; ++x)
+	{
+		for (int y = ymin; y <= ymax; ++y)
+		{
+			//glUniform2f(UniformRenderMaskCameraPosition,((2*WorldSize*x)+ cam.Position.x) / WorldSize,((2*WorldSize*y) + cam.Position.y) / WorldSize);
+			//glUniform2f(UniformRenderMaskScale, WorldSize / cam.CameraXSize, WorldSize / cam.CameraYSize);
+			glUniform1f(UniformTerrainWorldSize, WorldSize);
+			glUniform1i(UniformTerrainTexture, 0);
+			auto mvp = cam.MVPMat * glm::translate(glm::mat4(1.f),glm::vec3(2*x*WorldSize,2*y*WorldSize,0));
+			glUniformMatrix4fv(UniformTerrainMVP, 1, GL_FALSE, &mvp[0][0]);
+			glDrawElements(GL_TRIANGLES, Terrain_Elements.size(), GL_UNSIGNED_INT, 0);
 		}
 	}
 	glBindVertexArray(0);

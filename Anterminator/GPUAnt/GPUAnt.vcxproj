@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\Github\Anterminator\glfw-3.3.2\include;D:\Github\Anterminator\glew-2.1.0\include;D:\Github\Anterminator\glm;D:\Github\Anterminator\Aftermath\include;D:\Github\Anterminator\Aftermath\lib\x64;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Github\Anterminator\glfw-3.3.2\lib-vc2019;D:\Github\Anterminator\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Github\Anterminator\glfw-3.3.2\include;D:\Github\Anterminator\glew-2.1.0\include;D:\Github\Anterminator\glm;D:\Github\Anterminator\SFML-2.5.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Github\Anterminator\glfw-3.3.2\lib-vc2019;D:\Github\Anterminator\glew-2.1.0\lib\Release\x64;D:\Github\Anterminator\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\Github\Anterminator\glfw-3.3.2\include;D:\Github\Anterminator\glew-2.1.0\include;D:\Github\Anterminator\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Github\Anterminator\glfw-3.3.2\lib-vc2019;D:\Github\Anterminator\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Github\Anterminator\glfw-3.3.2\include;D:\Github\Anterminator\glew-2.1.0\include;D:\Github\Anterminator\glm;D:\Github\Anterminator\SFML-2.5.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Github\Anterminator\glfw-3.3.2\lib-vc2019;D:\Github\Anterminator\glew-2.1.0\lib\Release\x64;D:\Github\Anterminator\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -91,7 +91,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3dll.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;glew32.lib;opengl32.lib;openal32.lib;sfml-audio.lib;sfml-system.lib;sfml-main.lib;ogg.lib;flac.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -115,7 +115,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>glfw3dll.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;glew32.lib;opengl32.lib;openal32.lib;sfml-audio.lib;sfml-system.lib;sfml-main.lib;ogg.lib;flac.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,7 +134,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="FastNoise.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GUIBase.h" />
     <ClInclude Include="GUIGame.h" />
@@ -160,7 +162,9 @@
     <ClInclude Include="WaterEngineGPU.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="FastNoise.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GUIBase.cpp" />
     <ClCompile Include="GUIGame.cpp" />
@@ -183,9 +187,11 @@
     <ClCompile Include="WaterEngineGPU.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="audioevents.comp" />
     <None Include="chunkreset.comp" />
     <None Include="chunkupdate.comp" />
     <None Include="collisionupdate.comp" />
+    <None Include="collisionupdateentity.comp" />
     <None Include="drawmaskblur.comp" />
     <None Include="drawmaskupdate.comp" />
     <None Include="entityaiupdate.comp" />
@@ -199,6 +205,8 @@
     <None Include="render_quad.frag" />
     <None Include="render_quad.vert" />
     <None Include="entityupdate.comp" />
+    <None Include="render_terrain.frag" />
+    <None Include="render_terrain.vert" />
     <None Include="typesort.comp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

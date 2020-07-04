@@ -50,7 +50,7 @@ struct Faction{
 const int WorldSize = 2048;
 const float PheremoneResolution = 4;
 const int PheremoneCount = int(floor(2 * WorldSize/PheremoneResolution));
-const int MaxEntityCount = 50000;
+const int MaxEntityCount = 20000;
 const int MaxTypeCount = 5;
 const int MaxEntityPerChunk = 10;
 const int ChunkSize = 8;
@@ -58,7 +58,6 @@ const int ChunkCount = 2*WorldSize/ChunkSize;
 const int FactionCount = 4;
 
 const float WalkHomeTime = 2;
-
 
 struct Chunk{
 	int EntityCount;
@@ -258,456 +257,7 @@ void ApplyBoundaryCondition(uint i){
 		EntityList[i].ToRemove = 1;
 		EntityList[i].Alive = 0;
 	}
-}
-
-void CreateAnt(int i) {
-	EntityList[i].Position = vec2(0,0);
-	EntityList[i].PositionOld = vec2(0,0);
-	EntityList[i].Acceleration = vec2(0,0);
-	EntityList[i].Size = 1;
-	EntityList[i].Alive = 1;
-	EntityList[i].Colour = vec3(1,1,1);
-	EntityList[i].ToRemove = 0;
-	EntityList[i].Affiliation = 0;
-	EntityList[i].Type = 0;
-	EntityList[i].Mass = 1;
-	EntityList[i].Age = 20;
-	EntityList[i].Heading = vec2(0,0);
-	EntityList[i].Energy = 50;
-	EntityList[i].HeldFood = 0;
-	EntityList[i].TimeFromHome = 0;
-	EntityList[i].Attacked = -1;
-	EntityList[i].MaxEnergy = 50;
-	EntityList[i].Health = 5;
-	EntityList[i].MaxHealth = 5;
-	EntityList[i].Queen = 0;
-}
-void CreateQueen(int i) {
-	EntityList[i].Position = vec2(0,0);
-	EntityList[i].PositionOld = vec2(0,0);
-	EntityList[i].Acceleration = vec2(0,0);
-	EntityList[i].Size = 10;
-	EntityList[i].Alive = 1;
-	EntityList[i].Colour = vec3(1,1,1);
-	EntityList[i].ToRemove = 0;
-	EntityList[i].Affiliation = 0;
-	EntityList[i].Type = 0;
-	EntityList[i].Mass = 5;
-	EntityList[i].Age = 30;
-	EntityList[i].Heading = vec2(0,0);
-	EntityList[i].Energy = 8000;
-	EntityList[i].HeldFood = 0;
-	EntityList[i].TimeFromHome = 0;
-	EntityList[i].Attacked = -1;
-	EntityList[i].MaxEnergy = 8000;
-	EntityList[i].Health = 10;
-	EntityList[i].MaxHealth = 10;
-	EntityList[i].Queen = 1;
-}
-void CreateNest(int i) {
-	EntityList[i].Position = vec2(0,0);
-	EntityList[i].PositionOld = vec2(0,0);
-	EntityList[i].Acceleration = vec2(0,0);
-	EntityList[i].Size = 50;
-	EntityList[i].Alive = 1;
-	EntityList[i].Colour = vec3(1,1,1);
-	EntityList[i].ToRemove = 0;
-	EntityList[i].Affiliation = 0;
-	EntityList[i].Type = 1;
-	EntityList[i].Mass = 10000000;
-	EntityList[i].Age = 60;
-	EntityList[i].Heading = vec2(0,0);
-	EntityList[i].Energy = 5000;
-	EntityList[i].HeldFood = 0;
-	EntityList[i].TimeFromHome = 0;
-	EntityList[i].Attacked = -1;
-	EntityList[i].MaxEnergy = 100000;
-	EntityList[i].MaxHealth = 500;
-	EntityList[i].Health = 500;
-	EntityList[i].Queen = 0;
-}
-void CreatePrey(int i) {
-	EntityList[i].Position = vec2(0,0);
-	EntityList[i].PositionOld = vec2(0,0);
-	EntityList[i].Acceleration = vec2(0,0);
-	EntityList[i].Size = 5;
-	EntityList[i].Alive = 1;
-	EntityList[i].Colour = vec3(0,1,0);
-	EntityList[i].ToRemove = 0;
-	EntityList[i].Affiliation = -1;
-	EntityList[i].Type = 2;
-	EntityList[i].Mass = 50;
-	EntityList[i].Age = 40;
-	EntityList[i].Heading = vec2(0,0);
-	EntityList[i].HeldFood = 0;
-	EntityList[i].TimeFromHome = 0;
-	EntityList[i].Attacked = -1;
-	EntityList[i].MaxEnergy = 2000;
-	EntityList[i].Energy = 1000;
-	EntityList[i].MaxHealth = 10;
-	EntityList[i].Health = 10;
-	EntityList[i].Queen = 0;
-}
-void CreatePredator(int i) {
-	EntityList[i].Position = vec2(0,0);
-	EntityList[i].PositionOld = vec2(0,0);
-	EntityList[i].Acceleration = vec2(0,0);
-	EntityList[i].Size = 20;
-	EntityList[i].Alive = 1;
-	EntityList[i].Colour = vec3(1,0,0);
-	EntityList[i].ToRemove = 0;
-	EntityList[i].Affiliation = -2;
-	EntityList[i].Type = 3;
-	EntityList[i].Mass = 40;
-	EntityList[i].Age = 90;
-	EntityList[i].Heading = vec2(0,0);
-	EntityList[i].Energy = 2000;
-	EntityList[i].HeldFood = 0;
-	EntityList[i].TimeFromHome = 0;
-	EntityList[i].Attacked = -1;
-	EntityList[i].MaxEnergy = 50000;
-	EntityList[i].MaxHealth = 100;
-	EntityList[i].Health = 100;
-}
-
-
-
-void ExecuteBehaviourAnt(uint i)
-{
-	if (EntityList[i].Alive == 1 && EntityList[i].Queen == 0)
-	{
-		
-		vec2 dv = (EntityList[i].Position - EntityList[i].PositionOld)/dt;
-		if (EntityList[i].HeldFood > 0) {
-			//Bring food back to colony
-				const float WalkFoodPHLayFood = 0.01 / 10;
-				const float WalkFoodRandomSpeed = 10;
-				const float WalkFoodPHFollowHome = 10;
-				PlacePheremone(i,PheremoneFood,-vec3(dv,0) * WalkFoodPHLayFood * EntityList[i].HeldFood);
-				RandomWalk(i,WalkFoodRandomSpeed,0.5);
-				FollowPhermomon(i,PheremoneHome,WalkFoodPHFollowHome);
-		}
-		else {
-			if (EntityList[i].TimeFromHome > WalkHomeTime)
-			{
-
-				//Walk back to colony
-					const float WalkHomeRandomSpeed = 1;
-					const float WalkHomePHFollowHome = 1;
-					RandomWalk(i,WalkHomeRandomSpeed,0.5);
-					FollowPhermomon(i,PheremoneHome,WalkHomePHFollowHome);
-//					FollowPhermomon(i,PheremoneAttack,20);
-			}
-			else {
-				//Explore - follow trails
-				float PhereStrengthThres = 50;
-				float MaxPhere = max(
-				max(
-				length(imageLoad(PheremoneHome,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy),
-				length(imageLoad(PheremoneFood,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy)
-				),
-				length(imageLoad(PheremoneAttack,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy)
-				);
-					MaxPhere = min(MaxPhere, 100.0f);
-					if (MaxPhere > PhereStrengthThres)
-					{
-							EntityList[i].TimeFromHome -= dt * 0.5 * MaxPhere;
-							EntityList[i].TimeFromHome = max(0.0f, EntityList[i].TimeFromHome);
-					}
-					float LayHome = 0.1;
-					float FollowFood = 1;
-					float FollowHome = 1;
-					RandomWalk(i,100,0.5);
-					PlacePheremone(i,PheremoneHome,-vec3(dv,0) * LayHome);
-					FollowPhermomon(i,PheremoneFood,FollowFood);
-					FollowPhermomon(i,PheremoneHome,-FollowHome);
-					FollowPhermomon(i,PheremoneAttack,100);
-					FollowPhermomonScent(i,0,5,10);
-			
-					//Reprop attack
-					vec3 val = imageLoad(PheremoneAttack,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xyz;
-					val *= 1.001;
-					imageStore(PheremoneAttack,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation)),vec4(val,1));
-			}
-		}
-	}
-	if (EntityList[i].Alive == 1 && EntityList[i].Queen == 1)
-	{
-		RandomWalk(i,50,0.5);
-		FollowPhermomon(i,PheremoneHome,-1000);
-		FollowPhermomon(i,PheremoneAttack,10);
-		vec2 dir = EntityList[i].Position - EntityList[i].PositionOld;
-		PlacePheremone(i,PheremoneAttack,vec3(dir,0) * 500);
-		if(length(imageLoad(PheremoneHome,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy) < 5){
-			EntityList[i].Age = 0;
-		}
-	}
-	if(EntityList[i].Age <= 0 && EntityList[i].Energy > 0 && EntityList[i].Queen == 1)
-	{
-		if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
-			int id = AddEntity(2);
-			if(id != -1)
-			{
-				float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
-				float dist = 3 + (2*abs(random(vec2(i * 3,2 * i) + 9.2 * RandomTimeSeed)));
-				vec2 displacement = vec2(cos(ang),sin(ang)) * dist * EntityList[i].Size;
-				CreateNest(id);
-						memoryBarrier();
-				EntityList[id].Position = EntityList[i].Position;
-				EntityList[id].PositionOld = EntityList[i].Position;// - (dt * displacement * 0.1);
-				EntityList[id].Affiliation = EntityList[i].Affiliation;
-				EntityList[id].Energy = EntityList[i].Energy;
-				EntityList[id].Colour = EntityList[i].Colour;
-				EntityList[i].Energy = 0;
-				EntityList[i].Alive = 0;
-				EntityList[i].ToRemove = 1;
-				factions[int(EntityList[i].Affiliation)].NestCount++;
-				if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
-					EntityList[id].Position = vec2(0,0);
-					EntityList[id].PositionOld = vec2(0,0);
-					EntityList[id].ToRemove = 1;
-					EntityList[id].Alive = 0;
-				}
-						memoryBarrier();
-			}
-		}
-	}
-
-	if (EntityList[i].Attacked != -1)
-	{
-			vec2 dir = EntityList[i].Position - EntityList[int(EntityList[i].Attacked)].Position;
-			PlacePheremone(i,PheremoneAttack,-vec3(normalize(dir.xy) * 5,0));
-			EntityList[i].Attacked = -1;
-	}
-	PlacePheremoneScent(i,2,1,1);
-}
-
-void ExecuteBehaviourNest(uint i)
-{
-	//Ant spawn rate
-	if(int(EntityList[i].Alive) == 1)
-	{
-		int aff = int(EntityList[i].Affiliation);
-		EntityList[i].Age += dt;
-		int spawncount = int(0.1*abs(random(vec2(EntityList[i].Energy * 100 + (1 + i) + RandomTimeSeed * 10321.1,(1 + i) + RandomTimeSeed * 101.1))) * 50);
-		//int spawncount = int(abs(random(vec2(EntityList[i].Energy * 100 + (1 + i) + RandomTimeSeed * 10321.1,(1 + i) + RandomTimeSeed * 101.1))) * 50);
-		//if(random(vec2(EntityList[i].Energy * 100 + (1 + i) + RandomTimeSeed * 10321.1,(1 + i) + RandomTimeSeed * 101.1)) < 1)
-		for(int k = 0;k < spawncount;++k)
-		{
-			if(EntityList[i].Energy > 5000)
-			{
-				if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
-					int id = AddEntity(0);
-					if(id != -1)
-					{
-						float ang = random(vec2(i + k,2 * i) + RandomTimeSeed) * 3.14 * 2;
-						float dist = 1.1 + (0.1*abs(random(vec2(i * 3 + k,k + 2 * i) + 9.2 * RandomTimeSeed)));
-						vec2 displacement = vec2(cos(ang),sin(ang)) * dist * EntityList[i].Size;
-						CreateAnt(id);
-						memoryBarrier();
-						//TODO: Analyse nan
-						EntityList[id].Position = EntityList[i].Position + displacement;
-						EntityList[id].PositionOld = EntityList[id].Position - (dt * displacement * 0.1);
-						EntityList[id].Affiliation = EntityList[i].Affiliation;
-						EntityList[i].Energy -= EntityList[id].Energy;
-						EntityList[id].Colour = EntityList[i].Colour;
-						factions[aff].AntCount++;
-
-						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
-							EntityList[id].Position = vec2(0,0);
-							EntityList[id].PositionOld = vec2(0,0);
-							EntityList[id].ToRemove = 1;
-							EntityList[id].Alive = 0;
-						}
-						memoryBarrier();
-					}
-				}
-			}
-		}
-		if(EntityList[i].Energy > 10000)
-		{
-			if(abs(random(vec2(EntityList[i].Energy * 33+ (1 + i) + RandomTimeSeed * 1.3,(1 + i) + RandomTimeSeed * 901.1))) < 0.01)
-			{
-				if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
-					int id = AddEntity(0);
-					if(id != -1)
-					{
-						float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
-						float dist = 1.1 + (0.1*abs(random(vec2(i * 3 , 2 * i) + 9.2 * RandomTimeSeed)));
-						vec2 displacement = vec2(cos(ang),sin(ang)) * dist * EntityList[i].Size;
-						CreateQueen(id);
-						memoryBarrier();
-						//TODO: Analyse nan
-						EntityList[id].Position = EntityList[i].Position + displacement;
-						EntityList[id].PositionOld = EntityList[id].Position - (dt * displacement * 0.1);
-						EntityList[id].Affiliation = EntityList[i].Affiliation;
-						EntityList[i].Energy -= 8000;
-						EntityList[id].Colour = EntityList[i].Colour;
-						factions[aff].NestCount++;
-
-						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
-							EntityList[id].Position = vec2(0,0);
-							EntityList[id].PositionOld = vec2(0,0);
-							EntityList[id].ToRemove = 1;
-							EntityList[id].Alive = 0;
-						}
-						memoryBarrier();
-					}
-				}
-			}
-		}
-		int size = int(floor(EntityList[i].Size/PheremoneResolution));
-		for(int x = -size;x <= size;++x)
-		{
-			for(int y = -size;y <= size;++y)
-			{
-				ivec2 v = ivec2(x,y);
-				if((x != 0 || y != 0) && dot(v,v) * PheremoneResolution * PheremoneResolution < EntityList[i].Size * EntityList[i].Size)
-				{
-					vec3 val = imageLoad(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) - v),int(EntityList[i].Affiliation))).xyz;
-					val.xy += normalize(v.xy) * PheremoneResolution * 0.1;
-					imageStore(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) - v),int(EntityList[i].Affiliation)),vec4(val,1));
-				}
-			}
-		}
-	}
-	else{
-//		int size = int(floor(EntityList[i].Size/PheremoneResolution));
-//		for(int x = -size;x <= size;++x)
-//		{
-//			for(int y = -size;y <= size;++y)
-//			{
-//				if(x != 0 && y != 0){
-//					vec3 v = vec3(-x,-y,0);
-//					vec3 val = imageLoad(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) + ivec2(x,y)),int(0))).xyz;
-//					val.xy *= 0.5;
-//					imageStore(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) + ivec2(x,y)),int(0)),vec4(val,1));
-//				}
-//			}
-//		}
-	}
-}
-void ExecuteBehaviourPrey(uint i)
-{
-	if(EntityList[i].Alive == 1)
-	{
-
-		RandomWalk(i,100,0.01);
-		FollowPhermomonScent(i,0,10,-20);
-		FollowPhermomonScent(i,1,10,-100);
-		const float FoodGrowthRate = 15;
-		if(isnan(EntityList[i].Size) || isinf(EntityList[i].Size)){
-			EntityList[i].Size = 0;
-		}
-		memoryBarrier();
-		EntityList[i].Energy += FoodGrowthRate * EntityList[i].Size * dt;
-		float EnergyThresh = EntityList[i].MaxEnergy * 0.2;
-		if(EntityList[i].Energy > EnergyThresh && EntityList[i].Age < 20)
-		{
-			if(abs(random(vec2((1 + i) + RandomTimeSeed * 10321.1,(2 + i)*100 + RandomTimeSeed * 101.1))) < 0.01)
-			{
-				if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
-					int id = AddEntity(2);
-					if(id != -1)
-					{
-						CreatePrey(id);
-						memoryBarrier();
-//						memoryBarrierBuffer();
-						float MaxE = EnergyThresh * (0.5 + 0.1 * (abs(random(vec2(i*32 + RandomTimeSeed,2 * i) + 2.2 * RandomTimeSeed))));
-						MaxE = clamp(MaxE,1000,50000);
-						EntityList[id].Energy = MaxE;
-						EntityList[id].MaxEnergy = MaxE * 10;
-						EntityList[id].Size = sqrt((MaxE*10) * 0.01);
-//
-						float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
-						float dist = 3 + 0;//(1*abs(random(vec2(i,2 * i) + 9.2 * RandomTimeSeed)));
-						vec2 displacement = vec2(cos(ang),sin(ang)) * dist * 50;// * (EntityList[i].Size + EntityList[id].Size);
-						vec2 newpos = EntityList[i].Position + displacement;
-//						//TODO: Analyse nan
-						EntityList[id].Position = newpos;
-						EntityList[id].PositionOld = newpos;
-						memoryBarrier();
-//						EntityList[i].Energy -= MaxE * 1.5;
-//						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
-//							EntityList[id].Position = vec2(0,0);
-//							EntityList[id].PositionOld = vec2(0,0);
-//							EntityList[id].ToRemove = 1;
-//							EntityList[id].Alive = 0;
-//						}
-					}
-				}
-			}
-		}
-	}
-	vec2 Position = EntityList[i].Position;
-	if(any(isinf(Position)) || any(isnan(Position))){
-		Position = vec2(0,0);
-	}
-	PlacePheremoneScent(i,0,1,1);
-}
-void ExecuteBehaviourPredator(uint i)
-{
-	if(EntityList[i].Alive == 1)
-	{
-		RandomWalk(i,100,0.5);
-		if(abs(EntityList[i].MaxEnergy - EntityList[i].Energy) > 100)
-		{
-			FollowPhermomonScent(i,0,10,100);
-			FollowPhermomonScent(i,2,10,100);
-		}
-		FollowPhermomonScent(i,1,10,-50);
-		float EnergyThresh = (EntityList[i].MaxEnergy * 0.5) ;
-		if(EntityList[i].Energy > EnergyThresh && EntityList[i].Age < 80 && EntityList[i].Age > 10)
-		{
-//			if(abs(random(vec2((1 + i) + RandomTimeSeed * 10321.1 + EntityList[i].Energy,(2 + i)*100 + RandomTimeSeed * 101.1))) < 0.0000001)
-			{
-				if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
-					int id = AddEntity(4);
-					if(id != -1)
-					{
-						float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
-						float dist = 1 + (0.1*abs(random(vec2(i,2 * i) + 9.2 * RandomTimeSeed)));
-						vec2 displacement = vec2(cos(ang),sin(ang)) * dist * 2 * EntityList[i].Size;
-						CreatePredator(id);
-						memoryBarrier();
-						//TODO: Analyse nan
-						EntityList[id].Position = EntityList[i].Position + displacement;
-						EntityList[id].PositionOld = EntityList[i].Position + displacement;
-						EntityList[i].Energy -= EnergyThresh * 0.8;
-						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
-					EntityList[id].Position = vec2(0,0);
-					EntityList[id].PositionOld = vec2(0,0);
-					EntityList[id].ToRemove = 1;
-					EntityList[id].Alive = 0;
-						}
-						memoryBarrier();
-						//EntityList[id].Affiliation = EntityList[i].Affiliation;
-						//EntityList[id].Colour = EntityList[i].Colour;
-					}
-				}
-			}
-		}
-	}
-	PlacePheremoneScent(i,1,1,1);
-}
-
-void ExecuteBehaviour(uint i)
-{
-	int Type = int(EntityList[i].Type);
-	switch(Type) {
-		case 0:
-//			ExecuteBehaviourAnt(i);		
-			break;
-		case 1:
-//			ExecuteBehaviourNest(i);		
-			break;
-		case 2:
-			ExecuteBehaviourPrey(i);		
-			break;
-		case 3:
-//			ExecuteBehaviourPredator(i);		
-			break;
-	}
+	memoryBarrier();
 }
 
 void Intergrate(uint i){
@@ -717,16 +267,18 @@ void Intergrate(uint i){
 	diff.y = WrapDistance(diff.y);
 	vec2 v2drag = 0.01 * diff * length(diff);// dot(diff,diff);
 					//TODO: Analyse nan
-	if(any(isnan(EntityList[i].Acceleration)) || any(isinf(EntityList[i].Acceleration))){
-		EntityList[i].Acceleration = vec2(0,0);
+	vec2 Acceleration = EntityList[i].Acceleration;
+	if(any(isnan(Acceleration)) || any(isinf(Acceleration))){
+		Acceleration = vec2(0,0);
 	}
-	EntityList[i].Position += ((diff) * IntergrationDamping) - v2drag + (dt * dt * EntityList[i].Acceleration);
+	EntityList[i].Position += ((diff) * IntergrationDamping) - v2drag + (dt * dt * Acceleration);
 	EntityList[i].PositionOld = oldpos;
 	EntityList[i].Acceleration = vec2(0,0);
 	if(any(isnan(EntityList[i].Position)) || any(isinf(EntityList[i].Position))){
 		EntityList[i].Position = vec2(0,0);
 		EntityList[i].PositionOld = vec2(0,0);
 	}
+	memoryBarrier();
 }
 void UpdateRenderData(uint i)
 {
@@ -760,7 +312,7 @@ void UpdateEntity(uint i) {
 	CurrentEnergy -= EnergyDecayLinearBase * dt;
 	CurrentEnergy = clamp(CurrentEnergy,0,EntityList[i].MaxEnergy);
 	if( EntityList[i].ToRemove != 1){
-		ExecuteBehaviour(i);
+//		ExecuteBehaviour(i);
 	}
 	if(EntityList[i].Alive == 1){
 		float MaxSpeed = 5;
@@ -849,23 +401,16 @@ void main()
 		gpuscene.EntityCount = MaxEntityCount;
 	}
 
-	//ApplyFriction(i);
 	if(i < gpuscene.EntityCount && i < MaxEntityCount)
 	{
+		ApplyBoundaryCondition(i);
+		if(EntityList[i].Type != 4)
 		{
-			ApplyBoundaryCondition(i);
-			//UpdateCollision(i);
-			//ApplyBoundaryCondition(i);
-			//-1 == boundary
-			if(EntityList[i].Type != 4)
-			{
-				if(EntityList[i].Type != 1){
-					Intergrate(i);
-				}
-				//UpdateEntity(i);
-				ApplyBoundaryCondition(i);
+			if(EntityList[i].Type != 1){
+				Intergrate(i);
 			}
-			UpdateRenderData(i);
+			ApplyBoundaryCondition(i);
 		}
+		UpdateRenderData(i);
 	}
 }

@@ -15,6 +15,7 @@
 #include "KeyManager.h"
 #include <glm/glm.hpp>
 #include "GUIManager.h"
+#include "AudioEngine.h"
 class GameManager
 {
 private:
@@ -36,6 +37,7 @@ public:
 	std::unique_ptr<RenderEngine> renderengine;
 	std::unique_ptr<WaterEngineGPU> entityengine;
 	std::unique_ptr<GUIManager> guimanager;
+	std::unique_ptr<AudioEngine> audioengine;
 	GLFWwindow* Window_Handle;
 	std::array<float, 10> DTstack = {0};
 	int DTStackpointer = 0;

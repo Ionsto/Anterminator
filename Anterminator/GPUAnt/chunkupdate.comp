@@ -37,7 +37,7 @@ struct Entity{
 const int WorldSize = 2048;
 const int MaxEntityPerChunk = 10;
 const int MaxTypeCount = 5;
-const int MaxEntityCount = 50000;
+const int MaxEntityCount = 20000;
 const int ChunkSize = 8;
 const int ChunkCount = 2 * WorldSize/ChunkSize;
 struct Chunk{
@@ -105,9 +105,6 @@ void main()
 			int i = j + minent;
 			if(i < EntityCount && i < MaxEntityCount)
 			{
-				//int chunkid = GetChunkId(EntityList[i].Position);
-				//ivec2 cmin = ivec2(floor((EntityList[i].Position - EntityList[i].Size)/ChunkSize)) + (ChunkCount/2);
-				//ivec2 cmax = ivec2(floor((EntityList[i].Position + EntityList[i].Size)/ChunkSize)) + (ChunkCount/2);
 				if(!any(isnan(EntityList[i].Position)) && !any(isinf(EntityList[i].Position)) && !isnan(EntityList[i].Size) && !isinf(EntityList[i].Size)){
 					ivec2 cmin = ivec2(floor((EntityList[i].Position - EntityList[i].Size + WorldSize)/ChunkSize));
 					ivec2 cmax = ivec2(ceil((EntityList[i].Position + EntityList[i].Size + WorldSize)/ChunkSize));

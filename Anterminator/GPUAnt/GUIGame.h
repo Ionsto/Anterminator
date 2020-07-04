@@ -20,6 +20,8 @@ public:
 		std::array<float*,2 + AntFactionCount> PlotArray;
 		float MaxPopValue = 0;
 		float MaxAntValue = 0;
+		GPUFaction* CurrentFaction = nullptr;
+			
 //		float* PlotArray[3];
 	} CurrentState;
 	virtual void Update() override;

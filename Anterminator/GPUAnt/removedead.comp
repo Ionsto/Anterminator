@@ -45,7 +45,7 @@ struct Faction{
 
 const int WorldSize = 2048;
 const float PheremoneResolution = 4;
-const int MaxEntityCount = 50000;
+const int MaxEntityCount = 20000;
 const int MaxEntityPerChunk = 10;
 const int MaxTypeCount = 5;
 const int ChunkSize = 8;

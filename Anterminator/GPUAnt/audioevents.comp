@@ -1,0 +1,211 @@
+#version 430
+const int AIStepCount = 1;
+const float dt = 0.02 * AIStepCount;
+
+struct Entity{
+	vec2 Position;
+	vec2 PositionOld;
+
+	vec2 Acceleration;
+	float Size;
+	float Alive;
+
+	vec3 Colour;
+	float ToRemove;
+
+	float Affiliation;
+	float Type;
+	float Mass;
+	float Age;
+
+	vec2 Heading;
+	float Energy;
+	float HeldFood;
+
+	float TimeFromHome;
+	float Attacked;
+	float MaxEnergy;
+	float Health;
+
+	float MaxHealth;
+	float Queen;
+	float IndirectionID;
+	float AudioFlags;
+};
+
+
+const int WorldSize = 2048;
+const float PheremoneResolution = 4;
+const int PheremoneCount = int(floor(2 * WorldSize/PheremoneResolution));
+const int MaxEntityCount = 20000;
+const int MaxTypeCount = 5;
+const int MaxEntityPerChunk = 10;
+const int ChunkSize = 8;
+const int ChunkCount = 2*WorldSize/ChunkSize;
+const int FactionCount = 4;
+
+const float WalkHomeTime = 2;
+
+
+struct Chunk{
+	int EntityCount;
+	int EntityID[MaxEntityPerChunk];
+};
+int GetChunkId(vec2 pos)
+{
+	ivec2 localpos = ivec2(floor((pos + WorldSize)/ChunkSize));
+	return clamp(localpos.y + (localpos.x * ChunkCount),0,ChunkCount * ChunkCount-1); 
+}
+struct Scene{
+	int EntityCount;
+	int TypeCount[MaxTypeCount];
+//	int IndirectionList[MaxTypeCount][MaxEntityCount];
+};
+const int MaxAudioEvents = 5000;
+struct AudioEvent{
+	float Type;
+	float Loudness;
+	vec2 Position;
+};
+
+//uniform float WorldSize;       
+uniform float RandomTimeSeed;
+uniform int EntityCount = 0;
+
+layout (local_size_x = 512) in;
+
+layout(std430, binding = 0) buffer entity_block
+{
+	Entity EntityList[];
+};
+layout(std430, binding = 4) buffer scene_data 
+{
+	Scene gpuscene;
+};
+layout(std430, binding = 7) buffer audio_event
+{
+	int AudioEventCount;
+	AudioEvent AudioEvents[];
+};
+float random (vec2 st) {
+    return abs(fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123));
+}
+float WrapValue(float v)
+{
+	if(v < -WorldSize)
+	{
+		v += 2 * WorldSize;
+	}
+	if(v >= WorldSize)
+	{
+		v -= 2 * WorldSize;
+	}
+	return v;
+}
+float WrapDistance(float v)
+{
+	if (abs(v) > WorldSize)
+	{
+		v = (abs(v) - (WorldSize*2)) * sign(v);
+	}
+	return v;
+}
+int AddAudioEvent(){
+	if(AudioEventCount < MaxAudioEvents)
+	{
+		int id = atomicAdd(AudioEventCount,1);
+		if(id < MaxAudioEvents)
+		{
+			return id;	
+		}
+		else{
+			atomicAdd(AudioEventCount,-1);
+			return -1;	
+		}
+	}
+	return -1;	
+}
+ivec2 WrapPhermoneGrid(ivec2 pos)
+{
+	//return pos & (PheremoneCount-1);
+	return clamp(pos % PheremoneCount,ivec2(0,0),ivec2(PheremoneCount,PheremoneCount)-1);
+}
+ivec2 GetPheremoneGrid(vec2 pos)
+{
+	return ivec2(floor(((pos+WorldSize))/PheremoneResolution));
+}
+void ExecuteBehaviourAnt(uint i)
+{
+}
+
+void ExecuteBehaviourNest(uint i)
+{
+}
+
+void ExecuteBehaviourPrey(uint i)
+{
+}
+void ExecuteBehaviourPredator(uint i)
+{
+}
+
+void ExecuteBehaviour(uint i)
+{
+}
+
+void UpdateEntity(uint i) {
+	vec2 Velocity = (EntityList[i].Position - EntityList[i].PositionOld)/dt;
+	if(EntityList[i].Alive == 1){
+		if(abs(random(vec2(i * 3213,i + RandomTimeSeed) + RandomTimeSeed *2)) < 0.00000001)
+		{
+			int audioid = AddAudioEvent();	
+			if(audioid != -1)
+			{
+				//Walking
+				AudioEvents[audioid].Type = 1;
+				AudioEvents[audioid].Loudness = min(1,0.002 * EntityList[i].Size);
+				AudioEvents[audioid].Position = EntityList[i].Position;
+			}
+		}
+	}
+	if((int(EntityList[i].AudioFlags) & (1<<0)) != 0){
+		int audioid = AddAudioEvent();	
+		if(audioid != -1)
+		{
+			//Born
+			AudioEvents[audioid].Type = 2;
+			AudioEvents[audioid].Loudness = min(1,0.05 * EntityList[i].Size);
+			AudioEvents[audioid].Position = EntityList[i].Position;
+		}
+	}		
+	if((int(EntityList[i].AudioFlags) & (1<<1)) != 0){
+		int audioid = AddAudioEvent();	
+		if(audioid != -1)
+		{
+			//Die
+			AudioEvents[audioid].Type = 3;
+			AudioEvents[audioid].Loudness = 0.1 * EntityList[i].Size;
+			AudioEvents[audioid].Position = EntityList[i].Position;
+		}
+	}		
+	if((int(EntityList[i].AudioFlags) & (1<<2)) != 0){
+		int audioid = AddAudioEvent();	
+		if(audioid != -1)
+		{
+			//Bite
+			AudioEvents[audioid].Type = 4;
+			AudioEvents[audioid].Loudness = 0.05 * EntityList[i].Size;
+			AudioEvents[audioid].Position = EntityList[i].Position;
+		}
+	}		
+
+	EntityList[i].AudioFlags = 0;
+}
+void main()
+{
+    uint i = gl_GlobalInvocationID.x;
+	if(i < gpuscene.EntityCount && i < MaxEntityCount)
+	{
+		UpdateEntity(i);
+	}
+}

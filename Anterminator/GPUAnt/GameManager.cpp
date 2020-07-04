@@ -127,6 +127,7 @@ GameManager::GameManager()
 	renderengine->SetEntityEngine(*entityengine.get());
 	renderengine->Init();
 	guimanager = std::make_unique<GUIManager>(Window_Handle);
+	audioengine = std::make_unique<AudioEngine>();
 	//renderengine->cam.Position.x = entityengine->WorldEntityMirror[FollowEntity].PositionX;
 	//renderengine->cam.Position.y = entityengine->WorldEntityMirror[FollowEntity].PositionY;
 	//FollowEntity = -1;
@@ -192,17 +193,10 @@ void GameManager::Run()
 void GameManager::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//	renderengine->RenderWorld(*world);
-	//entityengine->Update();
 	if(guimanager->CurrentGui == GUIManager::GUIStates::GUIGame ||guimanager->CurrentGui == GUIManager::GUIStates::GUIPauseMenu){
 		renderengine->EntityCount = entityengine->ParticleCount;
 		renderengine->Render();
 	}
-	/*renderengine->RotateCounter += renderengine->DRotate * DeltaTime;
-	if (renderengine->RotateCounter > 360) {
-		renderengine->RotateCounter -= 360;
-	}*/
-	//world->waterengine.Render();
 	guimanager->Render();
 }
 
@@ -212,17 +206,27 @@ void GameManager::PollInput()
 	if (guimanager->CurrentGui == GUIManager::GUIStates::GUIGame) {
 		double xpos, ypos;
 		glfwGetCursorPos(Window_Handle, &xpos, &ypos);
+		glfwGetCursorPos(Window_Handle, &xpos, &ypos);
 		glfwGetWindowSize(Window_Handle, &ScreenSize.x, &ScreenSize.y);
 		glm::vec2 mpos(xpos, ScreenSize.y - ypos);
 		mpos.x /= ScreenSize.x;
 		mpos.y /= ScreenSize.y;
 		mpos.x -= 0.5;
 		mpos.y -= 0.5;
-		//mpos *= 8.0f;
+		mpos *= 2.0;
+//		mpos *= 1080;
+		mpos.x *= 16.0 / 9.0;
+		double viewRatio = tan(((float)3.14 / (180.f / renderengine->cam.FOV) / 2.00f));
+		mpos *= viewRatio;
+		auto loc = (mpos/renderengine->cam.ClipNear) * renderengine->cam.Position.z;
+		auto wpos = glm::vec2(loc.x + renderengine->cam.Position.x, loc.y + renderengine->cam.Position.y);
 		MouseScreenPosOld = MouseScreenPos;
-		MouseScreenPos = renderengine->cam.Position;
-		MouseScreenPos += glm::vec2(mpos.x * renderengine->cam.CameraXSize * 2.0f, mpos.y * renderengine->cam.CameraYSize * 2.0f);
-		//MouseScreenPos = glm::clamp(MouseScreenPos,glm::vec2(0, 0), glm::vec2(world->WorldSize, world->WorldSize));
+		MouseScreenPos = wpos;// +glm::vec2(renderengine->cam.Position.x, renderengine->cam.Position.y);
+		//std::cout << "pos" << wpos.x <<","<<wpos.y << "\n";
+		//MouseScreenPos += glm::vec2(mpos.x * renderengine->cam.CameraXSize * 2.0f, mpos.y * renderengine->cam.CameraYSize * 2.0f);
+		//MouseScreenPosOld = MouseScreenPos;
+		//MouseScreenPos = renderengine->cam.Position;
+		//MouseScreenPos += glm::vec2(mpos.x * renderengine->cam.CameraXSize * 2.0f, mpos.y * renderengine->cam.CameraYSize * 2.0f);
 		if (glfwGetMouseButton(Window_Handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 		{
 			int Aff = renderengine->RenderConfig.RenderAffiliation;
@@ -357,6 +361,7 @@ void GameManager::PollInput()
 			}
 			renderengine->cam.CameraXSize = std::clamp(renderengine->cam.CameraXSize, 1.0f / (1 << 3), entityengine->WorldSize);
 			renderengine->cam.CameraYSize = std::clamp(renderengine->cam.CameraYSize, (1.0f / (1 << 3)) * (9.0f / 16.0f), entityengine->WorldSize * (9.0f / 16.0f));
+			renderengine->cam.Position.z = (renderengine->cam.CameraXSize / entityengine->WorldSize) * 1000;
 			if (KeyInput.GetState(GLFW_KEY_P) == std::pair{ true,true })
 			{
 				entityengine->TimeScalingFactor *= 0.5;
@@ -382,6 +387,28 @@ void GameManager::PollInput()
 					renderengine->cam.Position[i] -= 2 * entityengine->WorldSize;
 				}
 			}
+			float height = 0;
+			float sampledheight = 0;
+			int ixa = floor((entityengine->WrapValue(renderengine->cam.Position.x) + entityengine->WorldSize) / entityengine->WorldTextureResolution);
+			int iya = floor((entityengine->WrapValue(renderengine->cam.Position.y) + entityengine->WorldSize) / entityengine->WorldTextureResolution);
+			height = std::max(renderengine->cam.Position.z,51.0f);
+			int samplesize = 5;
+			for (int dy = -samplesize; dy <= samplesize; ++dy)
+			{
+				for (int dx = -samplesize; dx <= samplesize; ++dx)
+				{
+					int ix = ixa + dx;
+					int iy = iya + dy;
+					if (ix < 0) { ix += entityengine->WorldTextureSize; }
+					if (iy < 0) { iy += entityengine->WorldTextureSize; }
+					if (ix >= entityengine->WorldTextureSize) { ix -= entityengine->WorldTextureSize; }
+					if (iy >= entityengine->WorldTextureSize) { iy -= entityengine->WorldTextureSize; }
+					int id = ix + (iy * entityengine->WorldTextureSize);
+					sampledheight = (entityengine->WorldNoiseMask[id] * 2000) - 1 + 51;
+					height =  std::max(height, sampledheight);
+				}
+			}
+			renderengine->cam.Position.z = height;
 			//renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, (float)Chunk::Size,-0.1f +  ((float)world->Chunks.WorldSize-1) * Chunk::Size);
 			//renderengine->cam.Position.z = std::clamp(renderengine->cam.Position.z, 0.0f,-0.1f +  (float)Chunk::Size);
 		}
@@ -396,6 +423,7 @@ void GameManager::PollInput()
 		}
 		if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_R)) {
 			entityengine->FollowEntity = entityengine->ResetWorld();
+			static_cast<GUIGame&>(guimanager->GetGUI(GUIManager::GUIStates::GUIGame)).CurrentState = GUIGame::GameState();
 			renderengine->cam.Position = glm::vec3(0, 0, 0);
 			renderengine->cam.Position.x = entityengine->WorldEntityMirror[entityengine->FollowEntity].PositionX;
 			renderengine->cam.Position.y = entityengine->WorldEntityMirror[entityengine->FollowEntity].PositionY;
@@ -460,6 +488,7 @@ void GameManager::Update()
 	//this->waterengine->Update(DeltaTime);
 	if (guimanager->CurrentGui == GUIManager::GUIStates::GUIGame) {
 		entityengine->Update(DeltaTime);
+		audioengine->UpdateGame(*entityengine.get(), renderengine->cam);
 		if (entityengine->FollowEntity != -1)
 		{
 			if (entityengine->WorldEntityMirror[entityengine->FollowEntity].ToRemove > 0)
@@ -489,6 +518,15 @@ void GameManager::Update()
 		if (entityengine->FollowEntity != -1)
 		{
 			guigame.CurrentState.followent = entityengine->WorldEntityMirror[entityengine->FollowEntity];
+
+		}
+		if (entityengine->FollowEntity != -1 && entityengine->WorldEntityMirror[entityengine->FollowEntity].Type == 0 || entityengine->WorldEntityMirror[entityengine->FollowEntity].Type == 1)
+		{
+			guigame.CurrentState.CurrentFaction = &entityengine->WorldFactionMirror[entityengine->WorldEntityMirror[entityengine->FollowEntity].Affiliation];
+			entityengine->WorldFactionMirrorDirty[entityengine->WorldEntityMirror[entityengine->FollowEntity].Affiliation] = true;
+		}
+		else {
+			guigame.CurrentState.CurrentFaction = nullptr;
 		}
 		if (DTStackpointer == 0)
 		{

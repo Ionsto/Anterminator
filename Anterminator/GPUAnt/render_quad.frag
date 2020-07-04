@@ -12,8 +12,11 @@ void main()
 	}
 	else{
 		float prey = length(texture(DestTexture, vec3(TexCoord.xy,0)).xy)/100.0;
-		float pred = length(texture(DestTexture, vec3(TexCoord.xy,-TexCoord.z)).xy)/100.0;
-		float ant = length(texture(DestTexture, vec3(TexCoord.xy,(-TexCoord.z)*2)).xy)/100.0;
+		//FragColor = vec4(prey,0,0,1);
+		float zspace = abs(TexCoord.z);
+		float pred = length(texture(DestTexture, vec3(TexCoord.xy,zspace)).xy)/100.0;
+		pred += length(texture(DestTexture, vec3(TexCoord.xy,zspace * 3.0)).xy)/100.0;
+		float ant = length(texture(DestTexture, vec3(TexCoord.xy,zspace*2.0)).xy)/100.0;
 		FragColor = vec4(prey,pred,ant,1);
 	}
 	//FragColor = vec4(1,1,1,1);
