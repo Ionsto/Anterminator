@@ -69,8 +69,7 @@ struct Scene{
 
 uniform float RandomTimeSeed;
 
-const int Stride = 1;
-layout (local_size_x = 1,local_size_y = 1,local_size_z =1) in;
+layout (local_size_x = 128,local_size_y = 1,local_size_z =1) in;
 layout(std430, binding = 0) buffer entity_block
 {
 	Entity EntityList[];
@@ -283,8 +282,9 @@ void UpdateTerrainCollision(uint i){
 	int steps = 1;
 	bool FullPen = true;
 	bool Coll = false;
-	int rsteps = int(max(1.0,Size/1.0));
+	int rsteps = int(max(1.0,Size/0.2));
 	for(int r = rsteps-1; r > max(1,rsteps-2);--r){
+	//for(int r = rsteps-1; r > max(1,rsteps-2);--r){
 		float len = r * Size / float(rsteps);
 		float cir = len * 2 * 3.14;
 		int tsteps = int(max(4.0,cir/4.0));
@@ -293,7 +293,7 @@ void UpdateTerrainCollision(uint i){
 			vec2 delta = vec2(cos(theta),sin(theta));
 			vec2 dist = vec2(cos(theta),sin(theta)) * len;
 			float val = texture(CollisionMap,((Position+WorldSize)+dist)/(2 * WorldSize)).x;	
-			if(val > 0)
+			if(val > 0.0001)
 			{
 				Position -= delta * (Size - len);
 			}
@@ -362,7 +362,7 @@ void UpdateCollisionEntities(uint i,uint j){
 			EntityI.Heading *= 0;
 			EntityJ.Heading *= 0;
 			EntityList[i] = EntityI;
-			EntityList[j] = EntityJ;
+			//EntityList[j] = EntityJ;
 			memoryBarrier();
 			if(EntityI.Type != 4 && EntityJ.Type != 4){
 				ExecuteCollisionBehaviour(i,j);
@@ -418,6 +418,24 @@ void main()
 				chunkid = clamp(chunkid,0,ChunkCount*ChunkCount-1);
 				//Insert every entity id into CollisionIDs	
 				//Make sure collision ids has only unique values 
+				for(int j = 0;j < chunks[chunkid].EntityCount;++j){
+					int cid = chunks[chunkid].EntityID[j];
+					if(cid != i){
+						if(CollisionCount < MaxCollisionIDs){
+							bool unique = true;
+							for(int c = 0;c < CollisionCount;++c){
+								if(c == cid){
+									unique = false;
+									break;
+								}
+							}
+							if(unique)
+							{
+								CollisionIDs[CollisionCount++] = cid;
+							}
+						}
+					}
+				}
 			}
 		}
 		for(int k = 0;k < CollisionCount;++k){
@@ -425,5 +443,6 @@ void main()
 			//i != j
 			UpdateCollisionEntities(i,j);	
 		}
+		UpdateTerrainCollision(i);
 	}
 }

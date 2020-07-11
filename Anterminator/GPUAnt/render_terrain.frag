@@ -13,7 +13,7 @@ void main()
 {
 	float maskvalue = texture(DestTexture, TexCoord).x;
 	vec3 c = vec3(0,0,0);
-	if(maskvalue > 0.01){
+	if(maskvalue > 0.0001){
 		c = vec3(1,1,1) * maskvalue + vec3(0.2,0.2,0.2);
 	}
 	else{

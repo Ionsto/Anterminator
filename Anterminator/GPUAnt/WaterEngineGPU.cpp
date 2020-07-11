@@ -24,7 +24,7 @@ void WaterEngineGPU::Init(GLFWwindow * handle)
 	Compute_PheremoneUpdate.Init("pheremoneupdate.comp", GL_COMPUTE_SHADER);
 	Compute_PheremonePaint.Init("pheremonepaint.comp", GL_COMPUTE_SHADER);
 	Compute_RemoveDead.Init("removedead.comp", GL_COMPUTE_SHADER);
-	Compute_CollisionUpdate.Init("collisionupdate.comp", GL_COMPUTE_SHADER);
+	Compute_CollisionUpdate.Init("collisionupdateentity.comp", GL_COMPUTE_SHADER);
 	Compute_AudioEvents.Init("audioevents.comp", GL_COMPUTE_SHADER);
 
 	Program_EntityUpdate.CreateProgram();
@@ -274,8 +274,9 @@ void WaterEngineGPU::UpdateStep(bool removedead,bool chunkupdate,bool entityupda
 		glBindTexture(GL_TEXTURE_2D,TextureWorldMap);
 		glUniform1f(UniformCollisionRandomTimeSeed, Time + random_number(generator));
 		glUniform1i(UniformCollisionCollsionMap, 0);
-		static constexpr int LocalSize = 1;
+		static constexpr int LocalSize = 128;
 		//glDispatchCompute(static_cast<int>(ceil(float(ChunkCount*ChunkCount)/LocalSize)), 1, 1);
+		glDispatchCompute(static_cast<int>(ceil(float(MaxParticleCount) / LocalSize)), 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glMemoryBarrier(GL_ALL_BARRIER_BITS);
 	}
