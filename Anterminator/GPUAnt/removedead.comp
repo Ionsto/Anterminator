@@ -1,6 +1,6 @@
 #version 430
+#include constants.comp
 const float dt = 0.02;
-const float IntergrationDamping = 0.95;
 
 struct Entity{
 	vec2 Position;
@@ -30,7 +30,7 @@ struct Entity{
 	float MaxHealth;
 	float Queen;
 	float IndirectionID;
-	float PadC;
+	float AudioFlags;
 };
 
 struct Faction{
@@ -41,15 +41,6 @@ struct Faction{
 	float NestSpawnRate;
 };
 
-
-
-const int WorldSize = 2048;
-const float PheremoneResolution = 4;
-const int MaxEntityCount = 20000;
-const int MaxEntityPerChunk = 10;
-const int MaxTypeCount = 5;
-const int ChunkSize = 8;
-const int ChunkCount = 2*WorldSize/ChunkSize;
 
 const float WalkHomeTime = 10;
 
@@ -83,10 +74,23 @@ layout(std430, binding = 6) buffer faction_data
 {
 	Faction factions[];
 };
+layout(std430, binding = 8) buffer entity_indirection
+{
+	int indirection_list[MaxTypeCount][MaxEntityCount];
+};
 float random (vec2 st) {
     return fract(sin(dot(st.xy,
                          vec2(12.9898,78.233)))*
         43758.5453123);
+}
+void DeleteIndirection(int type,int indirectionid){
+	//find the end indirection id
+	int endind = atomicAdd(gpuscene.TypeCount[type],-1) - 1;
+	//set the entity endind points to, to redirect to our new indirection 
+	int endID = int(indirection_list[type][endind]);
+	EntityList[endID].IndirectionID = float(indirectionid);
+	indirection_list[type][indirectionid] = endID;
+	indirection_list[type][endID] = -1;
 }
 void main()
 {
@@ -103,17 +107,36 @@ void main()
 			{
 				if(int(EntityList[id].ToRemove) == 1)
 				{
-					int EndEntity = atomicAdd(gpuscene.EntityCount,-1);	
-//					int endind = atomicAdd(gpuscene.TypeCount[int(EntityList[id].Type)],-1);
-//					gpuscene.IndirectionList[int(EntityList[i].IndirectionID)] = gpuscene.IndirectionList[endind];
-					EntityList[id] = EntityList[EndEntity];
+					int EndEntity = atomicAdd(gpuscene.EntityCount,-1) - 1;	
+					memoryBarrier();
+					//Move end indirection to the IndirectionID 
+					DeleteIndirection(int(EntityList[id].Type),int(EntityList[id].IndirectionID));
+					memoryBarrier();
+//					memoryBarrierBuffer();
+//					int indtype = int(EntityList[id].Type);
+//					int endind = atomicAdd(gpuscene.TypeCount[indtype],-1);
+//					int indEntityId = int(indirection_list[indtype][endind]);
+//
+//					int indEntityIdNewInd = int(EntityList[id].IndirectionID);
+//					//entity that the end of indirection was pointing to, point to new indirection
+//					EntityList[indEntityId].IndirectionID = float(indEntityIdNewInd);
+//					//new indirection set up in id entities slot
+//					indirection_list[indtype][indEntityIdNewInd] = indEntityId;
+//
+//					//Point endentity indirection to new location
+
 					if(EntityList[id].Type == 0){
-						factions[int(EntityList[id].Affiliation)].AntCount--;
+						atomicAdd(factions[int(EntityList[id].Affiliation)].AntCount,-1);
 					}
 					if(EntityList[id].Type == 1){
-						factions[int(EntityList[id].Affiliation)].NestCount--;
+						atomicAdd(factions[int(EntityList[id].Affiliation)].NestCount,-1);
 					}
-					id -= 1;
+					//Move end entity to id position
+					indirection_list[int(EntityList[EndEntity].Type)][int(EntityList[EndEntity].IndirectionID)] = id;
+					EntityList[id] = EntityList[EndEntity];
+					EntityList[EndEntity].IndirectionID = -1;
+					memoryBarrier();
+					//j -= 1;
 				}
 			}
 		}

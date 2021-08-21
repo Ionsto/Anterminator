@@ -1,0 +1,69 @@
+#version 430
+#include entity_common.comp
+
+void ExecuteBehaviourPrey(uint i)
+{
+	if(EntityList[i].Alive == 1)
+	{
+		FollowPhermomonScent(i,0,20,-90);
+		FollowPhermomonScent(i,1,10,-100);
+		const float FoodGrowthRate = 5;
+		memoryBarrier();
+		EntityList[i].Energy += FoodGrowthRate * EntityList[i].Size * dt;
+		const float EnergyPerSecond = 10;
+		memoryBarrier();
+		const float Density = 0.1;
+		const float EnergySize = 0.1;
+		EntityList[i].Mass = Density * EntityList[i].Size * EntityList[i].Size;
+		EntityList[i].Size = 50 * EntityList[i].Energy / EntityList[i].MaxEnergy;
+
+		float EnergyThresh = EntityList[i].MaxEnergy * 0.5;
+		float EnergyCost = 500;
+		if(EntityList[i].Energy > EnergyThresh && EntityList[i].Age > 10 && EntityList[i].Age < 60)
+		{
+			if(abs(random(vec2((1 + i) + RandomTimeSeed * 10321.1,(2 + i)*100 + RandomTimeSeed * 101.1))) < 0.0000001)
+			{
+				if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
+					int id = AddEntity(2);
+					if(id != -1)
+					{
+						CreatePrey(id);
+						memoryBarrier();
+						float MaxE = EnergyCost;
+						EntityList[id].Energy = MaxE;
+						EntityList[id].MaxEnergy = EntityList[id].MaxEnergy;
+						EntityList[id].Size = 1;
+						EntityList[id].Mass = 1;
+						EntityList[id].AudioFlags = int(EntityList[id].AudioFlags) | (1<<0);
+						float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
+						float dist = 1 + 0;
+						vec2 displacement = vec2(cos(ang),sin(ang)) * dist * (EntityList[i].Size + EntityList[id].Size);
+						vec2 newpos = EntityList[i].Position + displacement;
+						EntityList[id].Position = newpos;
+						EntityList[id].PositionOld = newpos;
+						EntityList[i].Energy -= EnergyThresh * 0.8;
+						memoryBarrier();
+					}
+				}
+			}
+		}
+	}
+	vec2 Position = EntityList[i].Position;
+	if(any(isinf(Position)) || any(isnan(Position))){
+		Position = vec2(0,0);
+	}
+	PlacePheremoneScent(i,0,1,10);
+}
+
+void main()
+{
+    uint i = gl_GlobalInvocationID.x;
+	const int ExecutionType = 2;
+	if(i < gpuscene.TypeCount[ExecutionType] && i < MaxEntityCount)
+	{
+		int id = indirection_list[ExecutionType][i];
+		if(EntityList[id].ToRemove != 1){
+			ExecuteBehaviourPrey(id);
+		}
+	}
+}

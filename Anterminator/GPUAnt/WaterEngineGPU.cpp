@@ -27,38 +27,62 @@ void WaterEngineGPU::Init(GLFWwindow * handle)
 	Compute_CollisionUpdate.Init("collisionupdateentity.comp", GL_COMPUTE_SHADER);
 	Compute_AudioEvents.Init("audioevents.comp", GL_COMPUTE_SHADER);
 
+	std::cout << "Create entity update" << std::endl;
 	Program_EntityUpdate.CreateProgram();
 	Program_EntityUpdate.AddShader(Compute_EntityUpdate);
 	Program_EntityUpdate.LinkProgram();
 
+	std::cout << "Create entity ai update" << std::endl;
 	Program_EntityAIUpdate.CreateProgram();
 	Program_EntityAIUpdate.AddShader(Compute_EntityAIUpdate);
 	Program_EntityAIUpdate.LinkProgram();
+	std::cout << "Create entity indirections" << std::endl;
+	for (int i = 0; i < Program_EntityAIIndirect.size();++i)
+	{
+		std::string shader[] = { 
+			"indirect_ant.comp",
+			"indirect_antnest.comp",
+			"indirect_prey.comp",
+			"indirect_pred.comp",
+			"indirect_plant.comp"
+		};
+		Compute_EntityAIIndirect[i].Init(shader[i], GL_COMPUTE_SHADER);
+		Program_EntityAIIndirect[i].CreateProgram();
+		Program_EntityAIIndirect[i].AddShader(Compute_EntityAIIndirect[i]);
+		Program_EntityAIIndirect[i].LinkProgram();
+	}
+	std::cout << "Create collision update" << std::endl;
 
 	Program_CollisionUpdate.CreateProgram();
 	Program_CollisionUpdate.AddShader(Compute_CollisionUpdate);
 	Program_CollisionUpdate.LinkProgram();
 
+	std::cout << "Create chunk update" << std::endl;
 	Program_ChunkUpdate.CreateProgram();
 	Program_ChunkUpdate.AddShader(Compute_ChunkUpdate);
 	Program_ChunkUpdate.LinkProgram();
 
+	std::cout << "Create chunk reset" << std::endl;
 	Program_ChunkReset.CreateProgram();
 	Program_ChunkReset.AddShader(Compute_ChunkReset);
 	Program_ChunkReset.LinkProgram();
 
+	std::cout << "Create pheremone update" << std::endl;
 	Program_PheremoneUpdate.CreateProgram();
 	Program_PheremoneUpdate.AddShader(Compute_PheremoneUpdate);
 	Program_PheremoneUpdate.LinkProgram();
 
+	std::cout << "Create remove dead" << std::endl;
 	Program_RemoveDead.CreateProgram();
 	Program_RemoveDead.AddShader(Compute_RemoveDead);
 	Program_RemoveDead.LinkProgram();
 
+	std::cout << "Create pheremone paint" << std::endl;
 	Program_PheremonePaint.CreateProgram();
 	Program_PheremonePaint.AddShader(Compute_PheremonePaint);
 	Program_PheremonePaint.LinkProgram();
 
+	std::cout << "Create audio events" << std::endl;
 	Program_AudioEvents.CreateProgram();
 	Program_AudioEvents.AddShader(Compute_AudioEvents);
 	Program_AudioEvents.LinkProgram();
@@ -66,17 +90,31 @@ void WaterEngineGPU::Init(GLFWwindow * handle)
 	Program_ChunkUpdate.UseProgram();
 	Program_EntityUpdate.UseProgram();
 	glGenBuffers(1, &EntityBuffer);
+	std::cout << "Entity buffer:" << EntityBuffer<<"\n";
 	glGenBuffers(1, &RenderPositionBuffer);
+	std::cout << "RenderPositionBuffer:" << RenderPositionBuffer <<"\n";
 	glGenBuffers(1, &RenderColourBuffer);
+	std::cout << "RenderColourBuffer:" << RenderColourBuffer <<"\n";
 	glGenBuffers(1, &RenderSizeBuffer);
+	std::cout << "RenderSizeBuffer:" << RenderSizeBuffer <<"\n";
 	glGenBuffers(1, &SceneBuffer);
+	std::cout << "SceneBuffer:" << SceneBuffer <<"\n";
 	glGenBuffers(1, &ChunkBuffer);
+	std::cout << "ChunkBuffer:" << ChunkBuffer <<"\n";
 	glGenBuffers(1, &FactionBuffer);
+	std::cout << "FactionBuffer:" << FactionBuffer <<"\n";
 	glGenBuffers(1, &SceneOutputBuffer);
+	std::cout << "SceneOutputBuffer:" << SceneOutputBuffer <<"\n";
 	glGenBuffers(1, &EntityOutputBuffer);
+	std::cout << "EntityOutputBuffer:" << EntityOutputBuffer <<"\n";
 	glGenBuffers(1, &FactionOutputBuffer);
+	std::cout << "FactionOutputBuffer:" << FactionOutputBuffer <<"\n";
 	glGenBuffers(1, &AudioEventBuffer);
+	std::cout << "AudioEventBuffer:" << AudioEventBuffer <<"\n";
 	glGenBuffers(1, &AudioOutputBuffer);
+	std::cout << "AudioOutputBuffer:" << AudioOutputBuffer <<"\n";
+	glGenBuffers(1, &TypeIndirectionBuffer);
+	std::cout << "TypeIndirectionBuffer:" << TypeIndirectionBuffer <<"\n";
 	GPUscene.ParticleCount = 0;
 
 	UniformEntityEntityCount = glGetUniformLocation(Program_EntityUpdate.GetProgram(), "EntityCount");
@@ -122,6 +160,10 @@ void WaterEngineGPU::Init(GLFWwindow * handle)
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, (2*sizeof(float)) + (sizeof(GPUAudioEvent) * MaxAudioEvents), NULL, GL_DYNAMIC_STORAGE_BIT);
 	glBindBuffer(GL_COPY_READ_BUFFER, AudioOutputBuffer);
 	glBufferStorage(GL_COPY_READ_BUFFER, (sizeof(GPUAudioEvent) * MaxAudioEvents), NULL, GL_DYNAMIC_STORAGE_BIT);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, TypeIndirectionBuffer);
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, sizeof(int) * MaxTypeCount * MaxParticleCount, NULL, GL_DYNAMIC_STORAGE_BIT);
+
 	glEnable(GL_TEXTURE_3D);
 	glGenTextures(TexturePheremone.size(), &TexturePheremone[0]);
 	for (int i = 0; i < TexturePheremone.size(); ++i)
@@ -192,6 +234,7 @@ void WaterEngineGPU::Update(float realdt)
 	glCopyBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_COPY_READ_BUFFER, 0, 0, sizeof(GPUScene));
 	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 	glGetBufferSubData(GL_COPY_READ_BUFFER, 0, sizeof(GPUScene), &GPUscene);
+	glMemoryBarrier(GL_ALL_BARRIER_BITS);
 	if (FollowEntity >= 0 && FollowEntity < MaxParticleCount)
 	{
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, EntityBuffer);
@@ -212,9 +255,12 @@ void WaterEngineGPU::Update(float realdt)
 		EntityUpdateCounter = 10;
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, EntityBuffer);
 		glBindBuffer(GL_COPY_READ_BUFFER, EntityOutputBuffer);
-		glCopyBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_COPY_READ_BUFFER, 0 , 0 , sizeof(GPUEntity) * GPUscene.ParticleCount);
-		glGetBufferSubData(GL_COPY_READ_BUFFER, 0, sizeof(GPUEntity) * GPUscene.ParticleCount , WorldEntityMirror.data());
-//		glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GPUEntity) * GPUscene.ParticleCount, WorldEntityMirror.data());
+		glCopyBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_COPY_READ_BUFFER, 0, 0, sizeof(GPUEntity) * GPUscene.ParticleCount);
+		glGetBufferSubData(GL_COPY_READ_BUFFER, 0, sizeof(GPUEntity) * GPUscene.ParticleCount, WorldEntityMirror.data());
+		//glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GPUEntity) * GPUscene.ParticleCount, WorldEntityMirror.data());
+	}
+	if(true)
+	{
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, FactionBuffer);
 		glBindBuffer(GL_COPY_READ_BUFFER, FactionOutputBuffer);
 		glCopyBufferSubData(GL_SHADER_STORAGE_BUFFER, GL_COPY_READ_BUFFER, 0 , 0 , sizeof(GPUFaction) * FactionCount);
@@ -238,6 +284,8 @@ void WaterEngineGPU::UpdateStep(bool removedead,bool chunkupdate,bool entityupda
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, ChunkBuffer);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 6, FactionBuffer);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 7, AudioEventBuffer);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 8, TypeIndirectionBuffer);
+	//0.00
 	if(removedead)
 	{
 		Program_RemoveDead.UseProgram();
@@ -247,9 +295,7 @@ void WaterEngineGPU::UpdateStep(bool removedead,bool chunkupdate,bool entityupda
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glMemoryBarrier(GL_ALL_BARRIER_BITS);
 	}
-//	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ChunkBuffer);
-//	glClearBufferData(GL_SHADER_STORAGE_BUFFER,GL_R32I, GL_RED_INTEGER, GL_INT, NULL);
-	//glClearNamedBufferData(ChunkBuffer, GL_R32I, GL_RED_INTEGER, GL_INT, NULL);
+	//0.06
 	if(chunkupdate)
 	{
 		Program_ChunkReset.UseProgram();
@@ -258,6 +304,7 @@ void WaterEngineGPU::UpdateStep(bool removedead,bool chunkupdate,bool entityupda
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glMemoryBarrier(GL_ALL_BARRIER_BITS);
 	}
+	//1.42
 	if(chunkupdate)
 	{
 		Program_ChunkUpdate.UseProgram();
@@ -265,8 +312,9 @@ void WaterEngineGPU::UpdateStep(bool removedead,bool chunkupdate,bool entityupda
 		static constexpr int ThreadsPerWarp = 16;
 		glDispatchCompute(static_cast<int>(ceil(float(MaxParticleCount)/(EntitiesPerThread*ThreadsPerWarp))), 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-	glMemoryBarrier(GL_ALL_BARRIER_BITS);
+		glMemoryBarrier(GL_ALL_BARRIER_BITS);
 	}
+	//0.68
 	if(entityupdate)
 	{
 		Program_CollisionUpdate.UseProgram();
@@ -275,23 +323,36 @@ void WaterEngineGPU::UpdateStep(bool removedead,bool chunkupdate,bool entityupda
 		glUniform1f(UniformCollisionRandomTimeSeed, Time + random_number(generator));
 		glUniform1i(UniformCollisionCollsionMap, 0);
 		static constexpr int LocalSize = 128;
-		//glDispatchCompute(static_cast<int>(ceil(float(ChunkCount*ChunkCount)/LocalSize)), 1, 1);
 		glDispatchCompute(static_cast<int>(ceil(float(MaxParticleCount) / LocalSize)), 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glMemoryBarrier(GL_ALL_BARRIER_BITS);
 	}
+	//1.55
 	if (entityupdate && AIUpdateTick-- <= 0)
 	{
 		AIUpdateTick = 0;
-		Program_EntityAIUpdate.UseProgram();
-		glUniform1i(UniformEntityAIEntityCount, GPUscene.ParticleCount);
-		glUniform1f(UniformEntityAIWorldSize, WorldSize);
-		glUniform1f(UniformEntityAIRandomTimeSeed, Time + random_number(generator));
-		static const constexpr int LocalSize = 512;
-		glDispatchCompute(static_cast<int>(ceil(float(MaxParticleCount) / LocalSize)), 1, 1);
+//		Program_EntityAIUpdate.UseProgram();
+//		glUniform1i(UniformEntityAIEntityCount, GPUscene.ParticleCount);
+//		glUniform1f(UniformEntityAIWorldSize, WorldSize);
+//		glUniform1f(UniformEntityAIRandomTimeSeed, Time + random_number(generator));
+//		static const constexpr int LocalSize = 512;
+//		glDispatchCompute(static_cast<int>(ceil(float(MaxParticleCount) / LocalSize)), 1, 1);
+//		for (int i = 0; i < Program_EntityAIIndirect.size(); ++i)
+		for (int i = 0; i < MaxTypeCount; ++i)
+		{
+			Program_EntityAIIndirect[i].UseProgram();
+//			glUniform1i(UniformEntityAIEntityCount, GPUscene.ParticleCount);
+//			glUniform1f(UniformEntityAIWorldSize, WorldSize);
+			glUniform1f((GLuint)0, Time + random_number(generator));//UniformEntityAIRandomTimeSeed
+			static const constexpr int LocalSize = 512;
+			glDispatchCompute(static_cast<int>(ceil(float(MaxParticleCount) / LocalSize)), 1, 1);
+			glMemoryBarrier(GL_ALL_BARRIER_BITS);
+		//	glDispatchCompute(static_cast<int>(ceil(float(GPUscene.TypeCount[i]) / LocalSize)), 1, 1);
+		}
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	}
+	//0.02
 	if (entityupdate)
 	{
 		Program_EntityUpdate.UseProgram();
@@ -330,6 +391,8 @@ void WaterEngineGPU::UpdateStep(bool removedead,bool chunkupdate,bool entityupda
 
 	if(true)
 	{
+		//0.3 * 4z
+		//1.2
 		Program_PheremoneUpdate.UseProgram();
 		for (int i = 0; i < TexturePheremone.size(); ++i)
 		{
@@ -390,15 +453,17 @@ int WaterEngineGPU::InitWorld()
 //	noisegen.SetNoiseType()
 	std::cout << "Generating world\n";
 	static constexpr int MaxMaskEnts = 0;
-	constexpr int Nests = FactionCount;
+	constexpr int Nests = 0;
 	constexpr int Prey = 500;
-	constexpr int Pred = 1;
+	constexpr int Pred = 10;
+	constexpr int Plants = 50;
 	int i = 0;
 	constexpr float NoiseMaskSizeResolution = WaterEngineGPU::WorldTextureResolution;
 	constexpr int NoiseMaskSize = 2 * WorldSize / NoiseMaskSizeResolution;
 	constexpr float Frequency = 30;
 	std::fill(WorldNoiseMask.begin(), WorldNoiseMask.end(), 0);
 	WorldEntityMirror = std::vector<GPUEntity>(MaxParticleCount);
+	WorldFactionMirror = std::vector<GPUFaction>(FactionCount);
 	float MaxMaskVal = 0.3;
 	float maxval = 0;
 	constexpr float falloff = 2;
@@ -456,61 +521,60 @@ int WaterEngineGPU::InitWorld()
 	
 	std::vector<float> WorldNoiseMaskMutable = WorldNoiseMask;
 	int MaskVal = 0;
-	for (; i < MaxMaskEnts; ++i)
-	{
-		auto max = max_element(WorldNoiseMaskMutable.begin(), WorldNoiseMaskMutable.end());
-		int id = distance(WorldNoiseMaskMutable.begin(), max);
-		if(*max > MaxMaskVal)
-		{
-			int x = floor(id / NoiseMaskSize);
-			int y = id - (x * NoiseMaskSize);
-			auto& e = WorldEntityMirror[i];
-			e.PositionX = (x * NoiseMaskSizeResolution) - WorldSize;
-			e.PositionY = (y * NoiseMaskSizeResolution) - WorldSize;
-			e.PositionOldX = e.PositionX;
-			e.PositionOldY = e.PositionY;
-			e.Size = Size;
-			e.MaxSize = e.Size;
-			e.ColourR = 1;
-			e.ColourG = 1;
-			e.ColourB = 1;
-			e.Mass = 1000000;
-			e.Type = 4;
-			GPUscene.TypeCount[int(e.Type)]++;
-			int MaskRemoveSize = int(0.5 * Size/NoiseMaskSizeResolution);
-			for (int dx = -MaskRemoveSize; dx <= MaskRemoveSize; ++dx)
-			{
-				for (int dy = -MaskRemoveSize; dy <= MaskRemoveSize; ++dy)
-				{
-					int xa = x + dx;
-					int ya = y + dy;
-//					if (x + dx >= 0 && x + dx < NoiseMaskSize && y + dy >= 0 && y + dy < NoiseMaskSize)
-					if (xa < 0) {
-						xa += NoiseMaskSize;
-					}
-					if (xa >= NoiseMaskSize) {
-						xa -= NoiseMaskSize;
-					}
-					if (ya < 0) {
-						ya += NoiseMaskSize;
-					}
-					if (ya >= NoiseMaskSize) {
-						ya -= NoiseMaskSize;
-					}
-					{
-						WorldNoiseMaskMutable[ya + (xa * NoiseMaskSize)] = 0;
-					}
-				}
-			} 
-//			GPUscene.IndirectionId[int(e.Type)][GPUscene.TypeCount[int(e.Type)]++] = i;
-		}
-		else {
-			break;
-		}
-	}
+//	for (; i < MaxMaskEnts; ++i)
+//	{
+//		auto max = max_element(WorldNoiseMaskMutable.begin(), WorldNoiseMaskMutable.end());
+//		int id = distance(WorldNoiseMaskMutable.begin(), max);
+//		if(*max > MaxMaskVal)
+//		{
+//			int x = floor(id / NoiseMaskSize);
+//			int y = id - (x * NoiseMaskSize);
+//			auto& e = WorldEntityMirror[i];
+//			e.PositionX = (x * NoiseMaskSizeResolution) - WorldSize;
+//			e.PositionY = (y * NoiseMaskSizeResolution) - WorldSize;
+//			e.PositionOldX = e.PositionX;
+//			e.PositionOldY = e.PositionY;
+//			e.Size = Size;
+//			e.ColourR = 1;
+//			e.ColourG = 1;
+//			e.ColourB = 1;
+//			e.Mass = 1000000;
+//			e.Type = 4;
+//			//GPUscene.TypeCount[int(e.Type)]++;
+//			int MaskRemoveSize = int(0.5 * Size/NoiseMaskSizeResolution);
+//			for (int dx = -MaskRemoveSize; dx <= MaskRemoveSize; ++dx)
+//			{
+//				for (int dy = -MaskRemoveSize; dy <= MaskRemoveSize; ++dy)
+//				{
+//					int xa = x + dx;
+//					int ya = y + dy;
+////					if (x + dx >= 0 && x + dx < NoiseMaskSize && y + dy >= 0 && y + dy < NoiseMaskSize)
+//					if (xa < 0) {
+//						xa += NoiseMaskSize;
+//					}
+//					if (xa >= NoiseMaskSize) {
+//						xa -= NoiseMaskSize;
+//					}
+//					if (ya < 0) {
+//						ya += NoiseMaskSize;
+//					}
+//					if (ya >= NoiseMaskSize) {
+//						ya -= NoiseMaskSize;
+//					}
+//					{
+//						WorldNoiseMaskMutable[ya + (xa * NoiseMaskSize)] = 0;
+//					}
+//				}
+//			} 
+////			GPUscene.IndirectionId[int(e.Type)][GPUscene.TypeCount[int(e.Type)]++] = i;
+//		}
+//		else {
+//			break;
+//		}
+//	}
 	std::cout << "World realised in "<<i<<" pseudo entities\n";
 	MaskVal = i;
-	int EntityCounter = MaskVal + Nests + Prey + Pred;
+	int EntityCounter = MaskVal + Nests + Prey + Pred + Plants;
 	float SpawnMaskVal = MaxMaskVal;// *0.65;
 	auto getmask = [&](float x, float y) {
 		int xmask = floor((x + WorldSize) / NoiseMaskSizeResolution);
@@ -544,9 +608,12 @@ int WaterEngineGPU::InitWorld()
 		}
 		return true;
 	};
+	//std::vector<std::array<int,MaxParticleCount>> indirection(MaxTypeCount);
+	std::vector<int> indirection(MaxTypeCount * MaxParticleCount);
+	std::fill(indirection.begin(), indirection.end(), -1);
 	//Gen the starting stuff
 	int StartNest = i;
-	int findermaxval = 100000;
+	int findermaxval = 1'000'000;
 	for(int af = 0;i < MaskVal + Nests;++i,++af)
 	{
 		auto& e = WorldEntityMirror[i];
@@ -557,11 +624,6 @@ int WaterEngineGPU::InitWorld()
 		{
 			e.PositionX = random_number(generator) * WorldSize;
 			e.PositionY = random_number(generator) * WorldSize;
-		}
-		if (i == 0)
-		{
-//			e.PositionX = 0;
-//			e.PositionY = 0;
 		}
 		e.PositionOldX = e.PositionX;
 		e.PositionOldY = e.PositionY;
@@ -574,12 +636,13 @@ int WaterEngineGPU::InitWorld()
 		e.Health = 500;
 		e.Type = 1;
 		e.Age = 600;
-		e.MaxSize = e.Size;
 		e.ColourR = (random_number(generator) + 1) * 0.5;
 		e.ColourG = (random_number(generator) + 1) * 0.5;
 		e.ColourB = (random_number(generator) + 1) * 0.5;
 		e.Affiliation = af;
-		GPUscene.TypeCount[int(e.Type)]++;
+		indirection[(int(e.Type) * MaxParticleCount) + GPUscene.TypeCount[int(e.Type)]] = i;
+		e.IndirectionID = GPUscene.TypeCount[int(e.Type)]++;
+		WorldFactionMirror[e.Affiliation].NestCount++;
 //		GPUscene.IndirectionId[int(e.Type)][GPUscene.TypeCount[int(e.Type)]++] = i;
 	}
 	for(;i < MaskVal + Nests + Prey;++i)
@@ -597,7 +660,6 @@ int WaterEngineGPU::InitWorld()
 		e.PositionOldY = e.PositionY;
 //		e.PositionOldX += random_number(generator) * 1;
 //		e.PositionOldY += random_number(generator) * 1;
-		e.MaxSize = e.Size;
 		e.MaxEnergy = 10000;
 		e.Energy = (e.MaxEnergy) * abs(random_number(generator));
 		e.Age = 100 * abs(random_number(generator));
@@ -607,7 +669,9 @@ int WaterEngineGPU::InitWorld()
 		e.ColourG = 1;
 		e.ColourB = 0;
 		e.Affiliation = -1;
-		GPUscene.TypeCount[int(e.Type)]++;
+//		indirection[int(e.Type)][GPUscene.TypeCount[int(e.Type)]] = i;
+		indirection[(int(e.Type) * MaxParticleCount) + GPUscene.TypeCount[int(e.Type)]] = i;
+		e.IndirectionID = GPUscene.TypeCount[int(e.Type)]++;
 //		GPUscene.IndirectionId[int(e.Type)][GPUscene.TypeCount[int(e.Type)]++] = i;
 	}
 	for(;i < MaskVal + Nests + Prey + Pred;++i)
@@ -627,7 +691,6 @@ int WaterEngineGPU::InitWorld()
 //		e.PositionOldY += random_number(generator) * 1;
 		e.Mass = 40;
 		e.Type = 3;
-		e.MaxSize = e.Size;
 		e.ColourR = 1;
 		e.ColourG = 0;
 		e.ColourB = 0;
@@ -637,8 +700,45 @@ int WaterEngineGPU::InitWorld()
 		e.MaxEnergy = 50000;
 		e.Age = 120 * abs(random_number(generator));
 		e.Energy = (e.MaxEnergy) * abs(random_number(generator));
-		GPUscene.TypeCount[int(e.Type)]++;
+//		indirection[int(e.Type)][GPUscene.TypeCount[int(e.Type)]] = i;
+		indirection[(int(e.Type) * MaxParticleCount) + GPUscene.TypeCount[int(e.Type)]] = i;
+		e.IndirectionID = GPUscene.TypeCount[int(e.Type)]++;
 //		GPUscene.IndirectionId[int(e.Type)][GPUscene.TypeCount[int(e.Type)]++] = i;
+	}
+	for (; i < MaskVal + Nests + Prey + Pred + Plants; ++i)
+	{
+		auto& e = WorldEntityMirror[i];
+		e.PositionX = random_number(generator) * WorldSize;
+		e.PositionY = random_number(generator) * WorldSize;
+		e.Size = 10;
+		for (int finder = 0; finder < findermaxval && !getvalid(e.PositionX, e.PositionY, e.Size); ++finder)
+		{
+			e.PositionX = random_number(generator) * WorldSize;
+			e.PositionY = random_number(generator) * WorldSize;
+		}
+		e.PositionOldX = e.PositionX;
+		e.PositionOldY = e.PositionY;
+		//		e.PositionOldX += random_number(generator) * 1;
+		//		e.PositionOldY += random_number(generator) * 1;
+		e.Mass = 10000;
+		e.Type = 4;
+		e.ColourR = 0.6;
+		e.ColourG = 0.2;
+		e.ColourB = 0.1;
+		e.Affiliation = -4;
+		e.MaxHealth = 1000;
+		e.Health = 1000;
+		e.MaxEnergy = 50000;
+		e.Age = 120 * abs(random_number(generator));
+		e.Energy = (e.MaxEnergy) * abs(random_number(generator));
+		//		indirection[int(e.Type)][GPUscene.TypeCount[int(e.Type)]] = i;
+		indirection[(int(e.Type) * MaxParticleCount) + GPUscene.TypeCount[int(e.Type)]] = i;
+		e.IndirectionID = GPUscene.TypeCount[int(e.Type)]++;
+	}
+	//for (int tc = 0; tc < GPUscene.TypeCount[3];++tc)
+	for (int tc : GPUscene.TypeCount)
+	{
+		std::cout << "Type count:" << tc <<"\n";
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, EntityBuffer);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER,0, sizeof(GPUEntity) * EntityCounter, WorldEntityMirror.data());
@@ -646,9 +746,10 @@ int WaterEngineGPU::InitWorld()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, SceneBuffer);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GPUScene), &GPUscene);
 	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-	WorldFactionMirror = std::vector<GPUFaction>(FactionCount);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, FactionBuffer);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GPUFaction) * WorldFactionMirror.size(), WorldFactionMirror.data());
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, TypeIndirectionBuffer);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER,0, sizeof(int) * MaxTypeCount * MaxParticleCount,indirection.data());
 	for (int i = 0; i < 10; ++i)
 	{
 		UpdateStep(false, true, false);

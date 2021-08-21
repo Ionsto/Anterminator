@@ -1,6 +1,6 @@
 #version 430
-const float dt = 0.02;
-const float IntergrationDamping = 0.95;
+#include constants.comp
+const float dt = dt_base;
 uniform sampler2D CollisionMap;
 
 struct Entity{
@@ -29,8 +29,8 @@ struct Entity{
 	float Health;
 
 	float MaxHealth;
-	float MaxSize;
 	float Queen;
+	float IndirectionID;
 	float AudioFlags;
 };
 //AudioFlags
@@ -41,15 +41,6 @@ struct Entity{
 //4: died 
 //
 //
-
-
-const int WorldSize = 2048;
-const float PheremoneResolution = 4;
-const int MaxEntityCount = 20000;
-const int MaxTypeCount = 5;
-const int MaxEntityPerChunk = 10;
-const int ChunkSize = 8;
-const int ChunkCount = 2*WorldSize/ChunkSize;
 
 const float WalkHomeTime = 5;
 
@@ -112,12 +103,13 @@ void ExecuteCollisionBehaviour(uint i,uint j)
 	Entity entityi = EntityList[i];
 	Entity entityj = EntityList[j];
 	float FoodCarryAmount = 50;
-	float MaxDeltaEnergyLookup[] = 
+	float MaxDeltaEnergyLookup[MaxTypeCount] = 
 	{
 	50,
 	0,
 	0,
-	1000
+	1000,
+	0
 	};
 
 	if (int(entityi.Alive) != int(entityj.Alive))
@@ -167,11 +159,12 @@ void ExecuteCollisionBehaviour(uint i,uint j)
 	{
 		if (int(entityi.Alive) == 1 && int(entityj.Alive) == 1)
 		{
-			float DamageLookup[] = {
+			float DamageLookup[MaxTypeCount] = {
 			5,//Ant
 			1,//Nest
 			1,//Prey
-			100//Pred
+			100,//Pred
+			0
 			};
 			float Damage = (abs(random(vec2(i +RandomTimeSeed ,2 * i + 0.2 * RandomTimeSeed)))) * DamageLookup[int(entityj.Type)];
 			entityi.Health -= Damage;

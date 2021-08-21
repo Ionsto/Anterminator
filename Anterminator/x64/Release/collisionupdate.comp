@@ -1,0 +1,408 @@
+#version 430
+const float dt = 0.02;
+const float IntergrationDamping = 0.95;
+uniform sampler2D CollisionMap;
+
+struct Entity{
+	vec2 Position;
+	vec2 PositionOld;
+
+	vec2 Acceleration;
+	float Size;
+	float Alive;
+
+	vec3 Colour;
+	float ToRemove;
+
+	float Affiliation;
+	float Type;
+	float Mass;
+	float Age;
+
+	vec2 Heading;
+	float Energy;
+	float HeldFood;
+
+	float TimeFromHome;
+	float Attacked;
+	float MaxEnergy;
+	float Health;
+
+	float MaxHealth;
+	float Queen;
+	float IndirectionID;
+	float AudioFlags;
+};
+//AudioFlags
+//0: general collision
+//1: eaten
+//2: home base
+//3: spawned
+//4: died 
+//
+//
+
+
+const int WorldSize = 2048;
+const float PheremoneResolution = 4;
+const int MaxEntityCount = 20000;
+const int MaxTypeCount = 4;
+const int MaxEntityPerChunk = 10;
+const int ChunkSize = 8;
+const int ChunkCount = 2*WorldSize/ChunkSize;
+
+const float WalkHomeTime = 5;
+
+struct Chunk{
+	int EntityCount;
+	int EntityID[MaxEntityPerChunk];
+};
+int GetChunkId(vec2 pos)
+{
+	ivec2 localpos = ivec2(floor((pos + WorldSize)/ChunkSize));
+	return clamp(localpos.y + (localpos.x * ChunkCount),0,ChunkCount * ChunkCount-1); 
+}
+struct Scene{
+	int EntityCount;
+	int TypeCount[MaxTypeCount];
+};
+
+uniform float RandomTimeSeed;
+
+const int Stride = 1;
+layout (local_size_x = 1,local_size_y = 1,local_size_z =1) in;
+layout(std430, binding = 0) buffer entity_block
+{
+	Entity EntityList[];
+};
+layout(std430, binding = 4) buffer scene_data 
+{
+	Scene gpuscene;
+};
+layout(std430, binding = 5) buffer chunk_data 
+{
+	Chunk chunks[];
+};
+float random (vec2 st) {
+    return abs(fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123));
+}
+float WrapValue(float v)
+{
+	if(v < -WorldSize)
+	{
+		v += 2 * WorldSize;
+	}
+	if(v >= WorldSize)
+	{
+		v -= 2 * WorldSize;
+	}
+	return v;
+}
+float WrapDistance(float v)
+{
+	if (abs(v) > WorldSize)
+	{
+		v = (abs(v) - (WorldSize*2)) * sign(v);
+	}
+	return v;
+}
+
+void ExecuteCollisionBehaviour(uint i,uint j)
+{
+	Entity entityi = EntityList[i];
+	Entity entityj = EntityList[j];
+	float FoodCarryAmount = 50;
+	float MaxDeltaEnergyLookup[] = 
+	{
+	50,
+	0,
+	0,
+	1000
+	};
+
+	if (int(entityi.Alive) != int(entityj.Alive))
+	{
+		//uint Alive = (entityi.Alive == 1) ? i : j;
+		//uint Dead = (entityi.Alive == 0) ? i : j;
+		Entity entityAlive = (entityi.Alive == 1) ? entityi : entityj;
+		Entity entityDead = (entityi.Alive == 0) ? entityi : entityj;
+		if(entityAlive.Type != 2){
+			float de = min(entityDead.Energy, entityAlive.MaxEnergy - entityAlive.Energy);
+			de = max(de,0);
+			de = min(de,MaxDeltaEnergyLookup[int(entityAlive.Type)]);
+			if(entityDead.Energy > 0){
+				entityDead.Size -= entityDead.Size * (de / entityDead.Energy);
+				entityDead.Mass -= entityDead.Mass * (de / entityDead.Energy);
+				entityDead.Energy -= de;
+				entityAlive.Energy += de;
+				entityDead.Mass = max(entityDead.Mass,0.0);
+				entityDead.Energy = max(entityDead.Energy,0.0);
+			}
+
+
+			if (entityi.Affiliation != entityj.Affiliation && int(entityAlive.Type) == 0)
+			{
+				de = min(entityDead.Energy, FoodCarryAmount);
+				de = max(de,0);
+				//de = min(de,MaxDeltaEnergy);
+				if(entityDead.Energy > 0){
+					entityDead.Size -= entityDead.Size * (de / entityDead.Energy);
+					entityDead.Mass -= entityDead.Mass * (de / entityDead.Energy);
+					entityDead.Energy -= de;
+					entityAlive.HeldFood += de;
+					entityAlive.AudioFlags = int(entityAlive.AudioFlags) | (1<<2);
+				}
+			}
+			de = 0;//.1;
+			float e = entityDead.Energy;
+			de = min(e, de);
+//			entityDead.Size *= (min(5.0,max(1.0,e)));
+//			entityDead.Mass -= entityDead.Mass * (de / max(1.0,entityDead.Energy));
+			entityDead.Energy -= de;
+		}
+		entityi = (entityi.Alive == 1) ? entityAlive : entityDead;
+		entityj = (entityi.Alive == 0) ? entityAlive : entityDead;
+	}
+	if (entityi.Affiliation != entityj.Affiliation)
+	{
+		if (int(entityi.Alive) == 1 && int(entityj.Alive) == 1)
+		{
+			float DamageLookup[] = {
+			5,//Ant
+			1,//Nest
+			1,//Prey
+			100//Pred
+			};
+			float Damage = (abs(random(vec2(i +RandomTimeSeed ,2 * i + 0.2 * RandomTimeSeed)))) * DamageLookup[int(entityj.Type)];
+			entityi.Health -= Damage;
+			float de = min(entityi.Energy, entityj.MaxEnergy - entityj.Energy);
+			de = max(de,0);
+			de = min(de,Damage);
+			de = min(de,MaxDeltaEnergyLookup[int(entityj.Type)]);
+			entityi.Energy -= de;
+			entityj.Energy += de;
+
+			Damage = (abs(random(vec2(j +RandomTimeSeed ,2 * j + 0.2 * RandomTimeSeed)))) * DamageLookup[int(entityi.Type)];
+			entityj.Health -= Damage;
+			de = min(entityj.Energy, entityi.MaxEnergy - entityi.Energy);
+			de = max(de,0);
+			de = min(de,Damage);
+			de = min(de,MaxDeltaEnergyLookup[int(entityi.Type)]);
+			entityj.Energy -= de;
+			entityi.Energy += de;
+			de = min(entityj.Energy, FoodCarryAmount - entityi.HeldFood);
+
+			entityi.AudioFlags = int(entityi.AudioFlags) | (1<<2);
+			entityj.AudioFlags = int(entityj.AudioFlags) | (1<<2);
+			entityi.Attacked = j;
+			entityj.Attacked = i;
+		}
+		if (
+				(int(entityj.Type) == 0 && entityi.Type != 1)
+			^^	
+				(int(entityi.Type) == 0 && entityj.Alive != 1)
+			)
+		{
+			Entity entityant = (int(entityi.Type) == 0) ? entityi : entityj;
+			Entity entitytarget = (!(int(entityi.Type) == 0)) ? entityi : entityj;
+			vec2 diff = entityant.Position - entitytarget.Position;
+			diff.x = WrapDistance(diff.x);
+			diff.y = WrapDistance(diff.y);
+			if(dot(diff,diff) != 0){
+				vec2 norm = normalize(diff);
+				float displacementajustment = 0.01;
+				float totalmass = entityi.Mass + entityj.Mass;
+				if(totalmass != 0){
+					//TODO: Analyse nan
+					entityi.Position += norm * (displacementajustment * (1 / totalmass));
+					entityj.Position += norm * 0.9 * (displacementajustment * (1 / totalmass));
+				}
+			}
+		}
+	}
+	if (entityi.Affiliation == entityj.Affiliation && 
+		entityi.Alive == entityj.Alive &&
+			(
+				(int(entityj.Type) == 0 && int(entityi.Type) == 1)
+				||
+				(int(entityi.Type) == 0 && int(entityj.Type) == 1)
+			)
+		)
+	{
+		Entity entityant = (int(entityi.Type) == 0) ? entityi : entityj;
+		Entity entityantnest = (!(int(entityi.Type) == 0)) ? entityi : entityj;
+
+		entityantnest.Energy += entityant.HeldFood;
+		entityant.TimeFromHome = 0;
+		entityant.HeldFood = 0;
+		float de = min(entityant.MaxEnergy - entityant.Energy, entityantnest.Energy);
+		entityant.Energy += de;
+		entityantnest.Energy -= de;
+		float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
+//		float dist = (2 + (abs(random(vec2(i,2 * i) + 9.2 * RandomTimeSeed)))) * (entityant.Size + entityantnest.Size);
+		float dist = (1.1 + (0.5*(abs(random(vec2(i,2 * i) + 9.2 * RandomTimeSeed))))) * (entityant.Size + entityantnest.Size);
+		vec2 displacement = vec2(cos(ang),sin(ang)) * dist;
+//		entityant.Position = entityantnest.Position + displacement;
+//		entityant.PositionOld = entityantnest.Position + displacement;
+		entityant.Heading *= 0;
+		entityi = (int(entityi.Type) == 0) ? entityant : entityantnest;
+		entityj = (!(int(entityi.Type) == 0)) ? entityant : entityantnest;
+	}
+	memoryBarrier();
+	EntityList[i] = entityi;
+	EntityList[j] = entityj;
+	memoryBarrier();
+}
+void ClearNANs(uint i){
+	for(int v = 0; v < 2;++v){
+		if(isinf(EntityList[i].Position[v]) || isnan(EntityList[i].Position[v])){
+			EntityList[i].Position[v] = 0;
+			EntityList[i].ToRemove = 1;
+			EntityList[i].Alive = 0;
+		}
+		if(isinf(EntityList[i].PositionOld[v]) || isnan(EntityList[i].PositionOld[v])){
+			EntityList[i].PositionOld[v] = 0;
+			EntityList[i].ToRemove = 1;
+			EntityList[i].Alive = 0;
+		}
+	}	
+	if(isinf(EntityList[i].Size) || isnan(EntityList[i].Size)){
+		EntityList[i].Size = 0;
+		EntityList[i].ToRemove = 1;
+		EntityList[i].Alive = 0;
+	}
+	if(isinf(EntityList[i].Energy) || isnan(EntityList[i].Energy)){
+		EntityList[i].Size = 0;
+		EntityList[i].ToRemove = 1;
+		EntityList[i].Alive = 0;
+	}
+}
+void UpdateTerrainCollision(uint i){
+	vec2 Position = EntityList[i].Position;
+	float Size = EntityList[i].Size;
+	int steps = 1;
+	bool FullPen = true;
+	bool Coll = false;
+	int rsteps = int(max(1.0,Size/1.0));
+	for(int r = rsteps-1; r > max(1,rsteps-2);--r){
+		float len = r * Size / float(rsteps);
+		float cir = len * 2 * 3.14;
+		int tsteps = int(max(4.0,cir/4.0));
+		for(int t = 0;t < tsteps;++t){
+			float theta = 3.14 * 2 * float(t)/float(tsteps);
+			vec2 delta = vec2(cos(theta),sin(theta));
+			vec2 dist = vec2(cos(theta),sin(theta)) * len;
+			float val = texture(CollisionMap,((Position+WorldSize)+dist)/(2 * WorldSize)).x;	
+			if(val > 0)
+			{
+				Position -= delta * (Size - len);
+			}
+			else{
+				FullPen = false;
+			}
+		}
+	}
+	if(texture(CollisionMap,((Position+WorldSize))/(2 * WorldSize)).x > 0.2){
+		EntityList[i].Alive = 0;
+		EntityList[i].ToRemove = 1;
+	}
+	EntityList[i].Position = Position;
+	memoryBarrier();
+}
+
+void UpdateCollisionEntities(uint i,uint j){
+	Entity EntityI = EntityList[i];
+	Entity EntityJ = EntityList[j];
+	if(!((int(EntityI.Type) == 4) && (int(EntityList[j].Type) == 4)))
+	{
+		vec2 diff = EntityI.Position - EntityJ.Position;
+		diff.x = WrapDistance(diff.x);
+		diff.y = WrapDistance(diff.y);
+		float distsq = dot(diff,diff);
+		float combsize = EntityI.Size + EntityJ.Size;
+		if((distsq < (combsize * combsize)) && (distsq != 0) && combsize != 0){
+			float dist = sqrt(distsq);
+			if(isnan(dist) || isinf(dist)){
+				dist = 1;
+			}
+			float displacementajustment = (combsize - dist) / dist;
+			float totalmass = EntityI.Mass + EntityJ.Mass;
+			if(totalmass == 0){
+				totalmass = 1;
+			}
+			if(EntityI.Type != 4 && EntityI.Type != 1){
+		//TODO: Analyse nan
+				EntityI.Position += diff * (displacementajustment * (EntityJ.Mass / totalmass));
+			}
+			if(EntityJ.Type != 4 && EntityJ.Type != 1){
+		//TODO: Analyse nan
+				EntityJ.Position -= diff * (displacementajustment * (EntityI.Mass / totalmass));
+			}
+			if (((abs(displacementajustment)/combsize) > 0.2))
+			{
+		//TODO: Analyse nan
+				EntityI.PositionOld += diff * (displacementajustment * (EntityJ.Mass / totalmass));
+				EntityJ.PositionOld -= diff * (displacementajustment * (EntityI.Mass / totalmass));
+				if((EntityI.Type == 4) ^^ (EntityJ.Type == 4)){
+					EntityList[(EntityJ.Type == 4) ? i : j].Health -= 50;
+				}
+			}
+			else{
+				vec2 v1 = EntityI.Position - EntityI.PositionOld; 
+				vec2 v2 = EntityJ.Position - EntityJ.PositionOld; 
+				const float damping = 0.1;
+				float f1 = (damping*(dot(diff,v1)))/distsq;
+				float f2 = (damping*(dot(diff,v2)))/distsq;
+
+				v1 += (f2 * diff) - (f1 * diff);
+				v2 += (f1 * diff) - (f2 * diff);
+				EntityI.PositionOld = EntityI.Position - v1;
+				EntityJ.PositionOld = EntityJ.Position - v2;
+			}
+			EntityI.Heading *= 0;
+			EntityJ.Heading *= 0;
+			EntityList[i] = EntityI;
+			EntityList[j] = EntityJ;
+			memoryBarrier();
+			if(EntityI.Type != 4 && EntityJ.Type != 4){
+				ExecuteCollisionBehaviour(i,j);
+			}
+		}
+		ClearNANs(j);
+		memoryBarrier();
+	}
+}
+
+void UpdateCollision(uint chunkid) {
+	int EntityCount = chunks[chunkid].EntityCount;
+	if(EntityCount != 0)
+	{
+		for(uint a = 0;a < EntityCount;++a)
+		{
+			int i = chunks[chunkid].EntityID[a];
+			for(uint k = a + 1;k < EntityCount;++k)
+			{
+				int j = chunks[chunkid].EntityID[k];
+				if(i != j){
+					memoryBarrier();
+					//UpdateCollisionEntities(i,j);	
+					memoryBarrier();
+				}
+			}
+			UpdateTerrainCollision(i);
+			ClearNANs(i);
+		}
+	}
+}
+void main()
+{
+	uint iglobal = gl_GlobalInvocationID.x;
+	uint i = 
+	uint((Stride * Stride) * floor(float(iglobal)/float(Stride * Stride))) +
+	uint(floor(float(iglobal % (Stride*Stride))/float(Stride))) +
+	uint(Stride * floor(float(iglobal % Stride)));
+	if(i < ChunkCount * ChunkCount)
+	{
+		UpdateCollision(i);
+	}
+}

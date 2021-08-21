@@ -157,6 +157,7 @@
     <ClInclude Include="RenderEngine.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="Shadinclude.h" />
     <ClInclude Include="SwapList.h" />
     <ClInclude Include="TinyPngOut.hpp" />
     <ClInclude Include="WaterEngineGPU.h" />
@@ -190,11 +191,17 @@
     <None Include="audioevents.comp" />
     <None Include="chunkreset.comp" />
     <None Include="chunkupdate.comp" />
-    <None Include="collisionupdate.comp" />
     <None Include="collisionupdateentity.comp" />
+    <None Include="constants.comp" />
     <None Include="drawmaskblur.comp" />
     <None Include="drawmaskupdate.comp" />
     <None Include="entityaiupdate.comp" />
+    <None Include="entity_common.comp" />
+    <None Include="indirect_ant.comp" />
+    <None Include="indirect_antnest.comp" />
+    <None Include="indirect_plant.comp" />
+    <None Include="indirect_pred.comp" />
+    <None Include="indirect_prey.comp" />
     <None Include="pheremoneupdate.comp" />
     <None Include="pheremonepaint.comp" />
     <None Include="removedead.comp" />

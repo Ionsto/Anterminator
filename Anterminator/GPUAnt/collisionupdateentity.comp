@@ -1,6 +1,7 @@
 #version 430
+#include constants.comp
 const float dt = 0.02;
-const float IntergrationDamping = 0.95;
+//const float IntergrationDamping = 0.95;
 uniform sampler2D CollisionMap;
 
 struct Entity{
@@ -29,8 +30,8 @@ struct Entity{
 	float Health;
 
 	float MaxHealth;
-	float MaxSize;
 	float Queen;
+	float IndirectionID;
 	float AudioFlags;
 };
 //AudioFlags
@@ -43,13 +44,6 @@ struct Entity{
 //
 
 
-const int WorldSize = 2048;
-const float PheremoneResolution = 4;
-const int MaxEntityCount = 20000;
-const int MaxTypeCount = 5;
-const int MaxEntityPerChunk = 10;
-const int ChunkSize = 8;
-const int ChunkCount = 2*WorldSize/ChunkSize;
 
 const float WalkHomeTime = 5;
 
@@ -111,12 +105,13 @@ void ExecuteCollisionBehaviour(uint i,uint j)
 	Entity entityi = EntityList[i];
 	Entity entityj = EntityList[j];
 	float FoodCarryAmount = 50;
-	float MaxDeltaEnergyLookup[] = 
+	float MaxDeltaEnergyLookup[MaxTypeCount] = 
 	{
 	50,
 	0,
 	0,
-	1000
+	1000,
+	0,
 	};
 
 	if (int(entityi.Alive) != int(entityj.Alive))
@@ -166,11 +161,12 @@ void ExecuteCollisionBehaviour(uint i,uint j)
 	{
 		if (int(entityi.Alive) == 1 && int(entityj.Alive) == 1)
 		{
-			float DamageLookup[] = {
+			float DamageLookup[MaxTypeCount] = {
 			5,//Ant
 			1,//Nest
 			1,//Prey
-			100//Pred
+			100,//Pred
+			0
 			};
 			float Damage = (abs(random(vec2(i +RandomTimeSeed ,2 * i + 0.2 * RandomTimeSeed)))) * DamageLookup[int(entityj.Type)];
 			entityi.Health -= Damage;
@@ -283,11 +279,11 @@ void UpdateTerrainCollision(uint i){
 	bool FullPen = true;
 	bool Coll = false;
 	int rsteps = int(max(1.0,Size/0.2));
+	//for(int r = rsteps; r > max(0,rsteps-2);--r){
 	for(int r = rsteps-1; r > max(1,rsteps-2);--r){
-	//for(int r = rsteps-1; r > max(1,rsteps-2);--r){
 		float len = r * Size / float(rsteps);
 		float cir = len * 2 * 3.14;
-		int tsteps = int(max(4.0,cir/4.0));
+		int tsteps = int(min(max(4.0,cir/4.0),10));
 		for(int t = 0;t < tsteps;++t){
 			float theta = 3.14 * 2 * float(t)/float(tsteps);
 			vec2 delta = vec2(cos(theta),sin(theta));
@@ -313,7 +309,7 @@ void UpdateTerrainCollision(uint i){
 void UpdateCollisionEntities(uint i,uint j){
 	Entity EntityI = EntityList[i];
 	Entity EntityJ = EntityList[j];
-	if(!((int(EntityI.Type) == 4) && (int(EntityList[j].Type) == 4)))
+	if(true)//!((int(EntityI.Type) == 4) && (int(EntityList[j].Type) == 4)))
 	{
 		vec2 diff = EntityI.Position - EntityJ.Position;
 		diff.x = WrapDistance(diff.x);
@@ -330,11 +326,13 @@ void UpdateCollisionEntities(uint i,uint j){
 			if(totalmass == 0){
 				totalmass = 1;
 			}
-			if(EntityI.Type != 4 && EntityI.Type != 1){
+			if(EntityI.Type != 4 && EntityI.Type != 1)
+			{
 		//TODO: Analyse nan
 				EntityI.Position += diff * (displacementajustment * (EntityJ.Mass / totalmass));
 			}
-			if(EntityJ.Type != 4 && EntityJ.Type != 1){
+			if(EntityJ.Type != 4 && EntityJ.Type != 1)
+			{
 		//TODO: Analyse nan
 				EntityJ.Position -= diff * (displacementajustment * (EntityI.Mass / totalmass));
 			}
@@ -343,9 +341,10 @@ void UpdateCollisionEntities(uint i,uint j){
 		//TODO: Analyse nan
 				EntityI.PositionOld += diff * (displacementajustment * (EntityJ.Mass / totalmass));
 				EntityJ.PositionOld -= diff * (displacementajustment * (EntityI.Mass / totalmass));
-				if((EntityI.Type == 4) ^^ (EntityJ.Type == 4)){
-					EntityList[(EntityJ.Type == 4) ? i : j].Health -= 50;
-				}
+				//if((EntityI.Type == 4) ^^ (EntityJ.Type == 4))
+				//{
+				//	EntityList[(EntityJ.Type == 4) ? i : j].Health -= 50;
+				//}
 			}
 			else{
 				vec2 v1 = EntityI.Position - EntityI.PositionOld; 
@@ -364,7 +363,8 @@ void UpdateCollisionEntities(uint i,uint j){
 			EntityList[i] = EntityI;
 			//EntityList[j] = EntityJ;
 			memoryBarrier();
-			if(EntityI.Type != 4 && EntityJ.Type != 4){
+			if(true)//(EntityI.Type != 4 && EntityJ.Type != 4)
+			{
 				ExecuteCollisionBehaviour(i,j);
 			}
 		}
@@ -399,7 +399,7 @@ void main()
 	uint i = gl_GlobalInvocationID.x;
 	if(i < gpuscene.EntityCount)
 	{
-		const int MaxCollisionIDs = 50;
+		const int MaxCollisionIDs = 10;
 		int CollisionIDs[MaxCollisionIDs];
 		int CollisionCount = 0;
 		ivec2 cmin = ivec2(floor((EntityList[i].Position - EntityList[i].Size + WorldSize)/ChunkSize));

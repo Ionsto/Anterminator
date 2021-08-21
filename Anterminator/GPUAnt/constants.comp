@@ -1,0 +1,11 @@
+const float dt_base = 0.02;
+const float IntergrationDamping = 0.95;
+const int WorldSize = 2048;
+const float PheremoneResolution = 4;
+const int PheremoneCount = int(floor(2 * WorldSize/PheremoneResolution));
+const int MaxEntityCount = 20000;
+const int MaxTypeCount = 5;
+const int MaxEntityPerChunk = 10;
+const int ChunkSize = 8;
+const int ChunkCount = 2*WorldSize/ChunkSize;
+const int FactionCount = 5;

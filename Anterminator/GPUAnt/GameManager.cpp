@@ -91,10 +91,11 @@ GameManager::GameManager()
 	//glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
 	std::cout << "Loading window" << std::endl;
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-	//Window_Handle = glfwCreateWindow(800, 800, "Anterminator",NULL, NULL);
-	Window_Handle = glfwCreateWindow(1920, 1080, "Anterminator", glfwGetPrimaryMonitor(), NULL);
-//	Window_Handle = glfwCreateWindow(800, 800, "Anterminator",NULL, NULL);
 	ScreenSize = glm::vec2(1920, 1080);
+	ScreenSize = glm::vec2(800, 800);
+	Window_Handle = glfwCreateWindow(ScreenSize.x, ScreenSize.y, "Anterminator",NULL, NULL);
+	//Window_Handle = glfwCreateWindow(1920, 1080, "Anterminator", glfwGetPrimaryMonitor(), NULL);
+//	Window_Handle = glfwCreateWindow(800, 800, "Anterminator",NULL, NULL);
 	
 	if (!Window_Handle)
 	{
@@ -374,6 +375,11 @@ void GameManager::PollInput()
 				entityengine->DtAccumulator = 0;
 				std::cout << "Time scale:" << entityengine->TimeScalingFactor << "\n";
 			}
+			if (KeyInput.GetState(GLFW_KEY_I) == std::pair{ true,true })
+			{
+				GamePause = !GamePause;
+				std::cout << "Game pause state:" << GamePause << "\n";
+			}
 			//renderengine->cam.Position.x = std::clamp(renderengine->cam.Position.x, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
 			//renderengine->cam.Position.y = std::clamp(renderengine->cam.Position.y, 0.0f,((float)world->Chunks.WorldSize) * Chunk::Size);
 			for (int i = 0; i < 2; ++i)
@@ -417,10 +423,10 @@ void GameManager::PollInput()
 			renderengine->RenderConfig.RenderPheremone ^= true;
 			std::cout << "Pheremone home: " << renderengine->RenderConfig.RenderPheremone << std::endl;
 		}
-		if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_U)) {
-			renderengine->RenderConfig.Refraction ^= true;
-			std::cout << "Refraction: " << renderengine->RenderConfig.Refraction << std::endl;
-		}
+		//if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_U)) {
+		//	renderengine->RenderConfig.Refraction ^= true;
+		//	std::cout << "Refraction: " << renderengine->RenderConfig.Refraction << std::endl;
+		//}
 		if (std::pair{ true,true } == KeyInput.GetState(GLFW_KEY_R)) {
 			entityengine->FollowEntity = entityengine->ResetWorld();
 			static_cast<GUIGame&>(guimanager->GetGUI(GUIManager::GUIStates::GUIGame)).CurrentState = GUIGame::GameState();
@@ -487,7 +493,9 @@ void GameManager::Update()
 //	renderengine->cam.yaw += DeltaTime * 30;
 	//this->waterengine->Update(DeltaTime);
 	if (guimanager->CurrentGui == GUIManager::GUIStates::GUIGame) {
-		entityengine->Update(DeltaTime);
+		if (!GamePause) {
+			entityengine->Update(DeltaTime);
+		}
 		audioengine->UpdateGame(*entityengine.get(), renderengine->cam);
 		if (entityengine->FollowEntity != -1)
 		{
@@ -513,51 +521,53 @@ void GameManager::Update()
 		Running = false;
 		break;
 	case GUIManager::GUIStates::GUIGame:
-		GUIGame& guigame = static_cast<GUIGame&>(guimanager->GetGUI(GUIManager::GUIStates::GUIGame));
-		guigame.CurrentState.FollowEntId = entityengine->FollowEntity;
-		if (entityengine->FollowEntity != -1)
-		{
-			guigame.CurrentState.followent = entityengine->WorldEntityMirror[entityengine->FollowEntity];
-
-		}
-		if (entityengine->FollowEntity != -1 && entityengine->WorldEntityMirror[entityengine->FollowEntity].Type == 0 || entityengine->WorldEntityMirror[entityengine->FollowEntity].Type == 1)
-		{
-			guigame.CurrentState.CurrentFaction = &entityengine->WorldFactionMirror[entityengine->WorldEntityMirror[entityengine->FollowEntity].Affiliation];
-			entityengine->WorldFactionMirrorDirty[entityengine->WorldEntityMirror[entityengine->FollowEntity].Affiliation] = true;
-		}
-		else {
-			guigame.CurrentState.CurrentFaction = nullptr;
-		}
-		if (DTStackpointer == 0)
-		{
-			guigame.CurrentState.FPS = int(1.0 / MeanDT);
-		}
-		guigame.CurrentState.TimeScalingFactor = entityengine->TimeScalingFactor;
-		guigame.CurrentState.EntityCount = entityengine->ParticleCount;
-		std::array<int, 4> Accumulator = {0};
-		std::array<int, WaterEngineGPU::FactionCount> AntAccumlator = { 0 };
-		for (int i = 0; i < entityengine->ParticleCount; ++i)
-		{
-			if (entityengine->WorldEntityMirror[i].Alive == 1)
+			GUIGame& guigame = static_cast<GUIGame&>(guimanager->GetGUI(GUIManager::GUIStates::GUIGame));
+			guigame.CurrentState.FollowEntId = entityengine->FollowEntity;
+			if (entityengine->FollowEntity != -1)
 			{
-				int type = int(entityengine->WorldEntityMirror[i].Type);
-				if (type >= 0 && type < 4)
+				guigame.CurrentState.followent = entityengine->WorldEntityMirror[entityengine->FollowEntity];
+
+			}
+			if (entityengine->FollowEntity != -1 && entityengine->WorldEntityMirror[entityengine->FollowEntity].Type == 0 || entityengine->WorldEntityMirror[entityengine->FollowEntity].Type == 1)
+			{
+				guigame.CurrentState.CurrentFaction = &entityengine->WorldFactionMirror[entityengine->WorldEntityMirror[entityengine->FollowEntity].Affiliation];
+				entityengine->WorldFactionMirrorDirty[entityengine->WorldEntityMirror[entityengine->FollowEntity].Affiliation] = true;
+			}
+			else {
+				guigame.CurrentState.CurrentFaction = nullptr;
+			}
+			if (DTStackpointer == 0)
+			{
+				guigame.CurrentState.FPS = int(1.0 / MeanDT);
+			}
+			guigame.CurrentState.TimeScalingFactor = entityengine->TimeScalingFactor;
+			guigame.CurrentState.EntityCount = entityengine->ParticleCount;
+		if (!GamePause) {
+			std::array<int, 4> Accumulator = { 0 };
+			std::array<int, WaterEngineGPU::FactionCount> AntAccumlator = { 0 };
+			for (int i = 0; i < entityengine->ParticleCount; ++i)
+			{
+				if (entityengine->WorldEntityMirror[i].Alive == 1)
 				{
-					++Accumulator[type];
-				}
-				if (type == 0)
-				{
-					++AntAccumlator[int(entityengine->WorldEntityMirror[i].Affiliation)];
+					int type = int(entityengine->WorldEntityMirror[i].Type);
+					if (type >= 0 && type < 4)
+					{
+						++Accumulator[type];
+					}
+					if (type == 0)
+					{
+						++AntAccumlator[int(entityengine->WorldEntityMirror[i].Affiliation)];
+					}
 				}
 			}
+			guigame.CurrentState.PredCount.push_back(Accumulator[3]);
+			guigame.CurrentState.PreyCount.push_back(Accumulator[2]);
+			for (int i = 0; i < guigame.CurrentState.AntFactionCount; ++i)
+			{
+				guigame.CurrentState.AntCount[i].push_back(AntAccumlator[i]);
+			}
+			break;
 		}
-		guigame.CurrentState.PredCount.push_back(Accumulator[3]);
-		guigame.CurrentState.PreyCount.push_back(Accumulator[2]);
-		for (int i = 0; i < guigame.CurrentState.AntFactionCount; ++i)
-		{
-			guigame.CurrentState.AntCount[i].push_back(AntAccumlator[i]);
-		}
-		break;
 	}
 //	guigame.CurrentState.Ant0Count.push_back(Accumulator[0]);
 }

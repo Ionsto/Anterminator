@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <cmath>
 struct CollisionNode {
 	static constexpr int MaxEntities = 500;
 	int EntityCount = 0;

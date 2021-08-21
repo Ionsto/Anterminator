@@ -29,6 +29,8 @@ void GUIGame::Render()
 		ImGui::Begin("Entity stats");
 		auto e = CurrentState.followent;
 		ImGui::BulletText("Info about entity: %d", CurrentState.FollowEntId);
+		ImGui::BulletText("Type: %d", int(e.Type));
+		ImGui::BulletText("Indirection: %d", int(e.IndirectionID));
 		ImGui::BulletText("Alive: %f", e.Alive);
 		ImGui::BulletText("Position: %f", e.PositionX, ", ", e.PositionY);
 		ImGui::BulletText("Health: %f", e.Health);

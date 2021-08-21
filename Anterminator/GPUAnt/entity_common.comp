@@ -1,0 +1,403 @@
+#include constants.comp
+const int AIStepCount = 1;
+const float dt = dt_base * AIStepCount;
+
+
+layout(rg16f,binding = 0) uniform image3D PheremoneHome;
+layout(rg16f,binding = 1) uniform image3D PheremoneFood;
+layout(rg16f,binding = 2) uniform image3D PheremoneAttack;
+layout(rg16f,binding = 3) uniform image3D PheremoneScent;
+layout(binding = 5) uniform sampler2D CollisionMap;
+
+struct Entity{
+	vec2 Position;
+	vec2 PositionOld;
+
+	vec2 Acceleration;
+	float Size;
+	float Alive;
+
+	vec3 Colour;
+	float ToRemove;
+
+	float Affiliation;
+	float Type;
+	float Mass;
+	float Age;
+
+	vec2 Heading;
+	float Energy;
+	float HeldFood;
+
+	float TimeFromHome;
+	float Attacked;
+	float MaxEnergy;
+	float Health;
+
+	float MaxHealth;
+	float Queen;
+	float IndirectionID;
+	float AudioFlags;
+};
+
+struct Faction{
+	int AntCount;
+	int NestCount;
+	float TotalEnergy;
+	float AntSpawnRate;
+	float NestSpawnRate;
+};
+
+const float WalkHomeTime = 2;
+
+
+struct Chunk{
+	int EntityCount;
+	int EntityID[MaxEntityPerChunk];
+};
+int GetChunkId(vec2 pos)
+{
+	ivec2 localpos = ivec2(floor((pos + WorldSize)/ChunkSize));
+	return clamp(localpos.y + (localpos.x * ChunkCount),0,ChunkCount * ChunkCount-1); 
+}
+struct Scene{
+	int EntityCount;
+	int TypeCount[MaxTypeCount];
+//	int IndirectionList[MaxTypeCount][MaxEntityCount];
+};
+
+//uniform float WorldSize;       
+layout(location=0) uniform float RandomTimeSeed;
+
+layout (local_size_x = 512) in;
+
+layout(std430, binding = 0) buffer entity_block
+{
+	Entity EntityList[];
+};
+layout(std430, binding = 1) buffer render_position_block
+{
+	vec2 RenderPosition[];
+};
+layout(std430, binding = 2) buffer render_colour_block
+{
+	vec4 RenderColour[];
+};
+layout(std430, binding = 3) buffer render_size_block
+{
+	float RenderSize[];
+};
+layout(std430, binding = 4) buffer scene_data 
+{
+	Scene gpuscene;
+};
+layout(std430, binding = 5) buffer chunk_data 
+{
+	Chunk chunks[];
+};
+layout(std430, binding = 6) buffer faction_data 
+{
+	Faction factions[];
+};
+layout(std430, binding = 8) buffer entity_indirection
+{
+	int indirection_list[MaxTypeCount][MaxEntityCount];
+};
+float random (vec2 st) {
+    return abs(fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123));
+}
+float WrapValue(float v)
+{
+	if(v < -WorldSize)
+	{
+		v += 2 * WorldSize;
+	}
+	if(v >= WorldSize)
+	{
+		v -= 2 * WorldSize;
+	}
+	return v;
+}
+float WrapDistance(float v)
+{
+	if (abs(v) > WorldSize)
+	{
+		v = (abs(v) - (WorldSize*2)) * sign(v);
+	}
+	return v;
+}
+int AddIndirection(int type,int i){
+	if(type >= 0 && type < MaxTypeCount)
+	{
+		if(gpuscene.TypeCount[type] < MaxEntityCount)
+		{
+			int id = atomicAdd(gpuscene.TypeCount[type],1);
+			if(id < MaxEntityCount)
+			{
+				indirection_list[type][id] = i;
+				return id;	
+			}
+			else{
+				atomicAdd(gpuscene.TypeCount[type],-1);
+			}
+		}
+	}
+	return -1;	
+}
+int AddEntity(int type){
+	if(gpuscene.EntityCount < MaxEntityCount)
+	{
+		int id = atomicAdd(gpuscene.EntityCount,1);
+		if(id < MaxEntityCount)
+		{
+			EntityList[id].IndirectionID = float(AddIndirection(type,id));
+			return id;	
+		}
+		else{
+			atomicAdd(gpuscene.EntityCount,-1);
+			return -1;	
+		}
+	}
+	return -1;	
+}
+ivec2 WrapPhermoneGrid(ivec2 pos)
+{
+	//return pos & (PheremoneCount-1);
+	return clamp(pos % PheremoneCount,ivec2(0,0),ivec2(PheremoneCount,PheremoneCount)-1);
+}
+ivec2 GetPheremoneGrid(vec2 pos)
+{
+	return ivec2(floor(((pos+WorldSize))/PheremoneResolution));
+}
+void FollowPhermomon(uint i,layout(rg16f) image3D im,float s) {
+	vec2 deltaheading = vec2(0,0);
+	for(int x = -1;x <= 1;++x){
+		for(int y = -1;y <= 1;++y){
+			 deltaheading += imageLoad(im,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) + ivec2(x,y)),int(EntityList[i].Affiliation))).xy * s;
+		}
+	}
+	EntityList[i].Heading += deltaheading;
+}
+void FollowPhermomonScent(uint i,int type,int detectrange,float s) {
+	vec2 Position = EntityList[i].Position;
+	vec2 headingdelta = vec2(0,0);
+	for(int x = -detectrange;x <= detectrange;++x){
+		for(int y = -detectrange;y <= detectrange;++y){
+			float dist = sqrt((x*x)+(y*y))* PheremoneResolution * 0.1;// / float(detectrange);
+			vec2 pvec = 
+				(imageLoad(PheremoneScent,
+				ivec3(
+				WrapPhermoneGrid(GetPheremoneGrid(Position) + ivec2(x,y))
+				,int(type))
+				).xy);
+			if(length(pvec) != 0){
+				vec2 SuggestedPos = Position + (vec2(x,y)*PheremoneResolution)
+					+ (normalize(pvec) * PheremoneResolution); 
+					headingdelta += normalize(SuggestedPos - Position) * s * length(pvec) / (1 + dist);
+			}
+//			float dist = sqrt((x*x)+(y*y))* PheremoneResolution * 0.1;// / float(detectrange);
+//			vec2 pheremonevec = (imageLoad(PheremoneScent,
+//				ivec3(
+//				WrapPhermoneGrid(GetPheremoneGrid(Position) + ivec2(x,y))
+//				,type)
+//				).xy);
+//				memoryBarrierImage();
+//				headingdelta += s * pheremonevec / (1 + dist);
+		}
+	}
+	EntityList[i].Heading += headingdelta;
+	memoryBarrier();
+}
+void PlacePheremoneScent(uint i,int type,float spreadrange,float s){
+	int size = int(ceil(EntityList[i].Size/PheremoneResolution) * spreadrange);
+	ivec2 iPosition = GetPheremoneGrid(EntityList[i].Position);
+	vec2 vel = EntityList[i].Position - EntityList[i].PositionOld;
+	for(int x = -size;x <= size;++x)
+	{
+		for(int y = -size;y <= size;++y)
+		{
+			if(x != 0 || y != 0){
+				vec2 v = vec2(-x,-y);
+				float dist = length(v);
+				vec2 val = imageLoad(PheremoneScent,ivec3(WrapPhermoneGrid(iPosition + ivec2(x,y)),int(type))).xy;
+				val += normalize(v.xy) * s / dist;
+				imageStore(PheremoneScent,ivec3(WrapPhermoneGrid(iPosition + ivec2(x,y)),int(type)),vec4(val,0,1));
+			}
+			else{
+				imageStore(PheremoneScent,ivec3(WrapPhermoneGrid(iPosition),int(type)),vec4(-vel * s * 1000,0,1));
+			}
+		}
+	}
+}
+void PlacePheremone(uint i,layout(rg16f) image3D ph, vec3 v){
+	vec3 val = imageLoad(ph,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xyz;
+	val += v;
+	imageStore(ph,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation)),vec4(val,1));
+}
+void RandomWalk(uint i,float speed,float rand){
+	if(abs(random(vec2((1 + i) + RandomTimeSeed,0))) < rand){
+		EntityList[i].Heading += vec2(random(vec2(i,2 * i) + RandomTimeSeed),random(vec2(i,2 * i) + 9.2 * RandomTimeSeed)) - 0.5;
+	}
+}
+void ApplyBoundaryCondition(uint i){
+	for(int j = 0;j < 2;++j)
+	{
+		if(EntityList[i].Position[j] < -WorldSize)
+		{
+			EntityList[i].Position[j] += 2 * WorldSize;
+			EntityList[i].PositionOld[j] += 2 * WorldSize;
+		}
+		if(EntityList[i].Position[j] >= WorldSize)
+		{
+			EntityList[i].Position[j] -= 2 * WorldSize;
+			EntityList[i].PositionOld[j] -= 2 * WorldSize;
+		}
+		if(isinf(EntityList[i].Position[j]) || isnan(EntityList[i].Position[j])){
+			EntityList[i].Position[j] = 0;
+			EntityList[i].ToRemove = 1;
+			EntityList[i].Alive = 0;
+		}
+		if(isinf(EntityList[i].PositionOld[j]) || isnan(EntityList[i].PositionOld[j])){
+			EntityList[i].PositionOld[j] = 0;
+			EntityList[i].ToRemove = 1;
+			EntityList[i].Alive = 0;
+		}
+	}
+	if(isinf(EntityList[i].Size) || isnan(EntityList[i].Size)){
+		EntityList[i].Size = 0;
+		EntityList[i].ToRemove = 1;
+		EntityList[i].Alive = 0;
+	}
+}
+
+void CreateAnt(int i) {
+	EntityList[i].Position = vec2(0,0);
+	EntityList[i].PositionOld = vec2(0,0);
+	EntityList[i].Acceleration = vec2(0,0);
+	EntityList[i].Size = 1;
+	EntityList[i].Alive = 1;
+	EntityList[i].Colour = vec3(1,1,1);
+	EntityList[i].ToRemove = 0;
+	EntityList[i].Affiliation = 0;
+	EntityList[i].Type = 0;
+	EntityList[i].Mass = 1;
+	EntityList[i].Age = 60;
+	EntityList[i].Heading = vec2(0,0);
+	EntityList[i].Energy = 50;
+	EntityList[i].HeldFood = 0;
+	EntityList[i].TimeFromHome = 0;
+	EntityList[i].Attacked = -1;
+	EntityList[i].MaxEnergy = 50;
+	EntityList[i].Health = 5;
+	EntityList[i].MaxHealth = 5;
+	EntityList[i].Queen = 0;
+}
+void CreateQueen(int i) {
+	EntityList[i].Position = vec2(0,0);
+	EntityList[i].PositionOld = vec2(0,0);
+	EntityList[i].Acceleration = vec2(0,0);
+	EntityList[i].Size = 10;
+	EntityList[i].Alive = 1;
+	EntityList[i].Colour = vec3(1,1,1);
+	EntityList[i].ToRemove = 0;
+	EntityList[i].Affiliation = 0;
+	EntityList[i].Type = 0;
+	EntityList[i].Mass = 10;
+	EntityList[i].Age = 30;
+	EntityList[i].Heading = vec2(0,0);
+	EntityList[i].Energy = 8000;
+	EntityList[i].HeldFood = 0;
+	EntityList[i].TimeFromHome = 0;
+	EntityList[i].Attacked = -1;
+	EntityList[i].MaxEnergy = 8000;
+	EntityList[i].Health = 10;
+	EntityList[i].MaxHealth = 10;
+	EntityList[i].Queen = 1;
+}
+void CreateNest(int i) {
+	EntityList[i].Position = vec2(0,0);
+	EntityList[i].PositionOld = vec2(0,0);
+	EntityList[i].Acceleration = vec2(0,0);
+	EntityList[i].Size = 50;
+	EntityList[i].Alive = 1;
+	EntityList[i].Colour = vec3(1,1,1);
+	EntityList[i].ToRemove = 0;
+	EntityList[i].Affiliation = 0;
+	EntityList[i].Type = 1;
+	EntityList[i].Mass = 10000000;
+	EntityList[i].Age = 60;
+	EntityList[i].Heading = vec2(0,0);
+	EntityList[i].Energy = 5000;
+	EntityList[i].HeldFood = 0;
+	EntityList[i].TimeFromHome = 0;
+	EntityList[i].Attacked = -1;
+	EntityList[i].MaxEnergy = 100000;
+	EntityList[i].MaxHealth = 500;
+	EntityList[i].Health = 500;
+	EntityList[i].Queen = 0;
+}
+void CreatePrey(int i) {
+	EntityList[i].Position = vec2(0,0);
+	EntityList[i].PositionOld = vec2(0,0);
+	EntityList[i].Acceleration = vec2(0,0);
+	EntityList[i].Size = 5;
+	EntityList[i].Alive = 1;
+	EntityList[i].Colour = vec3(0,1,0);
+	EntityList[i].ToRemove = 0;
+	EntityList[i].Affiliation = -1;
+	EntityList[i].Type = 2;
+	EntityList[i].Mass = 50;
+	EntityList[i].Age = 100;
+	EntityList[i].Heading = vec2(0,0);
+	EntityList[i].HeldFood = 0;
+	EntityList[i].TimeFromHome = 0;
+	EntityList[i].Attacked = -1;
+	EntityList[i].MaxEnergy = 2000;
+	EntityList[i].Energy = 1000;
+	EntityList[i].MaxHealth = 10;
+	EntityList[i].Health = 10;
+	EntityList[i].Queen = 0;
+}
+void CreatePredator(int i) {
+	EntityList[i].Position = vec2(0,0);
+	EntityList[i].PositionOld = vec2(0,0);
+	EntityList[i].Acceleration = vec2(0,0);
+	EntityList[i].Size = 40;
+	EntityList[i].Alive = 1;
+	EntityList[i].Colour = vec3(1,0,0);
+	EntityList[i].ToRemove = 0;
+	EntityList[i].Affiliation = -2;
+	EntityList[i].Type = 3;
+	EntityList[i].Mass = 40;
+	EntityList[i].Age = 120;
+	EntityList[i].Heading = vec2(0,0);
+	EntityList[i].Energy = 2000;
+	EntityList[i].HeldFood = 0;
+	EntityList[i].TimeFromHome = 0;
+	EntityList[i].Attacked = -1;
+	EntityList[i].MaxEnergy = 50000;
+	EntityList[i].MaxHealth = 100;
+	EntityList[i].Health = 100;
+}
+void CreatePlant(int i) {
+	EntityList[i].Position = vec2(0,0);
+	EntityList[i].PositionOld = vec2(0,0);
+	EntityList[i].Acceleration = vec2(0,0);
+	EntityList[i].Size = 2;
+	EntityList[i].Alive = 1;
+	EntityList[i].Colour = vec3(0,1,0);
+	EntityList[i].ToRemove = 0;
+	EntityList[i].Affiliation = -4;
+	EntityList[i].Type = 4;
+	EntityList[i].Mass = 10000000;
+	EntityList[i].Age = 10000;
+	EntityList[i].Heading = vec2(0,0);
+	EntityList[i].HeldFood = 0;
+	EntityList[i].TimeFromHome = 0;
+	EntityList[i].Attacked = -1;
+	EntityList[i].MaxEnergy = 5000;
+	EntityList[i].Energy = 1000;
+	EntityList[i].MaxHealth = 100;
+	EntityList[i].Health = 100;
+	EntityList[i].Queen = 0;
+}

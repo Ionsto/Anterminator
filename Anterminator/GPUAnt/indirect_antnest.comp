@@ -1,0 +1,126 @@
+#version 430
+#include entity_common.comp
+
+void ExecuteBehaviourNest(uint i)
+{
+	//Ant spawn rate
+	if(int(EntityList[i].Alive) == 1)
+	{
+		int aff = int(EntityList[i].Affiliation);
+		EntityList[i].Age += dt;
+		int spawncount = int(factions[aff].AntSpawnRate * 0.8 *
+			pow(
+			abs(random(vec2(EntityList[i].Energy * 100 + (1 + i) + RandomTimeSeed * 10321.1,(1 + i) + RandomTimeSeed * 101.1)))
+			,3) * 50);
+		//int spawncount = int(abs(random(vec2(EntityList[i].Energy * 100 + (1 + i) + RandomTimeSeed * 10321.1,(1 + i) + RandomTimeSeed * 101.1))) * 50);
+		//if(random(vec2(EntityList[i].Energy * 100 + (1 + i) + RandomTimeSeed * 10321.1,(1 + i) + RandomTimeSeed * 101.1)) < 1)
+		for(int k = 0;k < spawncount;++k)
+		{
+			if(EntityList[i].Energy > 5000)
+			{
+				if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
+					int id = AddEntity(0);
+					if(id != -1)
+					{
+						float ang = random(vec2(i + k,2 * i) + RandomTimeSeed) * 3.14 * 2;
+						float dist = 1.1 + (0.1*abs(random(vec2(i * 3 + k,k + 2 * i) + 9.2 * RandomTimeSeed)));
+						vec2 displacement = vec2(cos(ang),sin(ang)) * dist * EntityList[i].Size;
+						CreateAnt(id);
+						memoryBarrier();
+						//TODO: Analyse nan
+						EntityList[id].Position = EntityList[i].Position + displacement;
+						EntityList[id].PositionOld = EntityList[id].Position - (dt * displacement * 0.1);
+						EntityList[id].Affiliation = EntityList[i].Affiliation;
+						EntityList[i].Energy -= EntityList[id].Energy;
+						EntityList[id].Colour = EntityList[i].Colour;
+						EntityList[id].AudioFlags = int(EntityList[id].AudioFlags) | (1<<0);
+						atomicAdd(factions[aff].AntCount,1);
+
+						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
+							EntityList[id].Position = vec2(0,0);
+							EntityList[id].PositionOld = vec2(0,0);
+							EntityList[id].ToRemove = 1;
+							EntityList[id].Alive = 0;
+						}
+						memoryBarrier();
+					}
+				}
+			}
+		}
+		if(EntityList[i].Energy > 10000)
+		{
+			if(abs(random(vec2(EntityList[i].Energy * 33+ (1 + i) + RandomTimeSeed * 1.3,(1 + i) + RandomTimeSeed * 901.1))) < 0.01 * factions[aff].NestSpawnRate)
+			{
+				if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
+					int id = AddEntity(0);
+					if(id != -1)
+					{
+						float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
+						float dist = 1.1 + (0.1*abs(random(vec2(i * 3 , 2 * i) + 9.2 * RandomTimeSeed)));
+						vec2 displacement = vec2(cos(ang),sin(ang)) * dist * EntityList[i].Size;
+						CreateQueen(id);
+						memoryBarrier();
+						//TODO: Analyse nan
+						EntityList[id].Position = EntityList[i].Position + displacement;
+						EntityList[id].PositionOld = EntityList[id].Position - (dt * displacement * 0.1);
+						EntityList[id].Affiliation = EntityList[i].Affiliation;
+						EntityList[i].Energy -= 8000;
+						EntityList[id].Colour = EntityList[i].Colour;
+						atomicAdd(factions[aff].AntCount,1);
+						EntityList[id].AudioFlags = int(EntityList[id].AudioFlags) | (1<<0);
+
+						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
+							EntityList[id].Position = vec2(0,0);
+							EntityList[id].PositionOld = vec2(0,0);
+							EntityList[id].ToRemove = 1;
+							EntityList[id].Alive = 0;
+						}
+						memoryBarrier();
+					}
+				}
+			}
+		}
+		int size = int(floor(EntityList[i].Size/PheremoneResolution));
+		for(int x = -size;x <= size;++x)
+		{
+			for(int y = -size;y <= size;++y)
+			{
+				ivec2 v = ivec2(x,y);
+				if((x != 0 || y != 0) && dot(v,v) * PheremoneResolution * PheremoneResolution < EntityList[i].Size * EntityList[i].Size)
+				{
+					vec3 val = imageLoad(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) - v),int(EntityList[i].Affiliation))).xyz;
+					val.xy += normalize(v.xy) * PheremoneResolution * 0.1;
+					imageStore(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) - v),int(EntityList[i].Affiliation)),vec4(val,1));
+				}
+			}
+		}
+	}
+	else{
+//		int size = int(floor(EntityList[i].Size/PheremoneResolution));
+//		for(int x = -size;x <= size;++x)
+//		{
+//			for(int y = -size;y <= size;++y)
+//			{
+//				if(x != 0 && y != 0){
+//					vec3 v = vec3(-x,-y,0);
+//					vec3 val = imageLoad(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) + ivec2(x,y)),int(0))).xyz;
+//					val.xy *= 0.5;
+//					imageStore(PheremoneHome,ivec3(WrapPhermoneGrid(GetPheremoneGrid(EntityList[i].Position) + ivec2(x,y)),int(0)),vec4(val,1));
+//				}
+//			}
+//		}
+	}
+}
+void main()
+{
+    uint i = gl_GlobalInvocationID.x;
+	const int ExecutionType = 1;
+	//ApplyFriction(i);
+	if(i < gpuscene.TypeCount[ExecutionType] && i < MaxEntityCount)
+	{
+		int id = indirection_list[ExecutionType][i];
+		if(EntityList[id].ToRemove != 1){
+			ExecuteBehaviourNest(id);
+		}
+	}
+}

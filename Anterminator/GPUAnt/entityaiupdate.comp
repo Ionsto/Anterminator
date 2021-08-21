@@ -1,7 +1,7 @@
 #version 430
+#include constants.comp
 const int AIStepCount = 1;
 const float dt = 0.02 * AIStepCount;
-const float IntergrationDamping = 0.95;
 
 layout(rg16f,binding = 0) uniform image3D PheremoneHome;
 layout(rg16f,binding = 1) uniform image3D PheremoneFood;
@@ -48,16 +48,6 @@ struct Faction{
 	float NestSpawnRate;
 };
 
-
-const int WorldSize = 2048;
-const float PheremoneResolution = 4;
-const int PheremoneCount = int(floor(2 * WorldSize/PheremoneResolution));
-const int MaxEntityCount = 20000;
-const int MaxTypeCount = 5;
-const int MaxEntityPerChunk = 10;
-const int ChunkSize = 8;
-const int ChunkCount = 2*WorldSize/ChunkSize;
-const int FactionCount = 4;
 
 const float WalkHomeTime = 2;
 
@@ -473,7 +463,7 @@ void ExecuteBehaviourAnt(uint i)
 				EntityList[id].Position = EntityList[i].Position;
 				EntityList[id].PositionOld = EntityList[i].Position;// - (dt * displacement * 0.1);
 				EntityList[id].Affiliation = EntityList[i].Affiliation;
-				EntityList[id].Energy = EntityList[i].Energy;
+				//EntityList[id].Energy = EntityList[i].Energy;
 				EntityList[id].Colour = EntityList[i].Colour;
 				EntityList[i].Energy = 0;
 				EntityList[i].Alive = 0;
@@ -532,7 +522,7 @@ void ExecuteBehaviourNest(uint i)
 						EntityList[i].Energy -= EntityList[id].Energy;
 						EntityList[id].Colour = EntityList[i].Colour;
 						EntityList[id].AudioFlags = int(EntityList[id].AudioFlags) | (1<<0);
-						factions[aff].AntCount++;
+						atomicAdd(factions[aff].AntCount,1);
 
 						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
 							EntityList[id].Position = vec2(0,0);
@@ -564,7 +554,7 @@ void ExecuteBehaviourNest(uint i)
 						EntityList[id].Affiliation = EntityList[i].Affiliation;
 						EntityList[i].Energy -= 8000;
 						EntityList[id].Colour = EntityList[i].Colour;
-						factions[aff].NestCount++;
+						atomicAdd(factions[aff].NestCount,1);
 						EntityList[id].AudioFlags = int(EntityList[id].AudioFlags) | (1<<0);
 
 						if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
@@ -727,124 +717,18 @@ void ExecuteBehaviour(uint i)
 			break;
 	}
 }
-
-void UpdateEntity(uint i) {
-	float EnergyDecay = 0.98;
-	float EnergyDecayLinear = 0.01 * EntityList[i].Size;
-	float EnergyDecayLinearBase = 0.05;
-	float CurrentEnergy = EntityList[i].Energy;
-	CurrentEnergy *= pow(EnergyDecay,dt);
-	CurrentEnergy -= EnergyDecayLinear * dt;
-	CurrentEnergy -= EnergyDecayLinearBase * dt;
-	CurrentEnergy = clamp(CurrentEnergy,0,EntityList[i].MaxEnergy);
-	EntityList[i].Energy = CurrentEnergy;
-	if(EntityList[i].ToRemove != 1){
-		ExecuteBehaviour(i);
-	}
-	if(EntityList[i].Alive == 1){
-		float MaxSpeed = 5;
-		float SpeedLookup[] = {
-		10,//Ant
-		0,//Nest
-		10,//Prey
-		50//Pred
-		};
-		if(EntityList[i].Type == 1)
-		{
-			MaxSpeed = 0;
-			EntityList[i].Acceleration = vec2(0,0);
-		}
-		float EnergyMult = clamp(EntityList[i].Energy / EntityList[i].MaxEnergy,0.3,1.0);
-		if(isinf(EnergyMult) || isnan(EnergyMult)){
-			EnergyMult = 1;
-		}
-		MaxSpeed = SpeedLookup[int(EntityList[i].Type)];// * EnergyMult;
-		if(EntityList[i].Queen == 1)
-		{
-			MaxSpeed /= 1.5;	
-		}
-		if(any(isnan(EntityList[i].Heading)) || any(isinf(EntityList[i].Heading))){
-			EntityList[i].Heading = vec2(0,0);
-		}
-
-		if (dot(EntityList[i].Heading, EntityList[i].Heading) > MaxSpeed * MaxSpeed)
-		{
-			EntityList[i].Heading = normalize(EntityList[i].Heading) * MaxSpeed;
-		}
-		float MovmentCostLookup[] = {
-		0.0001,//Ant
-		0,//Nest
-		0.0001,//Prey
-		0.0001//Pred
-		};
-		float HeadingAccLookup[] = {
-		10,
-		0,
-		40 * EntityList[i].Size,
-		500
-		};
-		float MovmentCost = MovmentCostLookup[int(EntityList[i].Type)];
-		float HeadingAcc = HeadingAccLookup[int(EntityList[i].Type)];
-		if(EntityList[i].Queen == 1){
-			HeadingAcc *= 10;
-		}
-		float vel  = length(EntityList[i].Position - EntityList[i].PositionOld) / dt;
-		EntityList[i].Energy -= MovmentCost * vel * dt;
-		if(EntityList[i].Mass > 0){
-			EntityList[i].Acceleration += EntityList[i].Heading * HeadingAcc / EntityList[i].Mass;
-		}
-		EntityList[i].Age -= dt;
-		if (EntityList[i].HeldFood <= 0)
-		{
-			EntityList[i].TimeFromHome += dt;
-		}
-		EntityList[i].Attacked = -1;
-		if(EntityList[i].Health < EntityList[i].MaxHealth){
-			float HealLookup[] = {
-			10,//Ant
-			100,//Nest
-			10,//Prey
-			20//Pred
-			};
-			float HealRate = HealLookup[int(EntityList[i].Type)];
-			float dh = HealRate * dt;
-			dh = min(EntityList[i].MaxHealth-EntityList[i].Health,dh);
-			EntityList[i].Health += dh;
-			EntityList[i].Energy -= dh;
-		}
-	}
-	else{
-		EntityList[i].Size *= pow(EnergyDecay,dt);
-		EntityList[i].Size = max(1,EntityList[i].Size);
-	}
-	if(EntityList[i].Age <= 0 || EntityList[i].Health <= 0) {
-		if(EntityList[i].Alive != 0){
-		EntityList[i].AudioFlags = int(EntityList[i].AudioFlags) | (1<<1);
-		}
-		EntityList[i].Alive = 0;
-	}
-	if(EntityList[i].Energy <= 0) {
-		if(EntityList[i].Alive != 0){
-			EntityList[i].AudioFlags = int(EntityList[i].AudioFlags) | (1<<1);
-		}
-		EntityList[i].ToRemove = 1;
-		EntityList[i].Alive = 0;
-	}
-}
 void main()
 {
     uint i = gl_GlobalInvocationID.x;
-	if(gpuscene.EntityCount >= MaxEntityCount)
-	{
-		gpuscene.EntityCount = MaxEntityCount;
-	}
 
 	//ApplyFriction(i);
 	if(i < gpuscene.EntityCount && i < MaxEntityCount)
 	{
 		if(EntityList[i].Type != 4)
 		{
-			UpdateEntity(i);
+			if(EntityList[i].ToRemove != 1){
+				ExecuteBehaviour(i);
+			}
 		}
 	}
 }

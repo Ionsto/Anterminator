@@ -1,0 +1,30 @@
+#version 430
+const float dt = 0.02;
+layout(rg16f) uniform image3D Pheremone;
+layout(rgba32f,binding=4) uniform image2D PheremonePaint;
+layout (local_size_x = 16,local_size_y = 16,local_size_z=1) in;
+float random (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
+uniform float DecayConstant = 0.001;
+uniform float DiffusionConstant = 0.1;
+uniform int Affiliation;
+const float Resolution = 4;
+const float MaxDiffusionConstant = 50;
+const float MaxValue = 100;
+void main()
+{
+    uvec2 xy = gl_GlobalInvocationID.xy;
+    uint aff = gl_GlobalInvocationID.z;
+
+	vec4 ph = imageLoad(Pheremone,ivec3(xy,int(Affiliation)));
+	vec4 phpaint = imageLoad(PheremonePaint,ivec2(xy));
+	ph += phpaint;
+	float len = dot(ph.xy,ph.xy);
+	if(len > MaxValue * MaxValue){
+		ph.xy = normalize(ph.xy) * MaxValue; 
+	}
+	imageStore(Pheremone,ivec3(xy,int(Affiliation)),ph);
+}

@@ -55,16 +55,16 @@ struct GPUEntity {
 	float Health = 1;
 
 	float MaxHealth = 1;
-	float MaxSize;
-	float PadB;
-	float PadC;
+	float Queen = 0;
+	float IndirectionID = -1;
+	float AudioFlags = 0;
 };
 struct GPUFaction {
 	int AntCount = 0;
 	int NestCount = 0;
 	float TotalEnergy = 0;
-	float AntSpawnRate = 0.2;
-	float NestSpawnRate = 1;
+	float AntSpawnRate = 0.05;
+	float NestSpawnRate = 0.1;
 };
 struct GPUAudioEvent {
 	float Type = 0;
@@ -97,6 +97,9 @@ public:
 	Shader Compute_AudioEvents;
 	ShaderProgram Program_CollisionUpdate;
 	ShaderProgram Program_EntityAIUpdate;
+	static constexpr int AIIndirectTypes = GPUSceneTypeCount;
+	std::array<Shader,AIIndirectTypes> Compute_EntityAIIndirect;
+	std::array<ShaderProgram,AIIndirectTypes> Program_EntityAIIndirect;
 	ShaderProgram Program_EntityUpdate;
 	ShaderProgram Program_ChunkUpdate;
 	ShaderProgram Program_ChunkReset;
@@ -116,6 +119,8 @@ public:
 	GLuint FactionBuffer;
 	GLuint AudioEventBuffer;
 	GLuint AudioOutputBuffer;
+	static constexpr int MaxTypeCount = GPUSceneTypeCount;
+	GLuint TypeIndirectionBuffer;
 
 	GLuint UniformEntityEntityCount;       
 	GLuint UniformEntityWorldSize;       
@@ -177,7 +182,7 @@ public:
 
 	float TimeScalingFactor = 1;
 	float DtAccumulator = 0;
-	static constexpr const int MaxParticleCount = 20'000;
+	static constexpr const int MaxParticleCount = 20000;
 	//How often we pull gpu data onto the mirror in ram
 	int EntityUpdateCounter = 0;
 	int AudioUpdateCounter = 0;
@@ -233,6 +238,8 @@ public:
 		auto& e = WorldEntityMirror[i];
 		std::cout << "-----------------------------\n";
 		std::cout << "Info about entity:" << i << "\n";
+		std::cout << "Type:" << e.Type << "\n";
+		std::cout << "Ind:" << e.IndirectionID << "\n";
 		std::cout << "Alive:" << e.Alive << "\n";
 		std::cout << "Position:" << e.PositionX<<", " << e.PositionY << "\n";
 		std::cout << "Health:" << e.Health << "\n";

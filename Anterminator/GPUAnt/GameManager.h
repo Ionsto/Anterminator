@@ -29,6 +29,7 @@ private:
 	glm::vec2 MouseScreenPos;
 	glm::vec2 MouseScreenPosOld;
 	bool MouseDown = false;
+	bool GamePause = false;
 public:
 	KeyManager KeyInput;
 	float clickticker = 0;

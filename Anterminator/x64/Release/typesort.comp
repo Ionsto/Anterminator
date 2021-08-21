@@ -1,0 +1,102 @@
+#version 430
+const float dt = 0.02;
+const float IntergrationDamping = 0.95;
+
+layout(rg16f,binding = 0) uniform image3D PheremoneHome;
+layout(rg16f,binding = 1) uniform image3D PheremoneFood;
+layout(rg16f,binding = 2) uniform image3D PheremoneAttack;
+layout(rg16f,binding = 3) uniform image3D PheremoneScent;
+
+struct Entity{
+	vec2 Position;
+	vec2 PositionOld;
+
+	vec2 Acceleration;
+	float Size;
+	float Alive;
+
+	vec3 Colour;
+	float ToRemove;
+
+	float Affiliation;
+	float Type;
+	float Mass;
+	float Age;
+
+	vec2 Heading;
+	float Energy;
+	float HeldFood;
+
+	float TimeFromHome;
+	float Attacked;
+	float MaxEnergy;
+	float Health;
+
+	float MaxHealth;
+	float Queen;
+	float IndirectionID;
+	float AudioFlags;
+};
+
+struct Faction{
+	int AntCount;
+	int NestCount;
+	float TotalEnergy;
+	float AntSpawnRate;
+	float NestSpawnRate;
+};
+
+
+const int WorldSize = 2048;
+const float PheremoneResolution = 4;
+const int PheremoneCount = int(floor(2 * WorldSize/PheremoneResolution));
+const int MaxEntityCount = 20000;
+const int MaxTypeCount = 4;
+const int MaxEntityPerChunk = 10;
+const int ChunkSize = 8;
+const int ChunkCount = 2*WorldSize/ChunkSize;
+const int FactionCount = 4;
+
+const float WalkHomeTime = 2;
+
+
+struct Chunk{
+	int EntityCount;
+	int EntityID[MaxEntityPerChunk];
+};
+int GetChunkId(vec2 pos)
+{
+	ivec2 localpos = ivec2(floor((pos + WorldSize)/ChunkSize));
+	return clamp(localpos.y + (localpos.x * ChunkCount),0,ChunkCount * ChunkCount - 1); 
+}
+struct Scene{
+	int EntityCount;
+	int TypeCount[MaxTypeCount];
+//	int IndirectionList[MaxTypeCount][MaxEntityCount];
+};
+
+//uniform float WorldSize;       
+uniform float RandomTimeSeed;
+uniform int ExecutionType;
+
+layout (local_size_x = 128) in;
+
+layout(std430, binding = 0) buffer entity_block
+{
+	Entity EntityList[];
+};
+layout(std430, binding = 4) buffer scene_data 
+{
+	Scene gpuscene;
+};
+void main()
+{
+    uint id = gl_GlobalInvocationID.x;
+	int type = 0;
+	if(id < gpuscene.EntityCount)
+	{
+		for(int i = 0;i < gpuscene.TypeCount[id];++i){
+//			Entity e = EntityList[i];
+		}
+	}
+}

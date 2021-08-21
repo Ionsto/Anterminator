@@ -1,0 +1,153 @@
+#version 430
+const float dt = 0.02;
+const float IntergrationDamping = 0.95;
+
+struct Entity{
+	vec2 Position;
+	vec2 PositionOld;
+
+	vec2 Acceleration;
+	float Size;
+	float Alive;
+
+	vec3 Colour;
+	float ToRemove;
+
+	float Affiliation;
+	float Type;
+	float Mass;
+	float Age;
+
+	vec2 Heading;
+	float Energy;
+	float HeldFood;
+
+	float TimeFromHome;
+	float Attacked;
+	float MaxEnergy;
+	float Health;
+
+	float MaxHealth;
+	float Queen;
+	float IndirectionID;
+	float AudioFlags;
+};
+
+struct Faction{
+	int AntCount;
+	int NestCount;
+	float TotalEnergy;
+	float AntSpawnRate;
+	float NestSpawnRate;
+};
+
+
+
+const int WorldSize = 2048;
+const float PheremoneResolution = 4;
+const int MaxEntityCount = 20000;
+const int MaxEntityPerChunk = 10;
+const int MaxTypeCount = 4;
+const int ChunkSize = 8;
+const int ChunkCount = 2*WorldSize/ChunkSize;
+
+const float WalkHomeTime = 10;
+
+
+struct Chunk{
+	int EntityCount;
+	int EntityID[MaxEntityPerChunk];
+};
+int GetChunkId(vec2 pos)
+{
+	ivec2 localpos = ivec2(floor(pos / ChunkSize)) + (ChunkCount/2);
+	return clamp(localpos.y + (localpos.x * ChunkCount),0,ChunkCount * ChunkCount - 1); 
+}
+struct Scene{
+	int EntityCount;
+	int TypeCount[MaxTypeCount];
+};
+
+
+const int MaxEntitiesPerThread = 10;
+layout (local_size_x = 16) in;
+layout(std430, binding = 0) buffer entity_block
+{
+	Entity EntityList[];
+};
+layout(std430, binding = 4) buffer scene_data 
+{
+	Scene gpuscene;
+};
+layout(std430, binding = 6) buffer faction_data 
+{
+	Faction factions[];
+};
+layout(std430, binding = 8) buffer entity_indirection
+{
+	int indirection_list[MaxTypeCount][MaxEntityCount];
+};
+float random (vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
+void DeleteIndirection(int type,int indirectionid){
+	//find the end indirection id
+	int endind = atomicAdd(gpuscene.TypeCount[type],-1) - 1;
+	//set the entity endind points to, to redirect to our new indirection 
+	int endID = int(indirection_list[type][endind]);
+	EntityList[endID].IndirectionID = float(indirectionid);
+	indirection_list[type][indirectionid] = endID;
+	indirection_list[type][endID] = -1;
+}
+void main()
+{
+    uint i = gl_GlobalInvocationID.x;
+	int EntityCount = gpuscene.EntityCount;
+	int Threads = int(ceil(float(EntityCount) / float(MaxEntitiesPerThread)));
+	if(i < Threads)
+	{
+		int minent = int(i) * MaxEntitiesPerThread;	
+		for(int j = 0;j < MaxEntitiesPerThread;++j)
+		{
+			int id = j + minent;
+			if(id < gpuscene.EntityCount && id < MaxEntityCount)	
+			{
+				if(int(EntityList[id].ToRemove) == 1)
+				{
+					int EndEntity = atomicAdd(gpuscene.EntityCount,-1) - 1;	
+					memoryBarrier();
+					//Move end indirection to the IndirectionID 
+					DeleteIndirection(int(EntityList[id].Type),int(EntityList[id].IndirectionID));
+					memoryBarrier();
+//					memoryBarrierBuffer();
+//					int indtype = int(EntityList[id].Type);
+//					int endind = atomicAdd(gpuscene.TypeCount[indtype],-1);
+//					int indEntityId = int(indirection_list[indtype][endind]);
+//
+//					int indEntityIdNewInd = int(EntityList[id].IndirectionID);
+//					//entity that the end of indirection was pointing to, point to new indirection
+//					EntityList[indEntityId].IndirectionID = float(indEntityIdNewInd);
+//					//new indirection set up in id entities slot
+//					indirection_list[indtype][indEntityIdNewInd] = indEntityId;
+//
+//					//Point endentity indirection to new location
+
+					if(EntityList[id].Type == 0){
+						atomicAdd(factions[int(EntityList[id].Affiliation)].AntCount,-1);
+					}
+					if(EntityList[id].Type == 1){
+						atomicAdd(factions[int(EntityList[id].Affiliation)].NestCount,-1);
+					}
+					//Move end entity to id position
+					indirection_list[int(EntityList[EndEntity].Type)][int(EntityList[EndEntity].IndirectionID)] = id;
+					EntityList[id] = EntityList[EndEntity];
+					EntityList[EndEntity].IndirectionID = -1;
+					memoryBarrier();
+					//j -= 1;
+				}
+			}
+		}
+	}
+}

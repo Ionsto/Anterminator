@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "Shadinclude.h"
 
 Shader::Shader()
 {
@@ -16,15 +17,16 @@ Shader::~Shader()
 bool Shader::Init(std::string location, GLenum shaderType)
 {
 	std::cout << "Loading shader:" << location << std::endl;
-	std::ifstream input(location);
-	std::stringstream buffer;
-	if (!input.is_open())
-	{
-		std::cout << "Could not open shader at:" << location << std::endl;
-		return false;
-	}
-	buffer << input.rdbuf();
-	std::string shadersource = buffer.str();
+	std::string shadersource = Shadinclude::load(location);
+	//std::ifstream input(location);
+	//std::stringstream buffer;
+	//if (!input.is_open())
+	//{
+	//	std::cout << "Could not open shader at:" << location << std::endl;
+	//	return false;
+	//}
+	//buffer << input.rdbuf();
+	//std::string shadersource = buffer.str();
 	ShaderID = glCreateShader(shaderType);
 	const char * src = shadersource.c_str();
 	glShaderSource(ShaderID, 1, &src, NULL);

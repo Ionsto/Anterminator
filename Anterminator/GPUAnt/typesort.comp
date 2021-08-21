@@ -35,7 +35,7 @@ struct Entity{
 	float MaxHealth;
 	float Queen;
 	float IndirectionID;
-	float PadC;
+	float AudioFlags;
 };
 
 struct Faction{
@@ -51,7 +51,7 @@ const int WorldSize = 2048;
 const float PheremoneResolution = 4;
 const int PheremoneCount = int(floor(2 * WorldSize/PheremoneResolution));
 const int MaxEntityCount = 20000;
-const int MaxTypeCount = 5;
+const int MaxTypeCount = 4;
 const int MaxEntityPerChunk = 10;
 const int ChunkSize = 8;
 const int ChunkCount = 2*WorldSize/ChunkSize;

@@ -76,6 +76,9 @@
     <Filter Include="Shaders\Compute\Audio">
       <UniqueIdentifier>{3e0b19dc-76d5-4c3f-bb62-619d887d0ea1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Compute\Entity\indirect">
+      <UniqueIdentifier>{346207af-71c9-49b6-bb7a-78c1ef5651e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -155,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="AudioEngine.h">
       <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadinclude.h">
+      <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -244,9 +250,6 @@
     <None Include="entityupdate.comp">
       <Filter>Shaders\Compute\Entity</Filter>
     </None>
-    <None Include="collisionupdate.comp">
-      <Filter>Shaders\Compute\Collision</Filter>
-    </None>
     <None Include="drawmaskblur.comp">
       <Filter>Shaders\Compute\Draw mask</Filter>
     </None>
@@ -291,6 +294,27 @@
     </None>
     <None Include="collisionupdateentity.comp">
       <Filter>Shaders\Compute\Collision</Filter>
+    </None>
+    <None Include="indirect_ant.comp">
+      <Filter>Shaders\Compute\Entity\indirect</Filter>
+    </None>
+    <None Include="indirect_antnest.comp">
+      <Filter>Shaders\Compute\Entity\indirect</Filter>
+    </None>
+    <None Include="indirect_prey.comp">
+      <Filter>Shaders\Compute\Entity\indirect</Filter>
+    </None>
+    <None Include="indirect_pred.comp">
+      <Filter>Shaders\Compute\Entity\indirect</Filter>
+    </None>
+    <None Include="indirect_plant.comp">
+      <Filter>Shaders\Compute\Entity\indirect</Filter>
+    </None>
+    <None Include="entity_common.comp">
+      <Filter>Shaders\Compute\Entity</Filter>
+    </None>
+    <None Include="constants.comp">
+      <Filter>Shaders\Compute\Entity</Filter>
     </None>
   </ItemGroup>
 </Project>

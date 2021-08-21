@@ -1,0 +1,125 @@
+#version 430
+#include entity_common.comp
+void ExecuteBehaviourAnt(uint i)
+{
+	if (EntityList[i].Alive == 1 && EntityList[i].Queen == 0)
+	{
+		FollowPhermomonScent(i,2,2,-0.1);
+		vec2 dv = (EntityList[i].Position - EntityList[i].PositionOld)/dt;
+		if (EntityList[i].HeldFood > 0) {
+			//Bring food back to colony
+				const float WalkFoodPHLayFood = 0.01 / 10;
+				const float WalkFoodRandomSpeed = 10;
+				const float WalkFoodPHFollowHome = 10;
+				PlacePheremone(i,PheremoneFood,-vec3(dv,0) * WalkFoodPHLayFood * EntityList[i].HeldFood);
+				RandomWalk(i,WalkFoodRandomSpeed,0.5);
+				FollowPhermomon(i,PheremoneHome,WalkFoodPHFollowHome);
+		}
+		else {
+			if (EntityList[i].TimeFromHome > WalkHomeTime)
+			{
+
+				//Walk back to colony
+					const float WalkHomeRandomSpeed = 1;
+					const float WalkHomePHFollowHome = 1;
+					RandomWalk(i,WalkHomeRandomSpeed,0.5);
+					FollowPhermomon(i,PheremoneHome,WalkHomePHFollowHome);
+//					FollowPhermomon(i,PheremoneAttack,20);
+			}
+			else {
+				//Explore - follow trails
+				float PhereStrengthThres = 50;
+				float MaxPhere = max(
+				max(
+				length(imageLoad(PheremoneHome,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy),
+				length(imageLoad(PheremoneFood,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy)
+				),
+				length(imageLoad(PheremoneAttack,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy)
+				);
+					MaxPhere = min(MaxPhere, 100.0f);
+					if (MaxPhere > PhereStrengthThres)
+					{
+							EntityList[i].TimeFromHome -= dt * 0.5 * MaxPhere;
+							EntityList[i].TimeFromHome = max(0.0f, EntityList[i].TimeFromHome);
+					}
+					float LayHome = 0.1;
+					float FollowFood = 1;
+					float FollowHome = 1;
+					RandomWalk(i,100,0.5);
+					PlacePheremone(i,PheremoneHome,-vec3(dv,0) * LayHome);
+					FollowPhermomon(i,PheremoneFood,FollowFood);
+					FollowPhermomon(i,PheremoneHome,-FollowHome);
+					FollowPhermomon(i,PheremoneAttack,100);
+					FollowPhermomonScent(i,0,5,10);
+			
+					//Reprop attack
+					vec3 val = imageLoad(PheremoneAttack,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xyz;
+					val *= 1.001;
+					imageStore(PheremoneAttack,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation)),vec4(val,1));
+			}
+		}
+	}
+	if (EntityList[i].Alive == 1 && EntityList[i].Queen == 1)
+	{
+		RandomWalk(i,50,0.5);
+		FollowPhermomon(i,PheremoneHome,-1000);
+		FollowPhermomon(i,PheremoneAttack,10);
+		vec2 dir = EntityList[i].Position - EntityList[i].PositionOld;
+		PlacePheremone(i,PheremoneAttack,vec3(dir,0) * 500);
+		if(length(imageLoad(PheremoneHome,ivec3(GetPheremoneGrid(EntityList[i].Position),int(EntityList[i].Affiliation))).xy) < 50){
+			EntityList[i].Age = 0;
+		}
+	}
+	if(EntityList[i].Age <= 0 && EntityList[i].Energy > 0 && EntityList[i].Queen == 1)
+	{
+		if(!any(isinf(EntityList[i].Position)) && !any(isnan(EntityList[i].Position))){
+			int id = AddEntity(1);
+			if(id != -1)
+			{
+				float ang = random(vec2(i,2 * i) + RandomTimeSeed) * 3.14 * 2;
+				float dist = 3 + (2*abs(random(vec2(i * 3,2 * i) + 9.2 * RandomTimeSeed)));
+				vec2 displacement = vec2(cos(ang),sin(ang)) * dist * EntityList[i].Size;
+				CreateNest(id);
+				memoryBarrier();
+				EntityList[id].Position = EntityList[i].Position;
+				EntityList[id].PositionOld = EntityList[i].Position;// - (dt * displacement * 0.1);
+				EntityList[id].Affiliation = EntityList[i].Affiliation;
+				//EntityList[id].Energy = EntityList[i].Energy;
+				EntityList[id].Colour = EntityList[i].Colour;
+				EntityList[i].Energy = 0;
+				EntityList[i].Alive = 0;
+				EntityList[i].ToRemove = 1;
+				atomicAdd(factions[int(EntityList[i].Affiliation)].NestCount,1);
+				if(any(isinf(EntityList[id].Position)) || any(isnan(EntityList[id].Position))){
+					EntityList[id].Position = vec2(0,0);
+					EntityList[id].PositionOld = vec2(0,0);
+					EntityList[id].ToRemove = 1;
+					EntityList[id].Alive = 0;
+				}
+				memoryBarrier();
+			}
+		}
+	}
+
+	if (EntityList[i].Attacked != -1)
+	{
+			vec2 dir = EntityList[i].Position - EntityList[int(EntityList[i].Attacked)].Position;
+			PlacePheremone(i,PheremoneAttack,-vec3(normalize(dir.xy) * 5,0));
+			EntityList[i].Attacked = -1;
+	}
+	PlacePheremoneScent(i,2,1,0.01);
+}
+
+void main()
+{
+    uint i = gl_GlobalInvocationID.x;
+	const int ExecutionType = 0;
+	//ApplyFriction(i);
+	if(i < gpuscene.TypeCount[ExecutionType] && i < MaxEntityCount)
+	{
+		int id = indirection_list[ExecutionType][i];
+		if(EntityList[id].ToRemove != 1){
+			ExecuteBehaviourAnt(id);
+		}
+	}
+}
