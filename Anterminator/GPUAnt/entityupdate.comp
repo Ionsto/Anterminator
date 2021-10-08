@@ -320,8 +320,8 @@ void UpdateEntity(uint i) {
 		};
 		if(EntityList[i].Type == 1)
 		{
-			MaxSpeed = 0;
-			EntityList[i].Acceleration = vec2(0,0);
+			//MaxSpeed = 0;
+			//EntityList[i].Acceleration = vec2(0,0);
 		}
 		float EnergyMult = clamp(EntityList[i].Energy / EntityList[i].MaxEnergy,0.3,1.0);
 		if(isinf(EnergyMult) || isnan(EnergyMult)){

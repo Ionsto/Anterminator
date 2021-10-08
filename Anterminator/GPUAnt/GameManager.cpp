@@ -92,9 +92,9 @@ GameManager::GameManager()
 	std::cout << "Loading window" << std::endl;
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 	ScreenSize = glm::vec2(1920, 1080);
-	ScreenSize = glm::vec2(800, 800);
-	Window_Handle = glfwCreateWindow(ScreenSize.x, ScreenSize.y, "Anterminator",NULL, NULL);
-	//Window_Handle = glfwCreateWindow(1920, 1080, "Anterminator", glfwGetPrimaryMonitor(), NULL);
+	//ScreenSize = glm::vec2(800, 800);
+	//Window_Handle = glfwCreateWindow(ScreenSize.x, ScreenSize.y, "Anterminator",NULL, NULL);
+	Window_Handle = glfwCreateWindow(1920, 1080, "Anterminator", glfwGetPrimaryMonitor(), NULL);
 //	Window_Handle = glfwCreateWindow(800, 800, "Anterminator",NULL, NULL);
 	
 	if (!Window_Handle)

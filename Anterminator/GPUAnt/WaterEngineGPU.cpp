@@ -453,7 +453,7 @@ int WaterEngineGPU::InitWorld()
 //	noisegen.SetNoiseType()
 	std::cout << "Generating world\n";
 	static constexpr int MaxMaskEnts = 0;
-	constexpr int Nests = 0;
+	constexpr int Nests = 5;
 	constexpr int Prey = 500;
 	constexpr int Pred = 10;
 	constexpr int Plants = 50;
